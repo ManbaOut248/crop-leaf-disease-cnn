@@ -1,0 +1,6 @@
+{
+  "temperature": 1.0,
+  "ece_before": 0.0028,
+  "ece_after": 0.0028,
+  "note": "Temperature Scaling 温度 T 在验证集拟合、测试集评估；predict.py 推理端用 T 缩放 logits。"
+}

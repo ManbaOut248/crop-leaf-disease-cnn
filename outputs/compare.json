@@ -1,0 +1,35 @@
+{
+  "device": "cpu",
+  "backends": [
+    {
+      "backend": "fp32",
+      "desc": "原始防泄漏 best（fp32）",
+      "size_mb": 44.862782,
+      "acc": 0.9927,
+      "macro_f1": 0.9923,
+      "latency_ms": 22.75,
+      "size_reduce_pct": 0.0,
+      "speedup_x": 1.0
+    },
+    {
+      "backend": "quantized",
+      "desc": "INT8 静态量化（qnnpack/CPU）",
+      "size_mb": 11.237542,
+      "acc": 0.9923,
+      "macro_f1": 0.992,
+      "latency_ms": 11.16,
+      "size_reduce_pct": 75.0,
+      "speedup_x": 2.04
+    },
+    {
+      "backend": "pruned",
+      "desc": "结构化通道剪枝（fp32，20% 中间通道）",
+      "size_mb": 36.091134,
+      "acc": 0.9902,
+      "macro_f1": 0.9887,
+      "latency_ms": 18.98,
+      "size_reduce_pct": 19.6,
+      "speedup_x": 1.2
+    }
+  ]
+}

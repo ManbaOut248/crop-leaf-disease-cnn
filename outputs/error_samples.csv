@@ -1,0 +1,37 @@
+﻿image_path,true_label,pred_label,calibrated_confidence
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Corn_(maize)___Northern_Leaf_Blight\c4eb96b2-1345-46d0-a796-161042da21df___RS_NLB 0824 copy.jpg,玉米北方叶枯病,玉米灰斑病,0.7852
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\5bf73067-7550-4857-aa0f-c35e7bbcb668___UF.GRC_BS_Lab Leaf 1166.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.7895
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Potato___Late_blight\e439b96c-2ff6-4d53-b8f0-1ed720536b0c___RS_LB 4449.JPG,马铃薯晚疫病,马铃薯早疫病,0.7606
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\b19191da-a846-4e30-85b2-a028e1d85376___UF.GRC_BS_Lab Leaf 8635.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.616
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\0e94696b-3e0d-4d4c-a712-01197e228cf1___UF.GRC_BS_Lab Leaf 8641.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.654
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\13affc42-3a89-4a99-97aa-98f41682a71e___UF.GRC_BS_Lab Leaf 0546.JPG,番茄细菌性斑点病,番茄晚疫病,0.6729
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Septoria_leaf_spot\fb6bea39-f361-457c-b73e-fe3b2dbe6259___Matt.S_CG 2786.JPG,番茄 Septoria 叶斑病,马铃薯早疫病,0.8662
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Septoria_leaf_spot\adf85c8b-07e2-4f8c-a04a-8a71094b97e6___Matt.S_CG 7530.JPG,番茄 Septoria 叶斑病,马铃薯早疫病,0.5512
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Peach___healthy\789d2e40-b2fc-45d0-81e6-b210f09ac71e___Rutg._HL 2463.JPG,桃（健康）,桃细菌性斑点病,0.7046
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Corn_(maize)___Common_rust_\RS_Rust 1949.JPG,玉米普通锈病,玉米北方叶枯病,0.6703
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Cherry_(including_sour)___healthy\4b1fcb7b-3fa6-4bd9-bad0-59328645eef6___JR_HL 4087.JPG,樱桃（健康）,南瓜白粉病,0.5044
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\d8e40874-f16d-43e2-9922-97a973861a0c___UF.GRC_BS_Lab Leaf 8728.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.532
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\50d3806b-90a3-4d5e-8fd7-9dc443939279___UF.GRC_BS_Lab Leaf 1187.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.9314
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\53824ab2-5655-4524-916b-9900ee0b949b___UF.GRC_BS_Lab Leaf 1159.JPG,番茄细菌性斑点病,番茄晚疫病,0.5812
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Corn_(maize)___Common_rust_\RS_Rust 2101.JPG,玉米普通锈病,玉米灰斑病,0.9518
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot\ce28178f-e53a-4555-90b4-d7156fd8333a___RS_GLSp 9307.JPG,玉米灰斑病,玉米北方叶枯病,0.6425
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Soybean___healthy\5e85916d-d71c-447a-b21b-c1c9434c0c37___RS_HL 3619.JPG,大豆（健康）,番茄晚疫病,0.4977
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Tomato_Yellow_Leaf_Curl_Virus\3963a2e9-e6cc-4c8c-b8d2-96c7b2aa2f5a___UF.GRC_YLCV_Lab 01587.JPG,番茄黄化曲叶病毒病,番茄晚疫病,0.5867
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Apple___healthy\d80c1667-5e83-4405-9759-a9521eff44ad___RS_HL 5699.JPG,苹果（健康）,桃（健康）,0.7215
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Corn_(maize)___Northern_Leaf_Blight\e8527ec9-d83a-49c6-b0ed-1833e6350e23___RS_NLB 3796.JPG,玉米北方叶枯病,玉米灰斑病,0.9689
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\4552e196-00f9-4de7-9a47-605de7a9ecd0___UF.GRC_BS_Lab Leaf 9296.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.7997
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Septoria_leaf_spot\d3c59c88-195f-4aca-8311-a7c06fcf6c1b___Matt.S_CG 0969.JPG,番茄 Septoria 叶斑病,番茄细菌性斑点病,0.7951
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Corn_(maize)___Northern_Leaf_Blight\e2faa2e3-433a-4ee3-9b64-8de4ad2947e1___RS_NLB 3795.JPG,玉米北方叶枯病,玉米灰斑病,0.997
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\bc185bd9-5335-4fd5-b426-8c30b56feda3___UF.GRC_BS_Lab Leaf 8782.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.6417
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Tomato_Yellow_Leaf_Curl_Virus\11b71e53-8d68-4b37-8b71-3a83e7961f1e___YLCV_NREC 2645.JPG,番茄黄化曲叶病毒病,番茄红蜘蛛（二斑叶螨）,0.6317
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Late_blight\a6b94272-9bb5-495e-bce4-2622d2ea34f5___GHLB Leaf 25.2 Day 12.JPG,番茄晚疫病,玉米（健康）,0.7125
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Late_blight\7d8cbbfc-89e2-4fe5-9624-89b353d78832___RS_Late.B 5176.JPG,番茄晚疫病,马铃薯晚疫病,0.8169
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Early_blight\f4d4fe0b-d711-4a2c-b331-213787eda9b0___RS_Erly.B 6665.JPG,番茄早疫病,番茄 Septoria 叶斑病,0.608
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Early_blight\aca65de6-6464-4f8c-803d-b55f92f950f8___RS_Erly.B 6663.JPG,番茄早疫病,番茄 Septoria 叶斑病,0.9596
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Spider_mites Two-spotted_spider_mite\3046afbf-4a9a-41fb-a64f-3f9e75af08e7___Com.G_SpM_FL 1623.JPG,番茄红蜘蛛（二斑叶螨）,番茄靶斑病,0.7896
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Septoria_leaf_spot\ecdeac10-f463-4f66-a264-78c0f69f5ea3___Matt.S_CG 7473.JPG,番茄 Septoria 叶斑病,马铃薯早疫病,0.9691
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Late_blight\ba98d073-d05a-4dfd-ae35-3f1fda2c3110___RS_Late.B 4843.JPG,番茄晚疫病,番茄早疫病,0.5602
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\09ebe433-a21f-4ffe-9954-e3ce4347143f___UF.GRC_BS_Lab Leaf 1084.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.6882
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Leaf_Mold\9667b27d-09e8-4776-97bf-e6088227d26d___Crnl_L.Mold 6670.JPG,番茄叶霉病,番茄红蜘蛛（二斑叶螨）,0.5424
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\7b0955af-e428-4c82-9834-7158f6cf86db___UF.GRC_BS_Lab Leaf 0509.JPG,番茄细菌性斑点病,番茄黄化曲叶病毒病,0.5317
+F:\实训产品\基于CNN的农作物叶片病害识别系统\PlantVillage\Tomato___Bacterial_spot\962399bf-bc19-48a8-99b1-92b2963c2dcd___UF.GRC_BS_Lab Leaf 1074.JPG,番茄细菌性斑点病,番茄晚疫病,0.8855

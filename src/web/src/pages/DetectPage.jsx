@@ -1,0 +1,192 @@
+// 病害识别页：上传图片 → 调 /predict → Top-3 概率 + 病害说明 + 防治建议
+import React, { useState } from 'react'
+import {
+  Upload,
+  Button,
+  Card,
+  Progress,
+  Tag,
+  Typography,
+  Descriptions,
+  Alert,
+  Space,
+  App,
+  Divider,
+} from 'antd'
+import { UploadOutlined, ExperimentOutlined } from '@ant-design/icons'
+import http, { USE_MOCK } from '../api/http'
+import { mockPredict } from '../api/mock'
+
+const LOW_CONF = 0.5 // 置信度低于此值提示人工复核（对齐 API 文档）
+
+export default function DetectPage() {
+  const { message } = App.useApp()
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState(null)
+
+  const beforeUpload = (f) => {
+    const okType = ['image/jpeg', 'image/png', 'image/bmp', 'image/webp'].includes(f.type)
+    if (!okType) {
+      message.error('仅支持 JPG / PNG / BMP / WEBP 格式')
+      return Upload.LIST_IGNORE
+    }
+    if (f.size > 10 * 1024 * 1024) {
+      message.error('图片大小不能超过 10MB')
+      return Upload.LIST_IGNORE
+    }
+    const reader = new FileReader()
+    reader.onload = (e) => setPreview(e.target.result)
+    reader.readAsDataURL(f)
+    setFile(f)
+    setResult(null)
+    return false // 阻止自动上传，改为手动“开始识别”
+  }
+
+  const onDetect = () => {
+    if (!file) {
+      message.warning('请先选择一张叶片图片')
+      return
+    }
+    setLoading(true)
+    if (USE_MOCK) {
+      setTimeout(() => {
+        setResult(mockPredict())
+        setLoading(false)
+      }, 900)
+      return
+    }
+    const fd = new FormData()
+    fd.append('file', file)
+    http
+      .post('/predict', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+      .then((res) => setResult(res.data))
+      .catch(() => message.error('识别失败，请重试'))
+      .finally(() => setLoading(false))
+  }
+
+  const top1 = result && result.top1
+
+  return (
+    <div>
+      <Typography.Title level={3}>病害识别</Typography.Title>
+      <Typography.Paragraph type="secondary">
+        上传一张农作物叶片照片，系统将自动识别病害类别并给出防治建议。
+      </Typography.Paragraph>
+
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        {/* 左：上传 + 预览 */}
+        <Card title="上传叶片图片" style={{ width: 360 }}>
+          <div className="drop-zone" style={{ padding: 24, textAlign: 'center' }}>
+            <Upload.Dragger
+              beforeUpload={beforeUpload}
+              showUploadList={false}
+              accept="image/*"
+            >
+              {preview ? (
+                <img
+                  src={preview}
+                  alt="预览"
+                  style={{ maxWidth: '100%', maxHeight: 220, borderRadius: 8 }}
+                />
+              ) : (
+                <div>
+                  <p className="ant-upload-drag-icon">
+                    <UploadOutlined />
+                  </p>
+                  <p className="ant-upload-text">点击或拖拽图片到此</p>
+                  <p className="ant-upload-hint">支持 JPG / PNG / BMP / WEBP</p>
+                </div>
+              )}
+            </Upload.Dragger>
+          </div>
+          <Button
+            type="primary"
+            icon={<ExperimentOutlined />}
+            block
+            loading={loading}
+            onClick={onDetect}
+            style={{ marginTop: 16 }}
+          >
+            开始识别
+          </Button>
+          {result && result.is_mock && (
+            <Alert
+              style={{ marginTop: 12 }}
+              type="info"
+              showIcon
+              message="演示数据"
+              description="模型尚未加载，以下为示例结果。"
+            />
+          )}
+        </Card>
+
+        {/* 右：结果 */}
+        <Card title="识别结果" style={{ flex: 1, minWidth: 360 }}>
+          {!result && (
+            <Typography.Text type="secondary">
+              尚未识别，请先上传图片并点击「开始识别」。
+            </Typography.Text>
+          )}
+
+          {result && top1 && (
+            <>
+              {top1.confidence < LOW_CONF && (
+                <Alert
+                  type="warning"
+                  showIcon
+                  style={{ marginBottom: 12 }}
+                  message="置信度较低"
+                  description="识别置信度低于 50%，建议结合人工经验复核或重新拍摄清晰图片。"
+                />
+              )}
+
+              <div style={{ marginBottom: 16 }}>
+                <Space align="center">
+                  <Tag
+                    color={top1.is_healthy ? 'green' : 'volcano'}
+                    style={{ fontSize: 14, padding: '4px 10px' }}
+                  >
+                    {top1.is_healthy ? '健康' : '病害'}
+                  </Tag>
+                  <Typography.Title level={4} style={{ margin: 0 }}>
+                    {top1.name}
+                  </Typography.Title>
+                </Space>
+                <Typography.Text type="secondary">
+                  置信度 {(top1.confidence * 100).toFixed(1)}%
+                </Typography.Text>
+              </div>
+
+              <Typography.Paragraph strong>Top-3 可能性</Typography.Paragraph>
+              {result.top3.map((t, i) => (
+                <div key={i} style={{ marginBottom: 8 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>
+                      {i === 0 ? '最可能' : `第 ${i + 1} 可能`}：{t.name}
+                    </span>
+                    <span>{(t.confidence * 100).toFixed(1)}%</span>
+                  </div>
+                  <Progress
+                    percent={Math.round(t.confidence * 100)}
+                    showInfo={false}
+                    strokeColor={i === 0 ? '#52c41a' : '#bae637'}
+                  />
+                </div>
+              ))}
+
+              <Divider />
+              <Descriptions column={1} size="small" bordered>
+                <Descriptions.Item label="作物">{top1.crop}</Descriptions.Item>
+                <Descriptions.Item label="症状特征">{top1.symptom}</Descriptions.Item>
+                <Descriptions.Item label="防治建议">{top1.prevention}</Descriptions.Item>
+                <Descriptions.Item label="模型版本">{result.model_version}</Descriptions.Item>
+              </Descriptions>
+            </>
+          )}
+        </Card>
+      </div>
+    </div>
+  )
+}

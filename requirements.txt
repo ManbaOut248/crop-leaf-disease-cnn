@@ -1,0 +1,16 @@
+# 基于 CNN 的农作物叶片病害识别系统 — 运行依赖
+# 训练/推理（GPU 需 CUDA 版 PyTorch，本机环境 X:/Anconda3/python.exe 已含）
+torch==2.5.1
+torchvision==0.20.1
+numpy==1.26.4
+Pillow==11.3.0
+scikit-learn==1.5.1
+matplotlib==3.9.2
+
+# 后端 API
+fastapi==0.141.1
+uvicorn[standard]==0.52.4
+python-multipart==0.0.32
+bcrypt==3.2.0          # 密码哈希（替代原 sha256，符合 PRD NFR-SEC 安全基线）
+
+# 前端（React + Ant Design，独立 npm 构建，不在此列）

@@ -1,0 +1,316 @@
+{
+  "overall_accuracy": 0.9927,
+  "macro_f1": 0.9923,
+  "weighted_f1": 0.9927,
+  "calibration": {
+    "temperature": 1.0,
+    "ece_before": 0.0028,
+    "ece_after": 0.0028
+  },
+  "per_class": {
+    "0-苹果黑星病": {
+      "en": "Apple___Apple_scab",
+      "zh": "苹果黑星病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 63
+    },
+    "1-苹果黑腐病": {
+      "en": "Apple___Black_rot",
+      "zh": "苹果黑腐病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 62
+    },
+    "2-苹果雪松锈病": {
+      "en": "Apple___Cedar_apple_rust",
+      "zh": "苹果雪松锈病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 28
+    },
+    "3-苹果（健康）": {
+      "en": "Apple___healthy",
+      "zh": "苹果（健康）",
+      "precision": 1.0,
+      "recall": 0.9939,
+      "f1": 0.9969,
+      "support": 164
+    },
+    "4-蓝莓（健康）": {
+      "en": "Blueberry___healthy",
+      "zh": "蓝莓（健康）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 149
+    },
+    "5-樱桃白粉病": {
+      "en": "Cherry_(including_sour)___Powdery_mildew",
+      "zh": "樱桃白粉病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 105
+    },
+    "6-樱桃（健康）": {
+      "en": "Cherry_(including_sour)___healthy",
+      "zh": "樱桃（健康）",
+      "precision": 1.0,
+      "recall": 0.9524,
+      "f1": 0.9756,
+      "support": 21
+    },
+    "7-玉米灰斑病": {
+      "en": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
+      "zh": "玉米灰斑病",
+      "precision": 0.9259,
+      "recall": 0.9804,
+      "f1": 0.9524,
+      "support": 51
+    },
+    "8-玉米普通锈病": {
+      "en": "Corn_(maize)___Common_rust_",
+      "zh": "玉米普通锈病",
+      "precision": 1.0,
+      "recall": 0.9832,
+      "f1": 0.9915,
+      "support": 119
+    },
+    "9-玉米北方叶枯病": {
+      "en": "Corn_(maize)___Northern_Leaf_Blight",
+      "zh": "玉米北方叶枯病",
+      "precision": 0.9794,
+      "recall": 0.9694,
+      "f1": 0.9744,
+      "support": 98
+    },
+    "10-玉米（健康）": {
+      "en": "Corn_(maize)___healthy",
+      "zh": "玉米（健康）",
+      "precision": 0.9915,
+      "recall": 1.0,
+      "f1": 0.9957,
+      "support": 116
+    },
+    "11-葡萄黑腐病": {
+      "en": "Grape___Black_rot",
+      "zh": "葡萄黑腐病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 107
+    },
+    "12-葡萄埃斯卡病（黑麻疹）": {
+      "en": "Grape___Esca_(Black_Measles)",
+      "zh": "葡萄埃斯卡病（黑麻疹）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 127
+    },
+    "13-葡萄叶枯病（房枯病）": {
+      "en": "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
+      "zh": "葡萄叶枯病（房枯病）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 108
+    },
+    "14-葡萄（健康）": {
+      "en": "Grape___healthy",
+      "zh": "葡萄（健康）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 36
+    },
+    "15-柑橘黄龙病": {
+      "en": "Orange___Haunglongbing_(Citrus_greening)",
+      "zh": "柑橘黄龙病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 550
+    },
+    "16-桃细菌性斑点病": {
+      "en": "Peach___Bacterial_spot",
+      "zh": "桃细菌性斑点病",
+      "precision": 0.9957,
+      "recall": 1.0,
+      "f1": 0.9978,
+      "support": 230
+    },
+    "17-桃（健康）": {
+      "en": "Peach___healthy",
+      "zh": "桃（健康）",
+      "precision": 0.9722,
+      "recall": 0.9722,
+      "f1": 0.9722,
+      "support": 36
+    },
+    "18-甜椒细菌性斑点病": {
+      "en": "Pepper,_bell___Bacterial_spot",
+      "zh": "甜椒细菌性斑点病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 100
+    },
+    "19-甜椒（健康）": {
+      "en": "Pepper,_bell___healthy",
+      "zh": "甜椒（健康）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 148
+    },
+    "20-马铃薯早疫病": {
+      "en": "Potato___Early_blight",
+      "zh": "马铃薯早疫病",
+      "precision": 0.9615,
+      "recall": 1.0,
+      "f1": 0.9804,
+      "support": 100
+    },
+    "21-马铃薯晚疫病": {
+      "en": "Potato___Late_blight",
+      "zh": "马铃薯晚疫病",
+      "precision": 0.99,
+      "recall": 0.99,
+      "f1": 0.99,
+      "support": 100
+    },
+    "22-马铃薯（健康）": {
+      "en": "Potato___healthy",
+      "zh": "马铃薯（健康）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 15
+    },
+    "23-树莓（健康）": {
+      "en": "Raspberry___healthy",
+      "zh": "树莓（健康）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 20
+    },
+    "24-大豆（健康）": {
+      "en": "Soybean___healthy",
+      "zh": "大豆（健康）",
+      "precision": 1.0,
+      "recall": 0.9908,
+      "f1": 0.9954,
+      "support": 109
+    },
+    "25-南瓜白粉病": {
+      "en": "Squash___Powdery_mildew",
+      "zh": "南瓜白粉病",
+      "precision": 0.9946,
+      "recall": 1.0,
+      "f1": 0.9973,
+      "support": 184
+    },
+    "26-草莓叶焦病": {
+      "en": "Strawberry___Leaf_scorch",
+      "zh": "草莓叶焦病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 111
+    },
+    "27-草莓（健康）": {
+      "en": "Strawberry___healthy",
+      "zh": "草莓（健康）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 46
+    },
+    "28-番茄细菌性斑点病": {
+      "en": "Tomato___Bacterial_spot",
+      "zh": "番茄细菌性斑点病",
+      "precision": 0.9949,
+      "recall": 0.9423,
+      "f1": 0.9679,
+      "support": 208
+    },
+    "29-番茄早疫病": {
+      "en": "Tomato___Early_blight",
+      "zh": "番茄早疫病",
+      "precision": 0.9899,
+      "recall": 0.98,
+      "f1": 0.9849,
+      "support": 100
+    },
+    "30-番茄晚疫病": {
+      "en": "Tomato___Late_blight",
+      "zh": "番茄晚疫病",
+      "precision": 0.9741,
+      "recall": 0.9843,
+      "f1": 0.9792,
+      "support": 191
+    },
+    "31-番茄叶霉病": {
+      "en": "Tomato___Leaf_Mold",
+      "zh": "番茄叶霉病",
+      "precision": 1.0,
+      "recall": 0.9895,
+      "f1": 0.9947,
+      "support": 95
+    },
+    "32-番茄 Septoria 叶斑病": {
+      "en": "Tomato___Septoria_leaf_spot",
+      "zh": "番茄 Septoria 叶斑病",
+      "precision": 0.9886,
+      "recall": 0.9774,
+      "f1": 0.983,
+      "support": 177
+    },
+    "33-番茄红蜘蛛（二斑叶螨）": {
+      "en": "Tomato___Spider_mites Two-spotted_spider_mite",
+      "zh": "番茄红蜘蛛（二斑叶螨）",
+      "precision": 0.9882,
+      "recall": 0.994,
+      "f1": 0.9911,
+      "support": 168
+    },
+    "34-番茄靶斑病": {
+      "en": "Tomato___Target_Spot",
+      "zh": "番茄靶斑病",
+      "precision": 0.9929,
+      "recall": 1.0,
+      "f1": 0.9964,
+      "support": 140
+    },
+    "35-番茄黄化曲叶病毒病": {
+      "en": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+      "zh": "番茄黄化曲叶病毒病",
+      "precision": 0.9834,
+      "recall": 0.9963,
+      "f1": 0.9898,
+      "support": 536
+    },
+    "36-番茄花叶病毒病": {
+      "en": "Tomato___Tomato_mosaic_virus",
+      "zh": "番茄花叶病毒病",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 37
+    },
+    "37-番茄（健康）": {
+      "en": "Tomato___healthy",
+      "zh": "番茄（健康）",
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 159
+    }
+  }
+}

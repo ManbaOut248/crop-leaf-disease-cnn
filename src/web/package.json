@@ -1,0 +1,24 @@
+{
+  "name": "crop-disease-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "基于CNN的农作物叶片病害识别系统 - 前端 Web 客户端 (React + Vite + Ant Design)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.5.1",
+    "antd": "^5.21.0",
+    "axios": "^1.7.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^5.4.8"
+  }
+}
