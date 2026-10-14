@@ -9,6 +9,8 @@ data/split/
 # ============ 运行时产物 ============
 data/uploads/
 data/app.db
+data/app.db-wal        # SQLite WAL 模式运行时文件（#D 启用后产生）
+data/app.db-shm
 
 # ============ 训练/评估中间索引 ============
 outputs/index/

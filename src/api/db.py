@@ -16,9 +16,21 @@ DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 
 def get_conn():
-    """获取一个开启了 Row 工厂的 SQLite 连接。"""
-    conn = sqlite3.connect(str(DB_PATH))
+    """获取一个开启了 Row 工厂的 SQLite 连接。
+
+    并发保护（#D）：
+    - timeout=30 + check_same_thread=False：多请求并发时等待而非立即报
+      'database is locked'（本项目每请求独立建连/关闭，不跨线程共享连接，安全）。
+    - journal_mode=WAL：写入不再锁全库，读可并发，显著降低锁冲突。
+    - busy_timeout=30000：写冲突时阻塞等待而非立即失败。
+    - foreign_keys=ON：使 recognition_records 的 ON DELETE CASCADE 真正生效
+      （SQLite 默认关闭外键约束，此前删用户不会级联删记录）。
+    """
+    conn = sqlite3.connect(str(DB_PATH), timeout=30, check_same_thread=False)
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=30000")
+    conn.execute("PRAGMA foreign_keys=ON")
     return conn
 
 

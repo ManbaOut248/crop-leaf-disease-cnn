@@ -8,6 +8,8 @@ Base URL：/api/v1；统一响应：{code, data, msg}。
 import csv
 import io
 import json
+import os
+import tempfile
 import time
 import uuid
 from contextlib import asynccontextmanager
@@ -15,8 +17,8 @@ from pathlib import Path
 
 from fastapi import FastAPI, Depends, File, Header, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse, JSONResponse
+from starlette.background import BackgroundTask
 
 from src.config import (
     PROJECT_ROOT, UPLOAD_DIR, ALLOWED_IMAGE_EXT, MAX_UPLOAD_MB,
@@ -47,12 +49,30 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
-# 上传目录静态服务（如前端需要回显原图）
-app.mount("/static", StaticFiles(directory=str(PROJECT_ROOT / "data")), name="static")
+# 安全说明：刻意不挂载任何静态目录。
+# 旧实现曾 app.mount("/static", StaticFiles(directory=data))，会把 data/app.db（全部账户与
+# 密码哈希）、data/uploads（他人上传原图）、data/split（5.4 万训练图）全部公开下载，属高危信息泄露。
+# 现前端用本地 URL.createObjectURL 预览、历史仅展示图片名文本，无需服务端静态图；
+# 若日后需回显原图，应走带鉴权的路由（Depends(get_current_user)）而非公开静态挂载。
 
 
 # ===================== 限流（简易内存版） =====================
+# 注意：进程内字典不跨 worker 共享；多进程部署需改用 Redis/共享存储。
+# 单 uvicorn 进程演示场景足够。
 _RATE = {}
+
+
+def _client_ip(request: Request) -> str:
+    """取真实客户端 IP：优先反向代理透传的 X-Forwarded-For / X-Real-IP，
+    否则退回直连 IP。避免反向代理下 request.client.host 恒为 127.0.0.1
+    导致限流 key 全部撞同一 IP 而失效或误伤。"""
+    fwd = request.headers.get("X-Forwarded-For")
+    if fwd:
+        return fwd.split(",")[0].strip()
+    real = request.headers.get("X-Real-IP")
+    if real:
+        return real.strip()
+    return request.client.host if request.client else "local"
 
 
 def _rate_ok(ip: str, limit: int = 60, window: int = 60) -> bool:
@@ -70,8 +90,10 @@ def _ok(data=None, msg: str = "ok"):
     return {"code": 0, "data": data, "msg": msg}
 
 
-def _err(code: int, msg: str):
-    return JSONResponse(status_code=200, content={"code": code, "msg": msg})
+def _err(code: int, msg: str, status: int = 400):
+    """统一错误响应：返回真实 HTTP 状态码（便于网关/监控按 4xx/5xx 区分），
+    body 仍保留 {code, msg} 供前端读取具体业务码与文案。"""
+    return JSONResponse(status_code=status, content={"code": code, "msg": msg})
 
 
 def get_current_user(authorization: str = Header(None)):
@@ -109,7 +131,7 @@ def health():
 @app.post("/api/v1/auth/register")
 def register(body: schemas.RegisterRequest):
     if db.get_user_by_username(body.username):
-        return _err(1001, "用户名已存在")
+        return _err(1001, "用户名已存在", 409)
     salt, pwd_hash = auth.hash_password(body.password)
     uid = db.create_user(body.username, pwd_hash, salt, body.email, body.nickname)
     return _ok({"user_id": uid}, "注册成功")
@@ -119,7 +141,7 @@ def register(body: schemas.RegisterRequest):
 def login(body: schemas.LoginRequest):
     user = db.get_user_by_username(body.username)
     if not user or not auth.verify_password(body.password, user["salt"], user["password_hash"]):
-        return _err(1002, "用户名或密码错误")
+        return _err(1002, "用户名或密码错误", 401)
     # 旧 sha256 账户登录成功后，自动升级为 bcrypt（一次性迁移，提升存储安全性）
     if auth.is_legacy_hash(user["password_hash"]):
         new_salt, new_hash = auth.hash_password(body.password)
@@ -144,7 +166,7 @@ def me(user=Depends(get_current_user)):
 def update_me(body: schemas.UpdateMeRequest, user=Depends(get_current_user)):
     if body.new_password:
         if not body.old_password or not auth.verify_password(body.old_password, user["salt"], user["password_hash"]):
-            return _err(1003, "旧密码错误")
+            return _err(1003, "旧密码错误", 400)
         salt, pwd_hash = auth.hash_password(body.new_password)
         db.update_user(user["id"], nickname=body.nickname, password_hash=pwd_hash, salt=salt)
     else:
@@ -165,9 +187,9 @@ def predict(
     user=Depends(get_optional_user),
     request: Request = None,
 ):
-    ip = request.client.host if request else "local"
+    ip = _client_ip(request) if request else "local"
     if not _rate_ok(ip):
-        return _err(429, "请求过于频繁，请稍后再试")
+        return _err(429, "请求过于频繁，请稍后再试", 429)
 
     ext = Path(file.filename or "").suffix.lower()
     if ext not in ALLOWED_IMAGE_EXT:
@@ -175,7 +197,7 @@ def predict(
 
     raw = file.file.read()
     if len(raw) > MAX_UPLOAD_MB * 1024 * 1024:
-        return _err(413, f"文件超过 {MAX_UPLOAD_MB}MB 上限")
+        return _err(413, f"文件超过 {MAX_UPLOAD_MB}MB 上限", 413)
 
     # 先校验图像合法性（内存解码），确认无误再落盘，避免非法文件产生孤儿文件（#8）
     try:
@@ -192,10 +214,10 @@ def predict(
         results = predict_image(img, top_k=3)
     except FileNotFoundError:
         (UPLOAD_DIR / save_name).unlink(missing_ok=True)
-        return _err(503, "模型尚未就绪，请稍候（训练进行中或权重缺失）")
+        return _err(503, "模型尚未就绪，请稍候（训练进行中或权重缺失）", 503)
     except Exception as e:  # noqa: BLE001
         (UPLOAD_DIR / save_name).unlink(missing_ok=True)
-        return _err(500, f"识别失败：{e}")
+        return _err(500, f"识别失败：{e}", 500)
 
     top1 = results[0]
     is_healthy = _is_healthy_zh(top1["name_zh"])
@@ -233,7 +255,7 @@ def diseases(crop: str = Query(None, description="按作物中文名筛选，如
 def disease_detail(did: int):
     row = db.get_disease_by_id(did)
     if not row:
-        return _err(404, "未找到该病害")
+        return _err(404, "未找到该病害", 404)
     return _ok(row)
 
 
@@ -248,35 +270,41 @@ def records(user=Depends(get_current_user), page: int = 1, size: int = 20):
     return _ok({"items": rows, "total": total, "page": page, "size": size})
 
 
+@app.get("/api/v1/records/export")
+def record_export(user=Depends(get_current_user), fmt: str = Query("json")):
+    rows, _ = db.get_records_by_user(user["id"], 1, 100000)
+    if fmt == "csv":
+        fd, path = tempfile.mkstemp(suffix=".csv", text=True)
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8-sig", newline="") as f:
+                w = csv.writer(f)
+                w.writerow(["id", "pred_class_id", "confidence", "created_at"])
+                for r in rows:
+                    w.writerow([r["id"], r["pred_class_id"], r["confidence"], r["created_at"]])
+        except Exception:
+            os.close(fd)
+            raise
+        return FileResponse(
+            path, filename="records.csv", media_type="text/csv",
+            # 响应发送完成后删除临时文件，避免每次导出在服务器留一个泄漏文件（#C）
+            background=BackgroundTask(os.unlink, path),
+        )
+    return _ok(rows)
+
+
 @app.get("/api/v1/records/{rid}")
 def record_detail(rid: int, user=Depends(get_current_user)):
     row = db.get_record_by_id(rid, user["id"])
     if not row:
-        return _err(404, "未找到该记录")
+        return _err(404, "未找到该记录", 404)
     return _ok(row)
 
 
 @app.delete("/api/v1/records/{rid}")
 def record_delete(rid: int, user=Depends(get_current_user)):
     if not db.delete_record(rid, user["id"]):
-        return _err(404, "未找到该记录")
+        return _err(404, "未找到该记录", 404)
     return _ok({}, "已删除")
-
-
-@app.get("/api/v1/records/export")
-def record_export(user=Depends(get_current_user), fmt: str = Query("json")):
-    rows, _ = db.get_records_by_user(user["id"], 1, 100000)
-    if fmt == "csv":
-        import tempfile
-        fd, path = tempfile.mkstemp(suffix=".csv", text=True)
-        with open(path, "w", encoding="utf-8-sig", newline="") as f:
-            w = csv.writer(f)
-            w.writerow(["id", "pred_class_id", "confidence", "created_at"])
-            for r in rows:
-                w.writerow([r["id"], r["pred_class_id"], r["confidence"], r["created_at"]])
-        from fastapi.responses import FileResponse
-        return FileResponse(path, filename="records.csv", media_type="text/csv")
-    return _ok(rows)
 
 
 # 延迟导入，避免应用启动时即触发模型加载
