@@ -56,32 +56,42 @@ export const mockDiseases = RAW.map(([crop, disease, isHealthy, symptom, prevent
 }))
 
 // 模拟一次识别结果：以番茄晚疫病为例（Top-3）
+// 结构与 docs/04_API接口文档.md 的 /predict 响应一致，便于 mock / 真实自由切换
 export function mockPredict() {
+  const d = mockDiseases[30]
   return {
-    top1: {
-      class_id: 30,
-      name: '番茄晚疫病',
-      confidence: 0.918,
-      symptom: mockDiseases[30].symptom,
-      prevention: mockDiseases[30].prevention,
-      crop: '番茄',
-      is_healthy: false,
-    },
+    pred_class_id: 30,
+    crop_cn: '番茄',
+    disease_cn: '番茄晚疫病',
+    is_healthy: 0,
+    confidence: 0.918,
     top3: [
-      { class_id: 30, name: '番茄晚疫病', confidence: 0.918 },
-      { class_id: 29, name: '番茄早疫病', confidence: 0.054 },
-      { class_id: 37, name: '番茄（健康）', confidence: 0.021 },
+      { class_id: 30, disease_cn: '番茄晚疫病', prob: 0.918 },
+      { class_id: 29, disease_cn: '番茄早疫病', prob: 0.054 },
+      { class_id: 37, disease_cn: '番茄（健康）', prob: 0.021 },
     ],
-    model_version: 'resnet18-plantvillage-38-v1',
+    need_review: false,
+    knowledge: {
+      symptom: d.symptom,
+      cause: '致病疫霉（Phytophthora infestans），低温高湿、连续阴雨极易流行。',
+      prevention: d.prevention,
+      treatment: d.prevention,
+    },
     is_mock: true,
   }
 }
 
+// 历史列表：结构与 /records 的分页响应一致
 export function mockRecords() {
-  return [
-    { id: 1, image_name: 'leaf_001.jpg', top1_name: '番茄晚疫病', top1_confidence: 0.918, created_at: '2026-10-10 10:30:12' },
-    { id: 2, image_name: 'leaf_002.jpg', top1_name: '苹果黑星病', top1_confidence: 0.873, created_at: '2026-10-10 09:15:43' },
-    { id: 3, image_name: 'leaf_003.jpg', top1_name: '柑橘黄龙病', top1_confidence: 0.901, created_at: '2026-10-09 18:02:55' },
-    { id: 4, image_name: 'leaf_004.jpg', top1_name: '马铃薯早疫病', top1_confidence: 0.842, created_at: '2026-10-09 16:41:09' },
-  ]
+  return {
+    items: [
+      { id: 1, image_name: 'leaf_001.jpg', pred_class_id: 30, disease_cn: '番茄晚疫病', confidence: 0.918, created_at: '2026-10-10 10:30:12' },
+      { id: 2, image_name: 'leaf_002.jpg', pred_class_id: 0, disease_cn: '苹果黑星病', confidence: 0.873, created_at: '2026-10-10 09:15:43' },
+      { id: 3, image_name: 'leaf_003.jpg', pred_class_id: 15, disease_cn: '柑橘黄龙病', confidence: 0.901, created_at: '2026-10-09 18:02:55' },
+      { id: 4, image_name: 'leaf_004.jpg', pred_class_id: 20, disease_cn: '马铃薯早疫病', confidence: 0.842, created_at: '2026-10-09 16:41:09' },
+    ],
+    total: 4,
+    page: 1,
+    size: 20,
+  }
 }

@@ -52,7 +52,7 @@
       { "class_id": 30, "disease_cn": "番茄健康", "prob": 0.02 }
     ],
     "need_review": false,
-    "knowledge": { "symptom": "...", "control": "..." }
+    "knowledge": { "symptom": "...", "cause": "...", "prevention": "...", "treatment": "..." }
   }
 }
 ```
@@ -72,9 +72,18 @@
 | DELETE | `/records/{id}` | 删除单条 |
 | GET | `/records/export` | 导出 CSV/JSON（`?fmt=csv|json`） |
 
-**历史列表项**
+**历史列表响应**（分页）
 ```json
-{ "id": 12, "pred_class_id": 31, "disease_cn": "番茄晚疫病", "confidence": 0.93, "created_at": "2026-10-08T09:00:00Z", "thumb": "/static/thumbs/xxx.jpg" }
+{
+  "code": 0,
+  "data": {
+    "items": [
+      { "id": 12, "image_name": "leaf_012.jpg", "pred_class_id": 31, "disease_cn": "番茄晚疫病", "confidence": 0.93, "created_at": "2026-10-08 09:00:00" }
+    ],
+    "total": 1, "page": 1, "size": 20
+  },
+  "msg": "ok"
+}
 ```
 
 ## 3. 前端调用示例（识别）

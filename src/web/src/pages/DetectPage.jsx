@@ -1,4 +1,7 @@
 // 病害识别页：上传图片 → 调 /predict → Top-3 概率 + 病害说明 + 防治建议
+// 响应契约对齐 docs/04_API接口文档.md：
+//   { pred_class_id, crop_cn, disease_cn, is_healthy, confidence,
+//     top3:[{class_id, disease_cn, prob}], need_review, knowledge:{symptom,cause,prevention,treatment} }
 import React, { useState } from 'react'
 import {
   Upload,
@@ -62,11 +65,22 @@ export default function DetectPage() {
     http
       .post('/predict', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
       .then((res) => setResult(res.data))
-      .catch(() => message.error('识别失败，请重试'))
+      .catch((e) => message.error((e.response && e.response.data && e.response.data.msg) || '识别失败，请重试'))
       .finally(() => setLoading(false))
   }
 
-  const top1 = result && result.top1
+  // 把后端契约字段归一化，便于展示
+  const top1 = result && {
+    name: result.disease_cn,
+    confidence: result.confidence || 0,
+    is_healthy: !!(result.is_healthy === true || result.is_healthy === 1),
+    crop: result.crop_cn,
+    symptom: result.knowledge && result.knowledge.symptom,
+    prevention:
+      (result.knowledge && (result.knowledge.prevention || result.knowledge.treatment)) || '',
+  }
+  const top3 = (result && result.top3) || []
+  const needReview = result && (result.need_review || (top1 && top1.confidence < LOW_CONF))
 
   return (
     <div>
@@ -79,17 +93,9 @@ export default function DetectPage() {
         {/* 左：上传 + 预览 */}
         <Card title="上传叶片图片" style={{ width: 360 }}>
           <div className="drop-zone" style={{ padding: 24, textAlign: 'center' }}>
-            <Upload.Dragger
-              beforeUpload={beforeUpload}
-              showUploadList={false}
-              accept="image/*"
-            >
+            <Upload.Dragger beforeUpload={beforeUpload} showUploadList={false} accept="image/*">
               {preview ? (
-                <img
-                  src={preview}
-                  alt="预览"
-                  style={{ maxWidth: '100%', maxHeight: 220, borderRadius: 8 }}
-                />
+                <img src={preview} alt="预览" style={{ maxWidth: '100%', maxHeight: 220, borderRadius: 8 }} />
               ) : (
                 <div>
                   <p className="ant-upload-drag-icon">
@@ -132,7 +138,7 @@ export default function DetectPage() {
 
           {result && top1 && (
             <>
-              {top1.confidence < LOW_CONF && (
+              {needReview && (
                 <Alert
                   type="warning"
                   showIcon
@@ -160,16 +166,16 @@ export default function DetectPage() {
               </div>
 
               <Typography.Paragraph strong>Top-3 可能性</Typography.Paragraph>
-              {result.top3.map((t, i) => (
+              {top3.map((t, i) => (
                 <div key={i} style={{ marginBottom: 8 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>
-                      {i === 0 ? '最可能' : `第 ${i + 1} 可能`}：{t.name}
+                      {i === 0 ? '最可能' : `第 ${i + 1} 可能`}：{t.disease_cn}
                     </span>
-                    <span>{(t.confidence * 100).toFixed(1)}%</span>
+                    <span>{((t.prob || 0) * 100).toFixed(1)}%</span>
                   </div>
                   <Progress
-                    percent={Math.round(t.confidence * 100)}
+                    percent={Math.round((t.prob || 0) * 100)}
                     showInfo={false}
                     strokeColor={i === 0 ? '#52c41a' : '#bae637'}
                   />
@@ -181,7 +187,6 @@ export default function DetectPage() {
                 <Descriptions.Item label="作物">{top1.crop}</Descriptions.Item>
                 <Descriptions.Item label="症状特征">{top1.symptom}</Descriptions.Item>
                 <Descriptions.Item label="防治建议">{top1.prevention}</Descriptions.Item>
-                <Descriptions.Item label="模型版本">{result.model_version}</Descriptions.Item>
               </Descriptions>
             </>
           )}

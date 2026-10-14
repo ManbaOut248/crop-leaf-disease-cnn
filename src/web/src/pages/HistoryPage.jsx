@@ -15,13 +15,13 @@ export default function HistoryPage() {
   const load = () => {
     setLoading(true)
     if (USE_MOCK) {
-      setData(mockRecords())
+      setData(mockRecords().items)
       setLoading(false)
       return
     }
     http
       .get('/records')
-      .then((r) => setData(r.data))
+      .then((r) => setData((r.data && r.data.items) || []))
       .catch(() => message.error('加载失败'))
       .finally(() => setLoading(false))
   }
@@ -33,8 +33,8 @@ export default function HistoryPage() {
     const body = data
       .map(
         (r) =>
-          `${r.id},${r.image_name},${r.top1_name},${(
-            r.top1_confidence * 100
+          `${r.id},${r.image_name},${r.disease_cn},${(
+            r.confidence * 100
           ).toFixed(1)}%,${r.created_at}`,
       )
       .join('\n')
@@ -51,12 +51,12 @@ export default function HistoryPage() {
     { title: '图片名', dataIndex: 'image_name' },
     {
       title: '识别结果',
-      dataIndex: 'top1_name',
-      render: (t) => <Tag color={t.includes('健康') ? 'green' : 'volcano'}>{t}</Tag>,
+      dataIndex: 'disease_cn',
+      render: (t) => <Tag color={t && t.includes('健康') ? 'green' : 'volcano'}>{t}</Tag>,
     },
     {
       title: '置信度',
-      dataIndex: 'top1_confidence',
+      dataIndex: 'confidence',
       render: (v) => `${(v * 100).toFixed(1)}%`,
     },
     { title: '时间', dataIndex: 'created_at' },
@@ -89,9 +89,9 @@ export default function HistoryPage() {
         {cur && (
           <Descriptions column={1} bordered>
             <Descriptions.Item label="图片名">{cur.image_name}</Descriptions.Item>
-            <Descriptions.Item label="识别结果">{cur.top1_name}</Descriptions.Item>
+            <Descriptions.Item label="识别结果">{cur.disease_cn}</Descriptions.Item>
             <Descriptions.Item label="置信度">
-              {(cur.top1_confidence * 100).toFixed(1)}%
+              {(cur.confidence * 100).toFixed(1)}%
             </Descriptions.Item>
             <Descriptions.Item label="时间">{cur.created_at}</Descriptions.Item>
           </Descriptions>

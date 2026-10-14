@@ -23,7 +23,7 @@ from starlette.background import BackgroundTask
 from src.config import (
     PROJECT_ROOT, UPLOAD_DIR, ALLOWED_IMAGE_EXT, MAX_UPLOAD_MB,
     THRESHOLD_LOW_CONF, MODEL_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS,
-    NUM_CLASSES,
+    NUM_CLASSES, CLASS_DIRS, class_name_zh,
 )
 from src.api import auth, db, schemas
 
@@ -269,6 +269,14 @@ def records(user=Depends(get_current_user), page: int = 1, size: int = 20):
     if size < 1 or size > 100:
         size = 20
     rows, total = db.get_records_by_user(user["id"], page, size)
+    # 每条记录补中文病名（对齐 docs/04「历史列表项含 disease_cn」契约）：
+    # recognition_records 只存 pred_class_id，前端需可读病名，故在此按类别映射补齐。
+    for r in rows:
+        cid = r.get("pred_class_id")
+        try:
+            r["disease_cn"] = class_name_zh(CLASS_DIRS[cid])
+        except Exception:
+            r["disease_cn"] = ""
     return _ok({"items": rows, "total": total, "page": page, "size": size})
 
 

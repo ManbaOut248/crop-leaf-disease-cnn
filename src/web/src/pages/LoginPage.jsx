@@ -1,7 +1,7 @@
 // 登录 / 注册页（对接 /auth/login、/auth/register；mock 模式降级）
 import React, { useState } from 'react'
 import { Form, Input, Button, Tabs, Card, message, Typography } from 'antd'
-import { UserOutlined, LockOutlined, LeafOutlined } from '@ant-design/icons'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import http, { USE_MOCK } from '../api/http'
 import { setToken, setUser } from '../store/auth'
@@ -60,7 +60,7 @@ export default function LoginPage() {
     >
       <Card style={{ width: 380, boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <LeafOutlined style={{ fontSize: 40, color: '#52c41a' }} />
+          <span style={{ fontSize: 40, lineHeight: 1, color: '#52c41a' }}>🌿</span>
           <Typography.Title level={3} style={{ marginTop: 8 }}>
             农作物叶片病害识别
           </Typography.Title>

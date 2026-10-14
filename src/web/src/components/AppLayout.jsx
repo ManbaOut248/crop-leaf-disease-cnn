@@ -7,7 +7,6 @@ import {
   BookOutlined,
   UserOutlined,
   LogoutOutlined,
-  LeafOutlined,
 } from '@ant-design/icons'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { getUser, clearAuth } from '../store/auth'
@@ -49,7 +48,7 @@ export default function AppLayout() {
             fontSize: 16,
           }}
         >
-          <LeafOutlined style={{ fontSize: 24 }} />
+          <span style={{ fontSize: 22, lineHeight: 1 }}>🌿</span>
           <span>病害识别</span>
         </div>
         <Menu
