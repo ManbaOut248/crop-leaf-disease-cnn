@@ -13,8 +13,8 @@ from pathlib import Path
 
 from PIL import Image
 
-# 保证在项目根目录运行时能 import src.*
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+# 保证在项目根目录运行时能 import src.*（脚本位于 scripts/，需回退一级到项目根）
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.model.predict import predict_image  # noqa: E402
 

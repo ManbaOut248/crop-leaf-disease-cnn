@@ -20,6 +20,8 @@ import csv
 import json
 from pathlib import Path
 import os
+import glob
+import warnings
 
 import torch
 import torch.nn.functional as F
@@ -29,22 +31,81 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix, f1_score
 
-# 注册中文字体，确保混淆矩阵图的中文标签正常显示（默认 DejaVu Sans 缺 CJK 字形）
-_CJK_CANDIDATES = [
-    "C:/Windows/Fonts/simhei.ttf",   # 黑体（Win）
-    "C:/Windows/Fonts/msyh.ttc",     # 微软雅黑（Win）
-    "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",  # 文泉驿（Linux）
-]
-for _fp in _CJK_CANDIDATES:
-    if os.path.exists(_fp):
-        try:
-            matplotlib.font_manager.fontManager.addfont(_fp)
-            _name = matplotlib.font_manager.FontProperties(fname=_fp).get_name()
-            plt.rcParams["font.family"] = _name
+# 注册中文字体，确保混淆矩阵图的中文标签正常显示（默认 DejaVu Sans 缺 CJK 字形）。
+# 旧实现硬编码 Windows 绝对路径（C:/Windows/Fonts/...），换平台/无该字体会直接出豆腐块。
+# 现改为三级回退：已知绝对路径 → 常见系统字体目录 glob 扫描 → matplotlib 已注册字体名匹配，
+# 任一命中即用；全失败仅告警（图仍生成，标签可能为方块），绝不抛异常。
+_CJK_KEYWORDS = (
+    "hei", "yahei", "song", "simsun", "simhei", "ming",
+    "wqy", "noto sans cjk", "noto serif cjk", "source han",
+    "pingfang", "stheiti", "arphic", "uming", "ukai",
+    "microsoft yahei", "cjk",
+)
+
+
+def setup_cjk_font():
+    """注册一款支持中文的字体，返回生效字体名（str）或 None（未找到，仅告警）。"""
+    # 1) 已知绝对路径（覆盖 Win / Linux / macOS 常见中文字体，均为 CJK 字体，命中即用）
+    curated = [
+        "C:/Windows/Fonts/simhei.ttf",
+        "C:/Windows/Fonts/msyh.ttc",
+        "C:/Windows/Fonts/simsun.ttc",
+        "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/truetype/arphic/uming.ttc",
+        "/System/Library/Fonts/PingFang.ttc",
+        "/System/Library/Fonts/STHeiti Light.ttc",
+        "/Library/Fonts/Arial Unicode.ttf",
+    ]
+    for fp in curated:
+        if os.path.exists(fp):
+            try:
+                matplotlib.font_manager.fontManager.addfont(fp)
+                name = matplotlib.font_manager.FontProperties(fname=fp).get_name()
+                plt.rcParams["font.family"] = name
+                plt.rcParams["axes.unicode_minus"] = False
+                return name
+            except Exception:
+                continue
+
+    # 2) 常见系统字体目录通配扫描（兜底：用户自定义 / 其他发行版），仅采纳 CJK 名
+    patterns = [
+        "C:/Windows/Fonts/*",
+        "/usr/share/fonts/**/*",
+        "/usr/local/share/fonts/**/*",
+        "/System/Library/Fonts/**/*",
+        str(Path.home() / ".fonts" / "**" / "*"),
+    ]
+    for pat in patterns:
+        for fp in glob.glob(pat, recursive=True):
+            if not fp.lower().endswith((".ttf", ".ttc", ".otf")):
+                continue
+            try:
+                matplotlib.font_manager.fontManager.addfont(fp)
+                name = matplotlib.font_manager.FontProperties(fname=fp).get_name()
+            except Exception:
+                continue
+            if any(k in name.lower() for k in _CJK_KEYWORDS):
+                plt.rcParams["font.family"] = name
+                plt.rcParams["axes.unicode_minus"] = False
+                return name
+
+    # 3) 扫描 matplotlib 已加载字体列表，找 CJK 名（最后兜底，避免重复注册）
+    for f in matplotlib.font_manager.fontManager.ttflist:
+        if any(k in f.name.lower() for k in _CJK_KEYWORDS):
+            plt.rcParams["font.family"] = f.name
             plt.rcParams["axes.unicode_minus"] = False
-            break
-        except Exception:
-            continue
+            return f.name
+
+    warnings.warn(
+        "未找到支持中文的字体，混淆矩阵等图表的中文标签可能显示为方块（tofu）。"
+        "请安装中文字体（如 Windows 黑体 / Linux 文泉驿 / macOS 苹方）。"
+    )
+    plt.rcParams["axes.unicode_minus"] = False
+    return None
+
+
+setup_cjk_font()
 
 from src.config import (
     MODEL_DIR, INDEX_DIR, REPORT_DIR, CALIBRATION_PATH, NUM_CLASSES, BATCH_SIZE,

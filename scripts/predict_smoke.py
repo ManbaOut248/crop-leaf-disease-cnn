@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 """D-3 端到端冒烟测试：验证三种后端经 predict.py 均可加载并单图预测。"""
+import sys
+from pathlib import Path
+
+# 脚本位于 scripts/，需把项目根加入 sys.path 才能 import src.*
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from PIL import Image
 import numpy as np
 import src.model.predict as P

@@ -13,4 +13,7 @@ uvicorn[standard]==0.52.4
 python-multipart==0.0.32
 bcrypt==3.2.0          # 密码哈希（替代原 sha256，符合 PRD NFR-SEC 安全基线）
 
+# 测试（python -m pytest；slow 标记会加载模型权重，可用 `pytest -m "not slow"` 跳过）
+pytest==7.4.4
+
 # 前端（React + Ant Design，独立 npm 构建，不在此列）
