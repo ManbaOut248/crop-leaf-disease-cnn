@@ -19,6 +19,7 @@ import {
 import { UploadOutlined, ExperimentOutlined } from '@ant-design/icons'
 import http, { USE_MOCK } from '../api/http'
 import { mockPredict } from '../api/mock'
+import { formatPercent } from '../utils/format'
 
 const LOW_CONF = 0.5 // 置信度低于此值提示人工复核（对齐 API 文档）
 
@@ -161,7 +162,7 @@ export default function DetectPage() {
                   </Typography.Title>
                 </Space>
                 <Typography.Text type="secondary">
-                  置信度 {(top1.confidence * 100).toFixed(1)}%
+                  置信度 {formatPercent(top1.confidence)}
                 </Typography.Text>
               </div>
 
@@ -172,7 +173,7 @@ export default function DetectPage() {
                     <span>
                       {i === 0 ? '最可能' : `第 ${i + 1} 可能`}：{t.disease_cn}
                     </span>
-                    <span>{((t.prob || 0) * 100).toFixed(1)}%</span>
+                    <span>{formatPercent(t.prob)}</span>
                   </div>
                   <Progress
                     percent={Math.round((t.prob || 0) * 100)}

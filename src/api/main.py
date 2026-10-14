@@ -25,7 +25,7 @@ from src.config import (
     THRESHOLD_LOW_CONF, MODEL_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS,
     NUM_CLASSES, CLASS_DIRS, class_name_zh,
 )
-from src.api import auth, db, schemas
+from src.api import auth, db, schemas, thumbs
 
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -277,6 +277,10 @@ def records(user=Depends(get_current_user), page: int = 1, size: int = 20):
             r["disease_cn"] = class_name_zh(CLASS_DIRS[cid])
         except Exception:
             r["disease_cn"] = ""
+        # 缩略图以 base64 内联返回：既不再公开 data/ 静态目录，
+        # 也免去前端为 <img> 无法带 Authorization 头而做的 blob 处理。
+        # 详见 src/api/thumbs.py 顶部说明。
+        r["thumb"] = thumbs.thumb_for(r.get("image_name"))
     return _ok({"items": rows, "total": total, "page": page, "size": size})
 
 

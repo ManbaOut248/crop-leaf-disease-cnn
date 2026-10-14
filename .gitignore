@@ -9,7 +9,8 @@ data/split/
 # ============ 运行时产物 ============
 data/uploads/
 data/app.db
-data/app.db-wal        # SQLite WAL 模式运行时文件（#D 启用后产生）
+# SQLite WAL 模式运行时文件（#D 启用后产生）
+data/app.db-wal
 data/app.db-shm
 
 # ============ 训练/评估中间索引 ============
@@ -24,7 +25,8 @@ backups/
 # ============ 前端依赖 / 构建产物（Node） ============
 node_modules/
 **/node_modules/
-src/web/dist/
+# dist/ 及构建校验用的 dist-verify/ 等临时产物
+src/web/dist*/
 src/web/build/
 .vite/
 
