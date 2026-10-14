@@ -8,18 +8,25 @@
 - 推理统一 fp32，不再使用 AMP（与 evaluate.py 评估一致，避免 fp16/fp32 精度偏差）
 - 应用 Temperature Scaling 校准（由 evaluate.py 拟合的 T）缩放 logits，
   使 softmax 置信度更可靠，缓解"恒为 1.0"的过自信问题
+
+改善（低优先级审查结论）：
+- top_k 改为「逐次调用参数」而非单例缓存：此前 Predictor 单例在首次创建时固定 top_k，
+  之后 predict_image(img, top_k=5) 会被静默忽略、仍返回 3 条（参数名存在却失效，具误导性）。
+  现 get_instance() 只缓存模型（加载代价高），top_k 每次调用都生效。
+- 推理前加入「EXIF 方向校正 + 预缩放」：手机照片常带旋转元数据（PIL 默认不旋转，会把正立叶片喂歪）；
+  超大图（如 6000x4000）先缩到最长边 <= PRESCALE_SIZE，降低内存占用，对 224x224 输入精度无实质影响。
 """
 
 import json
 from pathlib import Path
 
 import torch
-from PIL import Image
+from PIL import Image, ImageOps
 
 from src.config import (
     MODEL_DIR, CLASS_DIRS, class_name_zh, DISEASE_KNOWLEDGE_PATH,
     CALIBRATION_PATH, INFER_BACKEND, PRUNED_MODEL_PATH, QUANTIZED_MODEL_PATH,
-    BEST_MODEL_PATH, LAST_MODEL_PATH,
+    BEST_MODEL_PATH, LAST_MODEL_PATH, NUM_CLASSES, PRESCALE_SIZE,
 )
 from src.data.transforms import get_val_transform
 from src.model.resnet import build_resnet18
@@ -27,13 +34,24 @@ from src.model.quantize import load_quantized_model
 from src.model.prune import build_pruned_model, PRUNE_RATIO
 
 
+def _prescale(img, max_side):
+    """推理前预缩放：最长边超过 max_side 时按等比例缩放到 max_side（LANCZOS 高质量下采样）。
+    仅用于降低超大上传图的内存占用，不改变模型输入尺寸（仍为 IMAGE_SIZE=224）。"""
+    w, h = img.size
+    long = max(w, h)
+    if long <= max_side:
+        return img
+    scale = max_side / float(long)
+    nw, nh = max(1, int(round(w * scale))), max(1, int(round(h * scale)))
+    return img.resize((nw, nh), Image.Resampling.LANCZOS)
+
+
 class Predictor:
     """单例式推理器，懒加载模型。"""
 
     _instance = None
 
-    def __init__(self, top_k=3, device=None):
-        self.top_k = top_k
+    def __init__(self, device=None):
         # 量化模型仅 CPU 生效（qnnpack 后端）；其余后端尊重 device 参数或自动选 CUDA
         if INFER_BACKEND == "quantized":
             self.device = torch.device("cpu")
@@ -44,11 +62,13 @@ class Predictor:
         self.model.eval()
         self.knowledge = self._load_knowledge()
         self.temperature = self._load_calibration()  # 温度缩放校准参数
+        self.num_classes = NUM_CLASSES
 
     @classmethod
-    def get_instance(cls, **kwargs):
+    def get_instance(cls, device=None):
+        # 注意：top_k 不在此缓存（见 predict_image），否则首次调用后 top_k 即被冻结、后续传参静默失效
         if cls._instance is None:
-            cls._instance = cls(**kwargs)
+            cls._instance = cls(device=device)
         return cls._instance
 
     def _load_model(self):
@@ -112,14 +132,20 @@ class Predictor:
             return 1.0
 
     @torch.no_grad()
-    def predict_image(self, pil_image):
-        """输入 PIL.Image，返回 Top-K 结果列表。统一 fp32 推理 + 温度缩放校准。"""
-        img = pil_image.convert("RGB")
+    def predict_image(self, pil_image, top_k=3):
+        """输入 PIL.Image，返回 Top-K 结果列表。统一 fp32 推理 + 温度缩放校准。
+        top_k 为逐次调用参数（非单例缓存），k 自动夹紧到 [1, 类别数]，避免越界。"""
+        # 1) 校正 EXIF 方向：手机照片常带旋转元数据，PIL 默认不应用，否则会把正立叶片喂歪导致误判
+        img = ImageOps.exif_transpose(pil_image).convert("RGB")
+        # 2) 预缩放：超大图（如 6000x4000）先缩到最长边 <= PRESCALE_SIZE，降低内存占用；
+        #    不改变模型输入尺寸（仍为 IMAGE_SIZE=224），对精度无实质影响
+        img = _prescale(img, PRESCALE_SIZE)
         x = self.transform(img).unsqueeze(0).to(self.device)
         logits = self.model(x)                  # 统一 fp32，不使用 AMP（与评估一致）
         logits = logits / self.temperature      # 温度缩放：T>1 抑制过自信，使置信度更可靠
         probs = torch.softmax(logits, dim=1)[0]
-        topk = torch.topk(probs, self.top_k)
+        k = max(1, min(int(top_k), self.num_classes))
+        topk = torch.topk(probs, k)
         results = []
         for rank, (idx, p) in enumerate(zip(topk.indices.tolist(), topk.values.tolist()), start=1):
             en = CLASS_DIRS[idx]
@@ -140,6 +166,6 @@ class Predictor:
 
 
 def predict_image(pil_image, top_k=3):
-    """便捷函数：懒加载全局 Predictor 并预测。"""
-    predictor = Predictor.get_instance(top_k=top_k)
-    return predictor.predict_image(pil_image)
+    """便捷函数：懒加载全局 Predictor 并预测。top_k 逐次生效（不受单例缓存影响）。"""
+    predictor = Predictor.get_instance()
+    return predictor.predict_image(pil_image, top_k=top_k)

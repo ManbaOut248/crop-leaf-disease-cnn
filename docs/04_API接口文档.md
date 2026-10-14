@@ -35,7 +35,7 @@
 |---|---|---|
 | POST | `/predict` | 上传叶片图，返回识别结果 |
 
-**请求**：`multipart/form-data`，字段 `file` = 图像。
+**请求**：`multipart/form-data`，字段 `file` = 图像；可选查询参数 `top_k`（1–38，默认 3）控制返回 Top-K 候选数量。
 **响应**
 ```json
 {

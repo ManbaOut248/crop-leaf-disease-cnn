@@ -96,6 +96,10 @@ IMAGE_SIZE = 224
 # ImageNet 预训练均值/标准差（与预训练权重一致，必需）
 MEAN = [0.485, 0.456, 0.406]
 STD = [0.229, 0.224, 0.225]
+# 推理预缩放上限：上传图最长边超过此值先缩放到此值（保持比例），用于降低超大图内存占用。
+# 仅作用于推理入口（predict.py），不改变模型输入尺寸（仍由 get_val_transform 统一缩到 224）；
+# 设为 None 可关闭预缩放（直接走 transform）。
+PRESCALE_SIZE = 512
 
 # 分层抽样比例（对齐任务书 8:1:1）
 SPLIT_TRAIN, SPLIT_VAL, SPLIT_TEST = 0.8, 0.1, 0.1

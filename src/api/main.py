@@ -23,6 +23,7 @@ from starlette.background import BackgroundTask
 from src.config import (
     PROJECT_ROOT, UPLOAD_DIR, ALLOWED_IMAGE_EXT, MAX_UPLOAD_MB,
     THRESHOLD_LOW_CONF, MODEL_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS,
+    NUM_CLASSES,
 )
 from src.api import auth, db, schemas
 
@@ -184,6 +185,7 @@ def logout():
 @app.post("/api/v1/predict")
 def predict(
     file: UploadFile = File(...),
+    top_k: int = Query(3, ge=1, le=NUM_CLASSES, description="返回 Top-K 候选数量，默认 3"),
     user=Depends(get_optional_user),
     request: Request = None,
 ):
@@ -211,7 +213,7 @@ def predict(
     save_name = f"{uuid.uuid4().hex}{ext}"
     (UPLOAD_DIR / save_name).write_bytes(raw)
     try:
-        results = predict_image(img, top_k=3)
+        results = predict_image(img, top_k=top_k)
     except FileNotFoundError:
         (UPLOAD_DIR / save_name).unlink(missing_ok=True)
         return _err(503, "模型尚未就绪，请稍候（训练进行中或权重缺失）", 503)
