@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>农作物叶片病害识别系统 · UI 原型 V1</title>
+<style>
+:root{
+  --c-primary-50:#F1FAF5; --c-primary-100:#E8F6EE; --c-primary-200:#C9EAD8;
+  --c-primary-300:#9BD8B5; --c-primary-400:#63BD8A; --c-primary-500:#2E9E5B;
+  --c-primary-600:#24814A; --c-primary-700:#1C663A; --c-primary-800:#164E2D; --c-primary-900:#0E3520;
+  --c-warning:#F2A93B; --c-warning-bg:#FEF6E7; --c-warning-text:#96590A; --c-warning-border:#F6D9A8;
+  --c-error:#D6453E; --c-error-bg:#FDECEB; --c-error-text:#992620;
+  --c-info:#3A7BD5; --c-info-bg:#EAF2FD; --c-info-text:#23528F;
+  --c-bg-page:#F7FAF8; --c-bg-subtle:#EFF3F0;
+  --c-border:#E2E8E4; --c-border-split:#EFF3F0;
+  --c-text-title:#1C2620; --c-text-body:#2E3A33; --c-text-sub:#6B7A72; --c-text-ph:#9AA8A0;
+  --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px;
+  --sh-sm:0 1px 2px rgba(16,38,26,.04);
+  --sh-md:0 4px 12px rgba(16,38,26,.06);
+  --sh-lg:0 8px 24px rgba(16,38,26,.08);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; padding:40px 24px 72px;
+  background:#EEF1EE;
+  color:var(--c-text-body);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:14px; line-height:1.6;
+}
+.page-head{max-width:1280px;margin:0 auto 32px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.page-head h1{margin:0;font-size:20px;font-weight:600;color:var(--c-text-title)}
+.page-head p{margin:6px 0 0;font-size:13px;color:var(--c-text-sub)}
+.palette-mini{display:flex;gap:6px;align-items:center}
+.sw{width:22px;height:22px;border-radius:5px;border:1px solid rgba(16,38,26,.08)}
+
+.board{max-width:1280px;margin:0 auto 36px}
+.board-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.board-idx{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:6px;
+  background:var(--c-primary-600);color:#fff;font-size:12px;font-weight:600;
+}
+.board-name{font-size:15px;font-weight:600;color:var(--c-text-title)}
+.board-note{font-size:12px;color:var(--c-text-sub)}
+.board-stage{
+  overflow-x:auto;border-radius:var(--r-lg);
+  box-shadow:var(--sh-md);border:1px solid var(--c-border);background:#fff;
+}
+.screen{width:100%;min-width:940px;background:var(--c-bg-page);display:flex;flex-direction:column;min-height:640px}
+
+/* ---------- 顶栏 ---------- */
+.topbar{
+  height:64px;background:#fff;border-bottom:1px solid var(--c-border);
+  box-shadow:var(--sh-sm);display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;flex-shrink:0;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-name{font-size:16px;font-weight:600;color:var(--c-text-title)}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.top-link{font-size:14px;color:var(--c-text-sub)}
+.avatar{
+  width:32px;height:32px;border-radius:50%;background:var(--c-primary-100);
+  color:var(--c-primary-700);display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;
+}
+
+/* ---------- 框架 ---------- */
+.shell{display:flex;flex:1}
+.sider{
+  width:200px;flex-shrink:0;background:var(--c-bg-page);padding:16px 12px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.menu-item{
+  display:flex;align-items:center;gap:10px;height:44px;padding:0 12px;
+  border-radius:var(--r-md);font-size:14px;color:var(--c-text-body);position:relative;
+}
+.menu-item.active{background:var(--c-primary-100);color:var(--c-primary-700);font-weight:500}
+.menu-item.active::before{
+  content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;
+  border-radius:0 2px 2px 0;background:var(--c-primary-600);
+}
+.menu-item .dot{width:6px;height:6px;border-radius:50%;background:var(--c-primary-300)}
+.content{flex:1;min-width:0;padding:24px}
+
+/* ---------- 通用 ---------- */
+.page-title{margin:0;font-size:24px;font-weight:600;color:var(--c-text-title)}
+.page-sub{margin:6px 0 0;font-size:14px;color:var(--c-text-sub)}
+.row-between{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.center-col{max-width:860px;margin:0 auto}
+
+.btn{
+  height:36px;padding:0 18px;border-radius:var(--r-md);font-size:14px;font-weight:500;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:default;
+  border:1px solid transparent;font-family:inherit;
+}
+.btn-primary{background:var(--c-primary-600);color:#fff}
+.btn-default{background:#fff;border-color:var(--c-border);color:var(--c-text-body)}
+.btn-disabled{background:var(--c-bg-subtle);color:var(--c-text-ph);border-color:var(--c-border)}
+.btn-block{width:100%}
+
+.tag{
+  display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;
+  border-radius:6px;font-size:12px;border:1px solid transparent;white-space:nowrap;
+}
+.tag-neutral{background:var(--c-bg-subtle);color:#4A5850;border-color:var(--c-border)}
+.tag-healthy{background:var(--c-primary-100);color:var(--c-primary-700);border-color:var(--c-primary-200)}
+.tag-disease{background:var(--c-warning-bg);color:var(--c-warning-text);border-color:var(--c-warning-border)}
+.tag-severe{background:var(--c-error-bg);color:var(--c-error-text);border-color:#F3C4C1}
+
+.card{
+  background:#fff;border:1px solid var(--c-border);border-radius:var(--r-lg);
+  padding:24px;
+}
+.card-title{margin:0 0 12px;font-size:16px;font-weight:600;color:var(--c-text-title)}
+
+.alert{
+  display:flex;gap:10px;padding:11px 14px;border-radius:var(--r-md);
+  font-size:14px;line-height:1.55;border:1px solid transparent;
+}
+.alert-success{background:var(--c-primary-100);color:var(--c-primary-700);border-color:var(--c-primary-200)}
+.alert-warning{background:var(--c-warning-bg);color:var(--c-warning-text);border-color:var(--c-warning-border)}
+.alert-info{background:var(--c-info-bg);color:var(--c-info-text);border-color:#C9DDF5}
+.alert b{font-weight:600}
+.alert .ico{flex-shrink:0;margin-top:1px}
+
+/* ---------- 上传区 ---------- */
+.dropzone{
+  border:2px dashed var(--c-primary-200);background:var(--c-primary-50);
+  border-radius:var(--r-lg);min-height:240px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  text-align:center;padding:32px;
+}
+.dz-title{font-size:16px;font-weight:500;color:var(--c-text-body)}
+.dz-hint{font-size:12px;color:var(--c-text-sub)}
+.dropzone.is-picked{
+  flex-direction:row;justify-content:flex-start;gap:16px;min-height:auto;
+  padding:16px;border-style:solid;border-color:var(--c-border);background:#fff;
+}
+.thumb{width:96px;height:96px;border-radius:var(--r-md);object-fit:cover;border:1px solid var(--c-border);flex-shrink:0}
+.thumb-sm{width:48px;height:48px;border-radius:6px;object-fit:cover;border:1px solid var(--c-border);flex-shrink:0}
+.file-meta{display:flex;flex-direction:column;gap:4px;min-width:0}
+.file-name{font-size:14px;font-weight:500;color:var(--c-text-title);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-dim{font-size:12px;color:var(--c-text-sub)}
+
+/* ---------- 结果 ---------- */
+.result-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.disease-name{font-size:24px;font-weight:600;color:var(--c-text-title);margin:10px 0 0}
+.conf-block{text-align:right}
+.conf-num{font-size:36px;font-weight:600;color:var(--c-primary-600);line-height:1.1;font-variant-numeric:tabular-nums}
+.conf-label{font-size:12px;color:var(--c-text-sub);margin-top:4px}
+
+.prob-list{display:flex;flex-direction:column;gap:14px;margin:0}
+.prob-row{display:grid;grid-template-columns:200px 1fr 76px;align-items:center;gap:16px}
+.prob-label{font-size:14px;color:var(--c-text-body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prob-track{height:10px;background:var(--c-bg-subtle);border-radius:5px;overflow:hidden}
+.prob-fill{height:100%;border-radius:5px;background:var(--c-primary-300)}
+.prob-fill.top{background:var(--c-primary-500)}
+.prob-val{font-size:14px;text-align:right;font-variant-numeric:tabular-nums;color:var(--c-text-body)}
+
+.knowledge-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.k-text{font-size:14px;line-height:1.75;color:var(--c-text-body);margin:0}
+
+/* ---------- 表格 ---------- */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--c-border);border-radius:var(--r-lg);background:#fff}
+table.tbl{width:100%;border-collapse:collapse;min-width:820px}
+table.tbl th{
+  background:var(--c-bg-subtle);color:var(--c-text-title);font-size:14px;font-weight:600;
+  text-align:left;padding:13px 16px;white-space:nowrap;
+}
+table.tbl td{padding:12px 16px;border-top:1px solid var(--c-border-split);font-size:14px;vertical-align:middle}
+table.tbl td.num{text-align:right;font-variant-numeric:tabular-nums}
+table.tbl tr:hover td{background:var(--c-primary-50)}
+.cell-file{display:flex;align-items:center;gap:12px}
+.link{color:var(--c-primary-600);font-size:14px}
+.pager{display:flex;justify-content:flex-end;gap:6px;margin-top:16px}
+.pg{min-width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--c-border);border-radius:6px;font-size:13px;color:var(--c-text-body);background:#fff}
+.pg.active{background:var(--c-primary-100);border-color:var(--c-primary-200);color:var(--c-primary-700);font-weight:500}
+
+/* ---------- 卡片网格 ---------- */
+.filters{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0 20px}
+.input{
+  height:36px;border:1px solid var(--c-border);border-radius:var(--r-md);background:#fff;
+  display:flex;align-items:center;padding:0 12px;color:var(--c-text-ph);font-size:14px;min-width:280px;
+}
+.select{height:36px;border:1px solid var(--c-border);border-radius:var(--r-md);background:#fff;
+  display:flex;align-items:center;justify-content:space-between;padding:0 12px;color:var(--c-text-body);font-size:14px;min-width:160px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dcard{background:#fff;border:1px solid var(--c-border);border-radius:var(--r-lg);padding:20px;display:flex;flex-direction:column;gap:10px}
+.dcard-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dcard-name{font-size:16px;font-weight:600;color:var(--c-text-title)}
+.dcard-text{font-size:14px;line-height:1.65;color:var(--c-text-sub);margin:0}
+
+/* ---------- 登录 ---------- */
+.login-screen{
+  min-height:640px;background:var(--c-bg-page);display:flex;align-items:center;justify-content:center;padding:48px 24px;
+}
+.login-card{
+  width:380px;background:#fff;border:1px solid var(--c-border);border-radius:var(--r-xl);
+  box-shadow:var(--sh-lg);padding:32px;
+}
+.login-brand{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:26px;text-align:center}
+.login-name{font-size:20px;font-weight:600;color:var(--c-text-title)}
+.login-en{font-size:12px;color:var(--c-text-sub);letter-spacing:.4px}
+.field{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.field label{font-size:14px;font-weight:500;color:var(--c-text-body)}
+.field .control{height:40px;border:1px solid var(--c-border);border-radius:var(--r-md);background:#fff;
+  display:flex;align-items:center;padding:0 12px;color:var(--c-text-ph);font-size:14px}
+.field .control.focus{border-color:var(--c-primary-600);box-shadow:0 0 0 3px rgba(46,158,91,.18);color:var(--c-text-body)}
+.login-foot{margin-top:16px;text-align:center;font-size:13px;color:var(--c-text-sub)}
+.login-foot a{color:var(--c-primary-600);text-decoration:none}
+
+.foot-note{max-width:1280px;margin:0 auto;font-size:12px;color:var(--c-text-sub);line-height:1.8}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <div>
+    <h1>农作物叶片病害识别系统 · UI 原型 V1</h1>
+    <p>主题「田野翠绿」Field Fresh ｜ 依据 <b>docs/02_UIUX设计.md V2.0</b> 实现 ｜ 共 5 个画板</p>
+  </div>
+  <div class="palette-mini">
+    <div class="sw" style="background:#2E9E5B"></div>
+    <div class="sw" style="background:#24814A"></div>
+    <div class="sw" style="background:#1C663A"></div>
+    <div class="sw" style="background:#E8F6EE"></div>
+    <div class="sw" style="background:#F2A93B"></div>
+    <div class="sw" style="background:#D6453E"></div>
+    <div class="sw" style="background:#3A7BD5"></div>
+    <div class="sw" style="background:#F7FAF8"></div>
+  </div>
+</div>
+
+<!-- ================= 01 识别页 · 空态 ================= -->
+<section class="board">
+  <div class="board-head">
+    <span class="board-idx">01</span>
+    <span class="board-name">识别页 · 空态</span>
+    <span class="board-note">全局框架 + 上传区默认态，页面只聚焦一个动作</span>
+  </div>
+  <div class="board-stage">
+    <div class="screen">
+      <div class="topbar">
+        <div class="brand">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M17 3C9 3 4 8 3 16c0 1 0 1 1 1 8-1 13-6 13-14z" fill="#2E9E5B"/>
+            <path d="M6 14c2-4 6-7 9-9" stroke="#fff" stroke-width="1" fill="none" opacity=".55"/>
+          </svg>
+          <span class="brand-name">农作物叶片病害识别系统</span>
+        </div>
+        <div class="topbar-right">
+          <span class="top-link">登录</span>
+        </div>
+      </div>
+      <div class="shell">
+        <aside class="sider">
+          <div class="menu-item active"><span class="dot"></span>病害识别</div>
+          <div class="menu-item"><span class="dot"></span>识别历史</div>
+          <div class="menu-item"><span class="dot"></span>病害知识库</div>
+          <div class="menu-item"><span class="dot"></span>个人中心</div>
+        </aside>
+        <main class="content">
+          <div class="center-col">
+            <h2 class="page-title">叶片病害识别</h2>
+            <p class="page-sub">上传一张叶片照片，AI 帮你判断病害类型</p>
+
+            <div style="height:24px"></div>
+
+            <div class="dropzone">
+              <svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+                <rect x="4" y="21" width="36" height="19" rx="4" fill="#E8F6EE" stroke="#9BD8B5" stroke-width="1.6"/>
+                <path d="M22 4v22M22 4l-7 7M22 4l7 7" stroke="#9BD8B5" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              </svg>
+              <div>
+                <div class="dz-title">点击或拖拽叶片照片到此处</div>
+                <div class="dz-hint" style="margin-top:6px">支持 JPG / PNG，单张不超过 10 MB</div>
+              </div>
+            </div>
+
+            <div style="height:20px"></div>
+
+            <div style="display:flex;gap:12px">
+              <button class="btn btn-disabled" style="min-width:120px">开始识别</button>
+              <button class="btn btn-disabled">重新选择</button>
+            </div>
+
+            <div style="height:16px"></div>
+            <p style="font-size:12px;color:var(--c-text-sub);margin:0">选择图片后「开始识别」按钮自动可用</p>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 识别页 · 识别结果 ================= -->
+<section class="board">
+  <div class="board-head">
+    <span class="board-idx">02</span>
+    <span class="board-name">识别页 · 识别结果</span>
+    <span class="board-note">核心页面：结论卡 → 概率条 → 置信度提示 → 防治知识 → 免责声明</span>
+  </div>
+  <div class="board-stage">
+    <div class="screen">
+      <div class="topbar">
+        <div class="brand">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M17 3C9 3 4 8 3 16c0 1 0 1 1 1 8-1 13-6 13-14z" fill="#2E9E5B"/>
+            <path d="M6 14c2-4 6-7 9-9" stroke="#fff" stroke-width="1" fill="none" opacity=".55"/>
+          </svg>
+          <span class="brand-name">农作物叶片病害识别系统</span>
+        </div>
+        <div class="topbar-right">
+          <span class="top-link">识别历史</span>
+          <span class="avatar">科</span>
+        </div>
+      </div>
+      <div class="shell">
+        <aside class="sider">
+          <div class="menu-item active"><span class="dot"></span>病害识别</div>
+          <div class="menu-item"><span class="dot"></span>识别历史</div>
+          <div class="menu-item"><span class="dot"></span>病害知识库</div>
+          <div class="menu-item"><span class="dot"></span>个人中心</div>
+        </aside>
+        <main class="content">
+          <div class="center-col">
+            <h2 class="page-title">叶片病害识别</h2>
+
+            <div style="height:20px"></div>
+
+            <!-- 已选图片条 -->
+            <div class="dropzone is-picked">
+              <img class="thumb" src="../../03.ppt/农作物叶片病害识别系统/assets/sample_corn_gray_leaf_spot.jpg" alt="玉米灰斑病叶片">
+              <div class="file-meta" style="flex:1">
+                <div class="file-name">corn_gray_leaf_spot_sample.jpg</div>
+                <div class="file-dim">1920 × 1080 · 1.2 MB · JPEG</div>
+              </div>
+              <button class="btn btn-default">重新选择</button>
+            </div>
+
+            <div style="height:20px"></div>
+
+            <!-- 结论卡 -->
+            <div class="card">
+              <div class="result-hero">
+                <div>
+                  <span class="tag tag-disease">检测到病害</span>
+                  <div class="disease-name">玉米灰斑病</div>
+                  <div style="font-size:13px;color:var(--c-text-sub);margin-top:6px">Cercospora leaf spot · Gray leaf spot</div>
+                </div>
+                <div class="conf-block">
+                  <div class="conf-num">98.8%</div>
+                  <div class="conf-label">Top-1 置信度</div>
+                </div>
+              </div>
+
+              <div style="height:22px"></div>
+              <div style="height:1px;background:var(--c-border-split)"></div>
+              <div style="height:20px"></div>
+
+              <div style="font-size:14px;font-weight:500;color:var(--c-text-title);margin-bottom:14px">Top-3 候选概率</div>
+              <div class="prob-list">
+                <div class="prob-row">
+                  <span class="prob-label">玉米灰斑病</span>
+                  <span class="prob-track"><span class="prob-fill top" style="width:98.8%"></span></span>
+                  <span class="prob-val">98.8%</span>
+                </div>
+                <div class="prob-row">
+                  <span class="prob-label">玉米北方叶枯病</span>
+                  <span class="prob-track"><span class="prob-fill" style="width:6%"></span></span>
+                  <span class="prob-val">0.9%</span>
+                </div>
+                <div class="prob-row">
+                  <span class="prob-label">玉米普通锈病</span>
+                  <span class="prob-track"><span class="prob-fill" style="width:3%"></span></span>
+                  <span class="prob-val">0.3%</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="height:16px"></div>
+
+            <!-- 置信度提示 -->
+            <div class="alert alert-success">
+              <svg class="ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="7" fill="none" stroke="#1C663A" stroke-width="1.5"/>
+                <path d="M5 8.2l2 2 4-4.4" fill="none" stroke="#1C663A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span><b>结果可信</b>　置信度 98.8% ≥ 80%，可直接参考下方防治建议。</span>
+            </div>
+
+            <div style="height:16px"></div>
+
+            <!-- 知识卡 -->
+            <div class="knowledge-grid">
+              <div class="card">
+                <h3 class="card-title">症状特征</h3>
+                <p class="k-text">叶片上出现长条形、边缘与叶脉平行的灰褐色病斑，后期病斑融合成片，导致叶片大面积枯死，影响光合作用与产量。</p>
+              </div>
+              <div class="card">
+                <h3 class="card-title">防治建议</h3>
+                <p class="k-text">选用抗病品种；收获后清除田间病残体并深翻；合理密植保证通风；发病初期及时喷施杀菌剂，7–10 天一次，连喷 2–3 次。</p>
+              </div>
+            </div>
+
+            <div style="height:16px"></div>
+
+            <div class="alert alert-info">
+              <svg class="ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                <circle cx="8" cy="8" r="7" fill="none" stroke="#23528F" stroke-width="1.5"/>
+                <path d="M8 7v5M8 4.6v.2" stroke="#23528F" stroke-width="1.7" stroke-linecap="round"/>
+              </svg>
+              <span>本结果为 <b>辅助识别</b>，不能替代专业农技诊断。用药请遵循当地植保部门指导。</span>
+            </div>
+
+            <div style="height:20px"></div>
+
+            <div style="display:flex;gap:12px">
+              <button class="btn btn-primary" style="min-width:140px">保存到历史</button>
+              <button class="btn btn-default">重新识别</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 识别历史 ================= -->
+<section class="board">
+  <div class="board-head">
+    <span class="board-idx">03</span>
+    <span class="board-name">识别历史</span>
+    <span class="board-note">表格用「色 + 文字」双重编码表达结果，不单靠颜色</span>
+  </div>
+  <div class="board-stage">
+    <div class="screen">
+      <div class="topbar">
+        <div class="brand">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M17 3C9 3 4 8 3 16c0 1 0 1 1 1 8-1 13-6 13-14z" fill="#2E9E5B"/>
+            <path d="M6 14c2-4 6-7 9-9" stroke="#fff" stroke-width="1" fill="none" opacity=".55"/>
+          </svg>
+          <span class="brand-name">农作物叶片病害识别系统</span>
+        </div>
+        <div class="topbar-right"><span class="avatar">科</span></div>
+      </div>
+      <div class="shell">
+        <aside class="sider">
+          <div class="menu-item"><span class="dot"></span>病害识别</div>
+          <div class="menu-item active"><span class="dot"></span>识别历史</div>
+          <div class="menu-item"><span class="dot"></span>病害知识库</div>
+          <div class="menu-item"><span class="dot"></span>个人中心</div>
+        </aside>
+        <main class="content">
+          <div class="row-between">
+            <div>
+              <h2 class="page-title">识别历史</h2>
+              <p class="page-sub">共 128 条识别记录</p>
+            </div>
+            <button class="btn btn-default">导出 CSV</button>
+          </div>
+
+          <div style="height:20px"></div>
+
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width:56px"></th>
+                  <th>文件名</th>
+                  <th>识别结果</th>
+                  <th style="text-align:right">置信度</th>
+                  <th>时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><img class="thumb-sm" src="../../03.ppt/农作物叶片病害识别系统/assets/sample_corn_gray_leaf_spot.jpg" alt="玉米灰斑病"></td>
+                  <td class="file-name" style="font-weight:400">corn_gray_leaf_spot.jpg</td>
+                  <td><span class="tag tag-disease">玉米灰斑病</span></td>
+                  <td class="num">98.8%</td>
+                  <td style="color:var(--c-text-sub)">2026-10-14 16:12</td>
+                  <td><span class="link">查看</span>　<span class="link" style="color:var(--c-error-text)">删除</span></td>
+                </tr>
+                <tr>
+                  <td><img class="thumb-sm" src="../../03.ppt/农作物叶片病害识别系统/assets/sample_tomato_late_blight.jpg" alt="番茄晚疫病"></td>
+                  <td class="file-name" style="font-weight:400">tomato_late_blight.jpg</td>
+                  <td><span class="tag tag-disease">番茄晚疫病</span></td>
+                  <td class="num">97.4%</td>
+                  <td style="color:var(--c-text-sub)">2026-10-14 15:48</td>
+                  <td><span class="link">查看</span>　<span class="link" style="color:var(--c-error-text)">删除</span></td>
+                </tr>
+                <tr>
+                  <td><img class="thumb-sm" src="../../03.ppt/农作物叶片病害识别系统/assets/sample_healthy.jpg" alt="番茄健康"></td>
+                  <td class="file-name" style="font-weight:400">tomato_healthy.jpg</td>
+                  <td><span class="tag tag-healthy">番茄（健康）</span></td>
+                  <td class="num">99.6%</td>
+                  <td style="color:var(--c-text-sub)">2026-10-13 18:02</td>
+                  <td><span class="link">查看</span>　<span class="link" style="color:var(--c-error-text)">删除</span></td>
+                </tr>
+                <tr>
+                  <td><img class="thumb-sm" src="../../03.ppt/农作物叶片病害识别系统/assets/sample_apple_scab.jpg" alt="苹果黑星病"></td>
+                  <td class="file-name" style="font-weight:400">apple_scab.jpg</td>
+                  <td><span class="tag tag-disease">苹果黑星病</span></td>
+                  <td class="num">96.1%</td>
+                  <td style="color:var(--c-text-sub)">2026-10-13 16:41</td>
+                  <td><span class="link">查看</span>　<span class="link" style="color:var(--c-error-text)">删除</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pager">
+            <span class="pg">‹</span>
+            <span class="pg active">1</span>
+            <span class="pg">2</span>
+            <span class="pg">3</span>
+            <span class="pg">…</span>
+            <span class="pg">13</span>
+            <span class="pg">›</span>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 病害知识库 ================= -->
+<section class="board">
+  <div class="board-head">
+    <span class="board-idx">04</span>
+    <span class="board-name">病害知识库</span>
+    <span class="board-note">响应式卡片网格（≥1200px 三列 / ≥768px 两列 / 其余单列）</span>
+  </div>
+  <div class="board-stage">
+    <div class="screen">
+      <div class="topbar">
+        <div class="brand">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M17 3C9 3 4 8 3 16c0 1 0 1 1 1 8-1 13-6 13-14z" fill="#2E9E5B"/>
+            <path d="M6 14c2-4 6-7 9-9" stroke="#fff" stroke-width="1" fill="none" opacity=".55"/>
+          </svg>
+          <span class="brand-name">农作物叶片病害识别系统</span>
+        </div>
+        <div class="topbar-right"><span class="avatar">科</span></div>
+      </div>
+      <div class="shell">
+        <aside class="sider">
+          <div class="menu-item"><span class="dot"></span>病害识别</div>
+          <div class="menu-item"><span class="dot"></span>识别历史</div>
+          <div class="menu-item active"><span class="dot"></span>病害知识库</div>
+          <div class="menu-item"><span class="dot"></span>个人中心</div>
+        </aside>
+        <main class="content">
+          <h2 class="page-title">病害知识库</h2>
+          <p class="page-sub">覆盖 14 种作物 / 38 类病害与健康状态</p>
+
+          <div class="filters">
+            <div class="input">搜索病害名称，如「玉米灰斑病」</div>
+            <div class="select"><span>全部作物</span><span style="color:var(--c-text-ph)">▾</span></div>
+          </div>
+
+          <div class="cards">
+            <div class="dcard">
+              <div class="dcard-top">
+                <span class="dcard-name">玉米灰斑病</span>
+                <span class="tag tag-neutral">玉米</span>
+              </div>
+              <p class="dcard-text">叶片出现与叶脉平行的长条形灰褐病斑，后期融合枯死。</p>
+              <span class="link" style="margin-top:2px">查看详情</span>
+            </div>
+            <div class="dcard">
+              <div class="dcard-top">
+                <span class="dcard-name">番茄晚疫病</span>
+                <span class="tag tag-neutral">番茄</span>
+              </div>
+              <p class="dcard-text">叶缘出现水渍状暗绿斑，湿度高时迅速扩大并生白霉。</p>
+              <span class="link" style="margin-top:2px">查看详情</span>
+            </div>
+            <div class="dcard">
+              <div class="dcard-top">
+                <span class="dcard-name">苹果黑星病</span>
+                <span class="tag tag-neutral">苹果</span>
+              </div>
+              <p class="dcard-text">叶片正面产生橄榄色绒状霉斑，后期变黑褐并引起落叶。</p>
+              <span class="link" style="margin-top:2px">查看详情</span>
+            </div>
+            <div class="dcard">
+              <div class="dcard-top">
+                <span class="dcard-name">葡萄黑腐病</span>
+                <span class="tag tag-neutral">葡萄</span>
+              </div>
+              <p class="dcard-text">叶片现褐色圆形斑点，边缘深褐，果实受害后干缩成僵果。</p>
+              <span class="link" style="margin-top:2px">查看详情</span>
+            </div>
+            <div class="dcard">
+              <div class="dcard-top">
+                <span class="dcard-name">柑橘黄龙病</span>
+                <span class="tag tag-neutral">柑橘</span>
+              </div>
+              <p class="dcard-text">叶片斑驳黄化、叶脉黄化，树势衰退，属检疫性病害。</p>
+              <span class="link" style="margin-top:2px">查看详情</span>
+            </div>
+            <div class="dcard">
+              <div class="dcard-top">
+                <span class="dcard-name">番茄（健康）</span>
+                <span class="tag tag-healthy">健康</span>
+              </div>
+              <p class="dcard-text">叶色浓绿均匀，无病斑、无萎蔫，叶形舒展。</p>
+              <span class="link" style="margin-top:2px">查看详情</span>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 登录页 ================= -->
+<section class="board">
+  <div class="board-head">
+    <span class="board-idx">05</span>
+    <span class="board-name">登录页</span>
+    <span class="board-note">居中卡片 · 圆角 16px · 阴影 lg · 品牌区用亮色 #2E9E5B</span>
+  </div>
+  <div class="board-stage">
+    <div class="screen">
+      <div class="login-screen">
+        <div class="login-card">
+          <div class="login-brand">
+            <svg width="40" height="40" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M17 3C9 3 4 8 3 16c0 1 0 1 1 1 8-1 13-6 13-14z" fill="#2E9E5B"/>
+              <path d="M6 14c2-4 6-7 9-9" stroke="#fff" stroke-width="1" fill="none" opacity=".55"/>
+            </svg>
+            <div class="login-name">农作物叶片病害识别系统</div>
+            <div class="login-en">CROP LEAF DISEASE RECOGNITION</div>
+          </div>
+
+          <div class="field">
+            <label>用户名</label>
+            <div class="control focus">demo</div>
+          </div>
+          <div class="field">
+            <label>密码</label>
+            <div class="control">••••••••</div>
+          </div>
+
+          <div style="height:8px"></div>
+          <button class="btn btn-primary btn-block">登录</button>
+
+          <div class="login-foot">还没有账号？<a href="#">去注册</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="foot-note">
+  原型说明：本文件为静态 HTML 原型，用于确认视觉方向与信息层级，交互（上传、识别、翻页）未接入真实逻辑。<br>
+  配色与组件规格严格取自 <b>docs/02_UIUX设计.md V2.0</b>；叶片缩略图为 PlantVillage 真实数据集样本。<br>
+  观察要点：① 主色仅出现在按钮、图标、图表等"非阅读"位置；② 正文与小字一律用 #2E3A33 / #6B7A72；③ 病害与健康通过「颜色 + 文字」双重表达。
+</div>
+
+</body>
+</html>
