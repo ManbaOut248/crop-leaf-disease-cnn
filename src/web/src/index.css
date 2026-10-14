@@ -1,3 +1,61 @@
+/* =====================================================================
+   全局样式 ·「田野翠绿」主题
+   设计依据：docs/02_UIUX设计.md V2.0
+   约定：AntD 组件颜色走 ConfigProvider token（main.jsx）；
+        此处仅声明 CSS 变量 + 少量无法用 token 表达的场景
+   ===================================================================== */
+
+:root {
+  /* ---- 主色阶 ---- */
+  --c-primary-50: #F1FAF5;
+  --c-primary-100: #E8F6EE;
+  --c-primary-200: #C9EAD8;
+  --c-primary-300: #9BD8B5;
+  --c-primary-400: #63BD8A;
+  --c-primary-500: #2E9E5B;   /* 品牌亮色：仅用于图形 */
+  --c-primary-600: #24814A;   /* 交互主色：文字与按钮 */
+  --c-primary-700: #1C663A;
+  --c-primary-800: #164E2D;
+  --c-primary-900: #0E3520;
+
+  /* ---- 语义色 ---- */
+  --c-success: #2E9E5B;
+  --c-success-bg: #E8F6EE;
+  --c-success-text: #1C663A;
+  --c-warning: #F2A93B;
+  --c-warning-bg: #FEF6E7;
+  --c-warning-text: #96590A;
+  --c-warning-border: #F6D9A8;
+  --c-error: #D6453E;
+  --c-error-bg: #FDECEB;
+  --c-error-text: #992620;
+  --c-info: #3A7BD5;
+  --c-info-bg: #EAF2FD;
+  --c-info-text: #23528F;
+
+  /* ---- 中性色（带绿味，R<G） ---- */
+  --c-bg-page: #F7FAF8;
+  --c-bg-container: #FFFFFF;
+  --c-bg-subtle: #EFF3F0;
+  --c-border: #E2E8E4;
+  --c-border-split: #EFF3F0;
+  --c-text-title: #1C2620;
+  --c-text-body: #2E3A33;
+  --c-text-sub: #6B7A72;
+  --c-text-placeholder: #9AA8A0;
+
+  /* ---- 圆角 ---- */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+
+  /* ---- 阴影（用绿黑而非纯黑，避免浅绿底上发脏） ---- */
+  --sh-sm: 0 1px 2px rgba(16, 38, 26, 0.04);
+  --sh-md: 0 4px 12px rgba(16, 38, 26, 0.06);
+  --sh-lg: 0 8px 24px rgba(16, 38, 26, 0.08);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -12,16 +70,53 @@ body,
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
     'Microsoft YaHei', sans-serif;
-  background: #f5f7f3;
+  background: var(--c-bg-page);
+  color: var(--c-text-body);
 }
 
-/* 上传拖拽区通用样式 */
-.drop-zone {
-  border: 2px dashed #b7eb8f;
-  border-radius: 12px;
-  background: #f6ffed;
-  transition: all 0.2s;
+/* ===================== 上传区 =====================
+   视觉由内部 .ant-upload-drag 承载，外层仅作定位容器，
+   避免出现「双层虚线框」。 */
+.drop-zone .ant-upload-drag {
+  border: 2px dashed var(--c-primary-200);
+  background: var(--c-primary-50);
+  border-radius: var(--r-lg);
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
-.drop-zone:hover {
-  border-color: #52c41a;
+
+.drop-zone .ant-upload-drag:hover {
+  border-color: var(--c-primary-600);
+  background: var(--c-primary-100);
+}
+
+/* 上传图标用柔绿（图形色），文案保持深色以保证可读 */
+.drop-zone .ant-upload-drag-icon .anticon {
+  color: var(--c-primary-300);
+  font-size: 40px;
+}
+
+.drop-zone .ant-upload-drag .ant-upload-text {
+  color: var(--c-text-body);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.drop-zone .ant-upload-drag .ant-upload-hint {
+  color: var(--c-text-sub);
+  font-size: 12px;
+}
+
+/* ===================== AntD 预设标签色 → 主题色 =====================
+   AntD 的 color="green" / "volcano" 走的是内置色板，
+   这里统一收敛到本设计系统的语义色，保证同类信息颜色一致。 */
+.ant-tag-green {
+  background: var(--c-primary-100);
+  border-color: var(--c-primary-200);
+  color: var(--c-primary-700);
+}
+
+.ant-tag-volcano {
+  background: var(--c-warning-bg);
+  border-color: var(--c-warning-border);
+  color: var(--c-warning-text);
 }

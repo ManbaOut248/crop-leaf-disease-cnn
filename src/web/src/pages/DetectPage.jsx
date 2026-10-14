@@ -92,7 +92,7 @@ export default function DetectPage() {
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         {/* 左：上传 + 预览 */}
         <Card title="上传叶片图片" style={{ width: 360 }}>
-          <div className="drop-zone" style={{ padding: 24, textAlign: 'center' }}>
+          <div className="drop-zone" style={{ textAlign: 'center' }}>
             <Upload.Dragger beforeUpload={beforeUpload} showUploadList={false} accept="image/*">
               {preview ? (
                 <img src={preview} alt="预览" style={{ maxWidth: '100%', maxHeight: 220, borderRadius: 8 }} />
@@ -177,7 +177,7 @@ export default function DetectPage() {
                   <Progress
                     percent={Math.round((t.prob || 0) * 100)}
                     showInfo={false}
-                    strokeColor={i === 0 ? '#52c41a' : '#bae637'}
+                    strokeColor={i === 0 ? 'var(--c-primary-500)' : 'var(--c-primary-300)'}
                   />
                 </div>
               ))}

@@ -29,7 +29,7 @@ export default function ProfilePage() {
       <Typography.Title level={3}>个人中心</Typography.Title>
       <Card style={{ maxWidth: 520 }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
-          <Avatar size={64} icon={<UserOutlined />} style={{ backgroundColor: '#52c41a' }} />
+          <Avatar size={64} icon={<UserOutlined />} style={{ backgroundColor: 'var(--c-primary-500)' }} />
           <div style={{ marginLeft: 16 }}>
             <Typography.Title level={4} style={{ margin: 0 }}>
               {user.nickname || user.username}

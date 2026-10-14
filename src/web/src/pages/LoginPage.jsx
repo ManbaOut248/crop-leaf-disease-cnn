@@ -5,6 +5,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import http, { USE_MOCK } from '../api/http'
 import { setToken, setUser } from '../store/auth'
+import LeafMark from '../components/LeafMark'
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false)
@@ -55,13 +56,22 @@ export default function LoginPage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg,#f6ffed,#e6f7ff)',
+        background: 'var(--c-bg-page)',
       }}
     >
-      <Card style={{ width: 380, boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}>
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <span style={{ fontSize: 40, lineHeight: 1, color: '#52c41a' }}>🌿</span>
-          <Typography.Title level={3} style={{ marginTop: 8 }}>
+      <Card style={{ width: 380, boxShadow: 'var(--sh-lg)' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 10,
+            marginBottom: 24,
+            textAlign: 'center',
+          }}
+        >
+          <LeafMark size={40} color="var(--c-primary-500)" />
+          <Typography.Title level={3} style={{ margin: 0 }}>
             农作物叶片病害识别
           </Typography.Title>
           <Typography.Text type="secondary">上传叶片图片，智能识别病害</Typography.Text>

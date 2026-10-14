@@ -1,6 +1,6 @@
 // 整体布局：左侧菜单 + 顶部用户信息 + 退出
 import React from 'react'
-import { Layout, Menu, Avatar, Dropdown, Typography } from 'antd'
+import { Layout, Menu, Avatar, Dropdown } from 'antd'
 import {
   ExperimentOutlined,
   HistoryOutlined,
@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { getUser, clearAuth } from '../store/auth'
+import LeafMark from './LeafMark'
 
 const { Header, Sider, Content } = Layout
 
@@ -36,6 +37,7 @@ export default function AppLayout() {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider theme="light" breakpoint="lg" collapsedWidth={0}>
+        {/* 品牌区：高度与顶栏对齐（64px）；标识用自绘 SVG */}
         <div
           style={{
             height: 64,
@@ -43,12 +45,12 @@ export default function AppLayout() {
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8,
-            color: '#52c41a',
-            fontWeight: 700,
+            color: 'var(--c-text-title)',
+            fontWeight: 600,
             fontSize: 16,
           }}
         >
-          <span style={{ fontSize: 22, lineHeight: 1 }}>🌿</span>
+          <LeafMark size={22} color="var(--c-primary-500)" />
           <span>病害识别</span>
         </div>
         <Menu
@@ -61,33 +63,26 @@ export default function AppLayout() {
       <Layout>
         <Header
           style={{
-            background: '#fff',
             display: 'flex',
             justifyContent: 'flex-end',
             alignItems: 'center',
             paddingRight: 24,
-            boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+            boxShadow: 'var(--sh-sm)',
           }}
         >
           <Dropdown menu={userMenu}>
             <span style={{ cursor: 'pointer' }}>
               <Avatar
                 icon={<UserOutlined />}
-                style={{ backgroundColor: '#52c41a', marginRight: 8 }}
+                style={{ backgroundColor: 'var(--c-primary-500)', marginRight: 8 }}
               />
               {user.nickname || user.username}
             </span>
           </Dropdown>
         </Header>
-        <Content
-          style={{
-            margin: 24,
-            padding: 24,
-            background: '#fff',
-            borderRadius: 12,
-            minHeight: 280,
-          }}
-        >
+        {/* 内容区不再自带白底与圆角 —— 层次交给页面内的 Card，
+            底色跟随 Layout（#F7FAF8），避免「白卡套白卡」 */}
+        <Content style={{ margin: 24, padding: 0, minHeight: 280 }}>
           <Outlet />
         </Content>
       </Layout>
