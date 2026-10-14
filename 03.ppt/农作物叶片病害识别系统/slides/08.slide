@@ -1,0 +1,97 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
+
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 56, background: '#0E3F8C', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <FAIcon name='leaf' style={{ fill: '#8FB6E8', width: 18, height: 18 }} />
+            <Text style={{ fontSize: 15, color: '#FFFFFF' }}>农作物叶片病害识别系统</Text>
+        </Box>
+        <Text style={{ fontSize: 15, color: '#8FB6E8' }}>02 系统设计方案</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 76, left: 40 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C' }}>五个模块构成完整业务闭环</Text>
+    </Box>
+    <Box style={{ position: 'absolute', top: 132, left: 40, width: 1200, height: 2, background: '#D6DCE5' }} />
+
+    {/* 左：模块设计说明栏 */}
+    <Box style={{ position: 'absolute', top: 152, left: 40, width: 360, height: 488, background: '#0E3F8C', borderRadius: 8, padding: '32px 28px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#FFFFFF' }}>模块设计</Text>
+        <Box style={{ height: 8 }} />
+        <Text style={{ fontSize: 16, color: '#8FB6E8', letterSpacing: 3, fontFamily: 'Times New Roman' }}>MODULES</Text>
+        <Box style={{ height: 24 }} />
+        <Box style={{ width: 64, height: 4, background: '#FFC107' }} />
+        <Box style={{ height: 24 }} />
+        <Text style={{ fontSize: 22, color: '#C7D8EE', lineHeight: 1.7 }}>
+            五个模块首尾相接，构成从录入到复核的完整业务闭环。
+        </Text>
+        <Box style={{ height: 150 }} />
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <Box style={{ width: 60, height: 40, background: '#1E4FA8', borderRadius: 6, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>录入</Text>
+            </Box>
+            <FAIcon name='chevron-right' style={{ fill: '#8FB6E8', width: 14, height: 14 }} />
+            <Box style={{ width: 60, height: 40, background: '#1E4FA8', borderRadius: 6, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>识别</Text>
+            </Box>
+            <FAIcon name='chevron-right' style={{ fill: '#8FB6E8', width: 14, height: 14 }} />
+            <Box style={{ width: 60, height: 40, background: '#1E4FA8', borderRadius: 6, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>归档</Text>
+            </Box>
+            <FAIcon name='chevron-right' style={{ fill: '#8FB6E8', width: 14, height: 14 }} />
+            <Box style={{ width: 60, height: 40, background: '#1E4FA8', borderRadius: 6, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 16, color: '#FFFFFF' }}>复核</Text>
+            </Box>
+        </Box>
+    </Box>
+
+    {/* 右：五个模块条 */}
+    <Box style={{ position: 'absolute', top: 152, left: 420, width: 820, height: 488, flexDirection: 'column', gap: 7 }}>
+
+        <Box style={{ height: 92, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, flexDirection: 'row', alignItems: 'center', padding: '12px 20px', gap: 16 }}>
+            <FAIcon name='user' style={{ fill: '#1E4FA8', width: 26, height: 26 }} />
+            <Box style={{ flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0E3F8C' }}>用户体系</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568' }}>注册 / 登录 / 登出（JWT），密码 bcrypt 加盐哈希</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 92, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 8, flexDirection: 'row', alignItems: 'center', padding: '12px 20px', gap: 16 }}>
+            <FAIcon name='image' style={{ fill: '#1E4FA8', width: 26, height: 26 }} />
+            <Box style={{ flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0E3F8C' }}>图像识别</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568' }}>上传叶片图 → 224×224 预处理 → ResNet18 推理 → Top-K</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 92, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, flexDirection: 'row', alignItems: 'center', padding: '12px 20px', gap: 16 }}>
+            <FAIcon name='chart-bar' style={{ fill: '#1E4FA8', width: 26, height: 26 }} />
+            <Box style={{ flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0E3F8C' }}>结果与知识</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568' }}>Top-3 概率条形图 + 中文病名 + 38 类防治知识卡</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 92, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 8, flexDirection: 'row', alignItems: 'center', padding: '12px 20px', gap: 16 }}>
+            <FAIcon name='history' style={{ fill: '#1E4FA8', width: 26, height: 26 }} />
+            <Box style={{ flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0E3F8C' }}>历史记录</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568' }}>识别记录落库、原图与结果对照、CSV / JSON 导出</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 92, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, flexDirection: 'row', alignItems: 'center', padding: '12px 20px', gap: 16 }}>
+            <FAIcon name='cog' style={{ fill: '#1E4FA8', width: 26, height: 26 }} />
+            <Box style={{ flexDirection: 'column', gap: 6 }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#0E3F8C' }}>模型优化</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568' }}>INT8 量化与结构化剪枝，一键切换部署形态</Text>
+            </Box>
+        </Box>
+
+    </Box>
+
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 1280, height: 60, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>前沿技术实训 · 2026</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>08 / 15</Text>
+    </Box>
+
+</Slide>

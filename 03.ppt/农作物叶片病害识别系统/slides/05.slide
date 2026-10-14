@@ -1,0 +1,83 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
+
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 56, background: '#0E3F8C', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <FAIcon name='leaf' style={{ fill: '#8FB6E8', width: 18, height: 18 }} />
+            <Text style={{ fontSize: 15, color: '#FFFFFF' }}>农作物叶片病害识别系统</Text>
+        </Box>
+        <Text style={{ fontSize: 15, color: '#8FB6E8' }}>01 项目背景与目标</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 76, left: 40 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C' }}>数据说话：让指标经得起追问</Text>
+    </Box>
+    <Box style={{ position: 'absolute', top: 132, left: 40, width: 1200, height: 2, background: '#D6DCE5' }} />
+
+    {/* 上左：三联真实叶片样本 */}
+    <Box style={{ position: 'absolute', top: 177, left: 40, flexDirection: 'row', gap: 16 }}>
+        <Image src="assets/sample_corn_gray_leaf_spot.jpg" style={{ width: 186, height: 186, objectFit: 'cover', borderRadius: 6, border: '1px solid #D6DCE5' }} />
+        <Image src="assets/sample_grape_black_rot.jpg" style={{ width: 186, height: 186, objectFit: 'cover', borderRadius: 6, border: '1px solid #D6DCE5' }} />
+        <Image src="assets/sample_healthy.jpg" style={{ width: 186, height: 186, objectFit: 'cover', borderRadius: 6, border: '1px solid #D6DCE5' }} />
+    </Box>
+
+    {/* 上右：说明卡 */}
+    <Box style={{ position: 'absolute', top: 152, left: 650, width: 590, height: 236, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 8, padding: '24px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#0E3F8C' }}>先解决"考试前看过原题"</Text>
+        <Box style={{ height: 14 }} />
+        <Text style={{ fontSize: 22, color: '#1A2230', lineHeight: 1.7 }}>
+            PlantVillage 同一片叶常有多张近重复拍摄。若按逐张随机切分，同一叶片会同时落进训练集与测试集，指标必然虚高。
+        </Text>
+    </Box>
+
+    {/* 下左：旧切分 */}
+    <Box style={{ position: 'absolute', top: 404, left: 40, width: 590, height: 236, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, padding: '20px 24px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#4A5568' }}>旧 · 逐张随机切分</Text>
+        <Box style={{ height: 10 }} />
+        <Box style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 14 }}>
+            <Text style={{ fontSize: 72, fontWeight: 'bold', color: '#D9534F', lineHeight: 1 }}>22.5%</Text>
+            <Text style={{ fontSize: 22, color: '#4A5568' }}>测试图存在精确重复孪生</Text>
+        </Box>
+        <Box style={{ height: 10 }} />
+        <Text style={{ fontSize: 22, color: '#1A2230', lineHeight: 1.5 }}>
+            1,224 张测试图与训练集完全重复 —— 铁证级数据泄漏。
+        </Text>
+        <Box style={{ height: 10 }} />
+        <Box style={{ flexDirection: 'row', gap: 10 }}>
+            <Box style={{ background: '#FBE9E8', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#D9534F' }}>距离 = 0</Text>
+            </Box>
+            <Box style={{ background: '#FBE9E8', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#D9534F' }}>准确率虚高 99.82%</Text>
+            </Box>
+        </Box>
+    </Box>
+
+    {/* 下右：新切分 */}
+    <Box style={{ position: 'absolute', top: 404, left: 650, width: 590, height: 236, background: '#E8EFF8', border: '1px solid #1E4FA8', borderRadius: 8, padding: '20px 24px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#0E3F8C' }}>新 · 分组切分（本次采用）</Text>
+        <Box style={{ height: 10 }} />
+        <Box style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 14 }}>
+            <Text style={{ fontSize: 72, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1 }}>0%</Text>
+            <Text style={{ fontSize: 22, color: '#4A5568' }}>测试图近重复泄漏已清零</Text>
+        </Box>
+        <Box style={{ height: 10 }} />
+        <Text style={{ fontSize: 22, color: '#1A2230', lineHeight: 1.5 }}>
+            以 aHash + 并查集把近重复图整组归入同一侧，杜绝同图跨集。
+        </Text>
+        <Box style={{ height: 10 }} />
+        <Box style={{ flexDirection: 'row', gap: 10 }}>
+            <Box style={{ background: '#FFFFFF', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>距离 ≤ 2</Text>
+            </Box>
+            <Box style={{ background: '#FFFFFF', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>诚实泛化 99.27%</Text>
+            </Box>
+        </Box>
+    </Box>
+
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 1280, height: 60, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>前沿技术实训 · 2026</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>05 / 15</Text>
+    </Box>
+
+</Slide>

@@ -1,0 +1,43 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#0E3F8C' }}>
+
+    {/* 顶部主蓝条（与封面呼应） */}
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 8, background: '#1E4FA8' }} />
+
+    {/* 底部黄色强调条 */}
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 1280, height: 6, background: '#FFC107' }} />
+
+    {/* 右侧装饰细线组 */}
+    <Box style={{ position: 'absolute', top: 120, right: 90, width: 180, flexDirection: 'column', gap: 10 }}>
+        <Box style={{ width: 180, height: 3, background: '#3D7BD9', opacity: 0.5 }} />
+        <Box style={{ width: 120, height: 3, background: '#3D7BD9', opacity: 0.35 }} />
+        <Box style={{ width: 60, height: 3, background: '#3D7BD9', opacity: 0.2 }} />
+    </Box>
+
+    {/* 居中主体 */}
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 720, justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+
+        <FAIcon name='leaf' style={{ fill: '#3D7BD9', width: 56, height: 56 }} />
+
+        <Box style={{ height: 28 }} />
+
+        <Text style={{ fontSize: 64, fontWeight: 'bold', color: '#FFFFFF' }}>感谢聆听 · 敬请指正</Text>
+
+        <Box style={{ height: 24 }} />
+
+        <Box style={{ width: 96, height: 4, background: '#FFC107' }} />
+
+        <Box style={{ height: 32 }} />
+
+        <Text style={{ fontSize: 22, color: '#C7D8EE', lineHeight: 1.7 }}>
+            基于 CNN 的农作物叶片病害识别系统 ｜ ResNet18 · FastAPI · React
+        </Text>
+
+        <Box style={{ height: 12 }} />
+
+        <Text style={{ fontSize: 16, color: '#8FB6E8', lineHeight: 1.7 }}>
+            本系统为辅助识别与科普工具，结果仅供参考，不能替代现场专业农技诊断。
+        </Text>
+
+    </Box>
+
+</Slide>

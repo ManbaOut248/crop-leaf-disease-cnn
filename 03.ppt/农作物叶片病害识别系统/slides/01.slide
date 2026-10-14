@@ -1,0 +1,63 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#0E3F8C' }}>
+
+    {/* 右栏：真实病害叶片主视觉（L1） */}
+    <Image
+        src="assets/sample_tomato_late_blight.jpg"
+        style={{ position: 'absolute', top: 0, right: 0, width: 560, height: 720, objectFit: 'cover' }}
+    />
+
+    {/* 左→右 渐变，衔接文字区与图片 */}
+    <Box style={{ position: 'absolute', top: 0, left: 560, width: 220, height: 720, background: 'linear-gradient(to right, #0E3F8C 0%, rgba(14,63,140,0) 100%)' }} />
+
+    {/* 顶部主蓝条（与内容页母版呼应） */}
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 780, height: 8, background: '#1E4FA8' }} />
+
+    {/* 底部黄色强调条 */}
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 780, height: 6, background: '#FFC107' }} />
+
+    {/* 左栏文字 */}
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 720, height: 720, padding: '88px 80px', flexDirection: 'column' }}>
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <FAIcon name='leaf' style={{ fill: '#8FB6E8', width: 20, height: 20 }} />
+            <Text style={{ fontSize: 16, color: '#8FB6E8', letterSpacing: 3 }}>前沿技术实训项目</Text>
+        </Box>
+
+        <Box style={{ height: 44 }} />
+
+        <Text style={{ fontSize: 54, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.28 }}>
+            基于 CNN 的农作物<br />叶片病害识别系统
+        </Text>
+
+        <Box style={{ height: 22 }} />
+
+        <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#8FB6E8', fontFamily: 'Times New Roman' }}>
+            Crop Leaf Disease Recognition
+        </Text>
+
+        <Box style={{ height: 26 }} />
+
+        <Box style={{ width: 72, height: 4, background: '#FFC107' }} />
+
+        <Box style={{ height: 26 }} />
+
+        <Text style={{ fontSize: 22, color: '#C7D8EE', lineHeight: 1.6 }}>
+            ResNet18 迁移学习 · 38 类病害识别<br />
+            前后端分离的浏览器端 Web 应用
+        </Text>
+
+        <Box style={{ height: 100 }} />
+
+        <Text style={{ fontSize: 16, color: '#8FB6E8' }}>
+            数据集 PlantVillage ｜ 防泄漏诚实指标 99.27%
+        </Text>
+
+        <Box style={{ height: 10 }} />
+
+        <Text style={{ fontSize: 16, color: '#8FB6E8' }}>
+            前沿技术实训 · 2026 年 10 月
+        </Text>
+
+    </Box>
+
+</Slide>

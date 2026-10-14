@@ -1,0 +1,73 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
+
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 56, background: '#0E3F8C', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <FAIcon name='leaf' style={{ fill: '#8FB6E8', width: 18, height: 18 }} />
+            <Text style={{ fontSize: 15, color: '#FFFFFF' }}>农作物叶片病害识别系统</Text>
+        </Box>
+        <Text style={{ fontSize: 15, color: '#8FB6E8' }}>03 功能实现与演示</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 76, left: 40 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C' }}>记录可追溯，病害可查询</Text>
+    </Box>
+    <Box style={{ position: 'absolute', top: 132, left: 40, width: 1200, height: 2, background: '#D6DCE5' }} />
+
+    {/* 上排左：历史页真实截图 */}
+    <Box style={{ position: 'absolute', top: 152, left: 40, width: 700, height: 240, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 8, padding: 7 }}>
+        <Image src="assets/history.png" style={{ width: 686, height: 226, objectFit: 'cover', borderRadius: 4 }} />
+    </Box>
+
+    {/* 上排右：历史模块说明 */}
+    <Box style={{ position: 'absolute', top: 152, left: 760, width: 480, height: 240, background: '#E8EFF8', border: '1px solid #D6DCE5', borderRadius: 8, padding: '22px 24px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#0E3F8C' }}>历史记录模块</Text>
+        <Box style={{ height: 12 }} />
+        <Text style={{ fontSize: 22, color: '#1A2230', lineHeight: 1.65 }}>
+            登录用户的每次识别自动落库，可按时间回溯、查看原图与结论对照，并一键导出 CSV / JSON 存档。
+        </Text>
+        <Box style={{ height: 14 }} />
+        <Box style={{ flexDirection: 'row', gap: 10 }}>
+            <Box style={{ background: '#FFFFFF', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>查询</Text>
+            </Box>
+            <Box style={{ background: '#FFFFFF', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>详情</Text>
+            </Box>
+            <Box style={{ background: '#FFFFFF', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>导出</Text>
+            </Box>
+        </Box>
+    </Box>
+
+    {/* 下排左：知识库模块说明 */}
+    <Box style={{ position: 'absolute', top: 412, left: 40, width: 700, height: 228, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, padding: '24px 26px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#0E3F8C' }}>病害知识库模块</Text>
+        <Box style={{ height: 12 }} />
+        <Text style={{ fontSize: 22, color: '#1A2230', lineHeight: 1.65 }}>
+            覆盖全部 38 类的症状特征与防治建议，与识别结果直接打通——识别到什么，就展示什么，不需要再跳转第三方资料检索。
+        </Text>
+        <Box style={{ height: 14 }} />
+        <Box style={{ flexDirection: 'row', gap: 10 }}>
+            <Box style={{ background: '#E8EFF8', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>症状特征</Text>
+            </Box>
+            <Box style={{ background: '#E8EFF8', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>防治建议</Text>
+            </Box>
+            <Box style={{ background: '#E8EFF8', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>38 类全覆盖</Text>
+            </Box>
+        </Box>
+    </Box>
+
+    {/* 下排右：知识库页真实截图 */}
+    <Box style={{ position: 'absolute', top: 412, left: 760, width: 480, height: 228, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 8, padding: 7 }}>
+        <Image src="assets/knowledge.png" style={{ width: 466, height: 214, objectFit: 'cover', borderRadius: 4 }} />
+    </Box>
+
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 1280, height: 60, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>前沿技术实训 · 2026</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>11 / 15</Text>
+    </Box>
+
+</Slide>

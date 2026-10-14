@@ -1,0 +1,110 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
+
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 56, background: '#0E3F8C', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <FAIcon name='leaf' style={{ fill: '#8FB6E8', width: 18, height: 18 }} />
+            <Text style={{ fontSize: 15, color: '#FFFFFF' }}>农作物叶片病害识别系统</Text>
+        </Box>
+        <Text style={{ fontSize: 15, color: '#8FB6E8' }}>04 成果与总结</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 76, left: 40 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C' }}>精度：达标且留有余量</Text>
+    </Box>
+    <Box style={{ position: 'absolute', top: 132, left: 40, width: 1200, height: 2, background: '#D6DCE5' }} />
+
+    {/* 左：评价口径 */}
+    <Box style={{ position: 'absolute', top: 152, left: 40, width: 360, height: 488, background: '#0E3F8C', borderRadius: 8, padding: '32px 28px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#FFFFFF' }}>评价口径</Text>
+        <Box style={{ height: 24 }} />
+        <Box style={{ width: 64, height: 4, background: '#FFC107' }} />
+        <Box style={{ height: 28 }} />
+
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 12, height: 52 }}>
+            <FAIcon name='check-circle' style={{ fill: '#8FB6E8', width: 22, height: 22 }} />
+            <Text style={{ fontSize: 22, color: '#FFFFFF' }}>独立测试集 4,914 张</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 12, height: 52 }}>
+            <FAIcon name='check-circle' style={{ fill: '#8FB6E8', width: 22, height: 22 }} />
+            <Text style={{ fontSize: 22, color: '#FFFFFF' }}>分组切分 · 泄漏清零</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 12, height: 52 }}>
+            <FAIcon name='check-circle' style={{ fill: '#8FB6E8', width: 22, height: 22 }} />
+            <Text style={{ fontSize: 22, color: '#FFFFFF' }}>不使用 AMP 混合精度</Text>
+        </Box>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 12, height: 52 }}>
+            <FAIcon name='check-circle' style={{ fill: '#8FB6E8', width: 22, height: 22 }} />
+            <Text style={{ fontSize: 22, color: '#FFFFFF' }}>单图真实推理 + 温度校准</Text>
+        </Box>
+
+        <Box style={{ height: 20 }} />
+        <Box style={{ background: '#1E4FA8', borderRadius: 6, padding: '14px 18px' }}>
+            <Text style={{ fontSize: 22, color: '#FFFFFF', lineHeight: 1.5 }}>
+                指标可作为交付与答辩的客观证据。
+            </Text>
+        </Box>
+    </Box>
+
+    {/* 右上：三组 KPI */}
+    <Box style={{ position: 'absolute', top: 152, left: 420, flexDirection: 'row', gap: 16 }}>
+        <Box style={{ width: 262, height: 200, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, padding: '18px 20px', flexDirection: 'column' }}>
+            <Text style={{ fontSize: 22, color: '#4A5568' }}>整体准确率</Text>
+            <Box style={{ height: 10 }} />
+            <Text style={{ fontSize: 72, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1 }}>99.27%</Text>
+            <Box style={{ height: 8 }} />
+            <Text style={{ fontSize: 18, color: '#8B97A8' }}>任务书要求 ≥ 85%</Text>
+        </Box>
+
+        <Box style={{ width: 262, height: 200, background: '#E8EFF8', border: '1px solid #1E4FA8', borderRadius: 8, padding: '18px 20px', flexDirection: 'column' }}>
+            <Text style={{ fontSize: 22, color: '#4A5568' }}>宏平均 F1</Text>
+            <Box style={{ height: 10 }} />
+            <Text style={{ fontSize: 72, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1 }}>99.23%</Text>
+            <Box style={{ height: 8 }} />
+            <Text style={{ fontSize: 18, color: '#8B97A8' }}>任务书要求 ≥ 0.80</Text>
+        </Box>
+
+        <Box style={{ width: 262, height: 200, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, padding: '18px 20px', flexDirection: 'column' }}>
+            <Text style={{ fontSize: 22, color: '#4A5568' }}>F1 达标类别</Text>
+            <Box style={{ height: 10 }} />
+            <Text style={{ fontSize: 72, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1 }}>38/38</Text>
+            <Box style={{ height: 8 }} />
+            <Text style={{ fontSize: 18, color: '#8B97A8' }}>最低 0.9524 玉米灰斑病</Text>
+        </Box>
+    </Box>
+
+    {/* 右下：逐类表现 + 错误分析 */}
+    <Box style={{ position: 'absolute', top: 368, left: 420, width: 410, height: 272, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, padding: '22px 24px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#0E3F8C' }}>逐类表现</Text>
+        <Box style={{ height: 12 }} />
+        <Text style={{ fontSize: 22, color: '#1A2230', lineHeight: 1.65 }}>
+            38 类中 19 类 F1 达到 1.0000，其余全部 ≥ 0.95。表现最弱的玉米灰斑病 0.9524，仍属优秀区间。
+        </Text>
+        <Box style={{ height: 14 }} />
+        <Box style={{ flexDirection: 'row', gap: 10 }}>
+            <Box style={{ background: '#E8EFF8', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>19 类满分</Text>
+            </Box>
+            <Box style={{ background: '#E8EFF8', borderRadius: 999, padding: '4px 14px' }}>
+                <Text style={{ fontSize: 17, color: '#1E4FA8' }}>全部 ≥ 0.95</Text>
+            </Box>
+        </Box>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 368, left: 840, width: 400, height: 272, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 8, padding: '22px 24px', flexDirection: 'column' }}>
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#0E3F8C' }}>36 条错误在哪</Text>
+        <Box style={{ height: 12 }} />
+        <Text style={{ fontSize: 22, color: '#1A2230', lineHeight: 1.65 }}>
+            全部为<span style={{ fontWeight: 'bold', color: '#D9534F' }}>同作物近缘病害互混</span>，如番茄细菌性斑点病与黄化曲叶病毒病，无跨作物大错。
+        </Text>
+        <Box style={{ height: 14 }} />
+        <Text style={{ fontSize: 18, color: '#8B97A8', lineHeight: 1.5 }}>
+            根因是实验室数据集同背景采集特性，非模型结构性缺陷。
+        </Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 1280, height: 60, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>前沿技术实训 · 2026</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>13 / 15</Text>
+    </Box>
+
+</Slide>

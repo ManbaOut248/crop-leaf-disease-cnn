@@ -1,0 +1,68 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
+
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 56, background: '#0E3F8C', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <FAIcon name='leaf' style={{ fill: '#8FB6E8', width: 18, height: 18 }} />
+            <Text style={{ fontSize: 15, color: '#FFFFFF' }}>农作物叶片病害识别系统</Text>
+        </Box>
+        <Text style={{ fontSize: 15, color: '#8FB6E8' }}>02 系统设计方案</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 120, left: 60, width: 520, height: 500, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ fontSize: 300, fontWeight: 'bold', color: '#E8EFF8', lineHeight: 1 }}>02</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 120, left: 40, width: 520, height: 500, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ fontSize: 240, fontWeight: 'bold', color: '#1E4FA8', lineHeight: 1 }}>02</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 168, left: 620, width: 620, flexDirection: 'column' }}>
+
+        <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#0E3F8C' }}>系统设计方案</Text>
+
+        <Box style={{ height: 18 }} />
+        <Box style={{ width: 80, height: 4, background: '#FFC107' }} />
+        <Box style={{ height: 36 }} />
+
+        <Box style={{ flexDirection: 'row', gap: 14, alignItems: 'flex-start' }}>
+            <Box style={{ width: 26, height: 26, background: '#1E4FA8', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>1</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 6, width: 566 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230' }}>前后端分离</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568', lineHeight: 1.5 }}>前端负责交互与可视化，后端专注数据、鉴权与推理。</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 26 }} />
+
+        <Box style={{ flexDirection: 'row', gap: 14, alignItems: 'flex-start' }}>
+            <Box style={{ width: 26, height: 26, background: '#1E4FA8', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>2</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 6, width: 566 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230' }}>模型与推理解耦</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568', lineHeight: 1.5 }}>推理后端一键切换，fp32 / INT8 / 剪枝对调用方完全透明。</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 26 }} />
+
+        <Box style={{ flexDirection: 'row', gap: 14, alignItems: 'flex-start' }}>
+            <Box style={{ width: 26, height: 26, background: '#1E4FA8', borderRadius: 4, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#FFFFFF' }}>3</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 6, width: 566 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1A2230' }}>数据持久化</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568', lineHeight: 1.5 }}>用户、识别历史、病害知识统一落在 SQLite，零外部依赖。</Text>
+            </Box>
+        </Box>
+
+    </Box>
+
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 1280, height: 60, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>前沿技术实训 · 2026</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>06 / 15</Text>
+    </Box>
+
+</Slide>

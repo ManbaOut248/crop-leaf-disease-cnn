@@ -36,6 +36,10 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 
+# ============ PPT 生成中间缓存（.pptx 与 slides/ 入库，缓存不入库） ============
+**/.slidep/
+**/.cache/
+
 # ============ 工作区元数据 ============
 .workbuddy/
 

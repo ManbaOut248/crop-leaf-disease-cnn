@@ -1,0 +1,77 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
+
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 56, background: '#0E3F8C', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <FAIcon name='leaf' style={{ fill: '#8FB6E8', width: 18, height: 18 }} />
+            <Text style={{ fontSize: 15, color: '#FFFFFF' }}>农作物叶片病害识别系统</Text>
+        </Box>
+        <Text style={{ fontSize: 15, color: '#8FB6E8' }}>03 功能实现与演示</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 76, left: 40 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C' }}>上传一张叶片，三步给出诊断</Text>
+    </Box>
+    <Box style={{ position: 'absolute', top: 132, left: 40, width: 1200, height: 2, background: '#D6DCE5' }} />
+
+    {/* 左：真实识别结果页截图 */}
+    <Box style={{ position: 'absolute', top: 152, left: 40, width: 700, height: 437, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 8, padding: 8 }}>
+        <Image src="assets/detect_result.png" style={{ width: 684, height: 421, objectFit: 'cover', borderRadius: 4 }} />
+    </Box>
+
+    {/* 右：三步流程 + 结论 */}
+    <Box style={{ position: 'absolute', top: 152, left: 760, width: 480, flexDirection: 'column' }}>
+
+        <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#0E3F8C' }}>识别流程</Text>
+        <Box style={{ height: 14 }} />
+
+        <Box style={{ height: 76, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, flexDirection: 'row', alignItems: 'center', padding: '0 18px', gap: 14 }}>
+            <Box style={{ width: 34, height: 34, background: '#1E4FA8', borderRadius: 17, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#FFFFFF' }}>1</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0E3F8C' }}>上传</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568' }}>选择本地叶片照片，自动校验格式</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 12 }} />
+
+        <Box style={{ height: 76, background: '#F0F5FC', border: '1px solid #D6DCE5', borderRadius: 8, flexDirection: 'row', alignItems: 'center', padding: '0 18px', gap: 14 }}>
+            <Box style={{ width: 34, height: 34, background: '#1E4FA8', borderRadius: 17, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#FFFFFF' }}>2</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0E3F8C' }}>推理</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568' }}>ResNet18 前向推理 + 温度缩放校准</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 12 }} />
+
+        <Box style={{ height: 76, background: '#FFFFFF', border: '1px solid #D6DCE5', borderRadius: 8, flexDirection: 'row', alignItems: 'center', padding: '0 18px', gap: 14 }}>
+            <Box style={{ width: 34, height: 34, background: '#1E4FA8', borderRadius: 17, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#FFFFFF' }}>3</Text>
+            </Box>
+            <Box style={{ flexDirection: 'column', gap: 4 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0E3F8C' }}>结果</Text>
+                <Text style={{ fontSize: 22, color: '#4A5568' }}>Top-3 概率 + 中文病名 + 防治卡</Text>
+            </Box>
+        </Box>
+
+        <Box style={{ height: 16 }} />
+
+        <Box style={{ height: 108, background: '#E8EFF8', borderLeft: '4px solid #1E4FA8', borderRadius: 6, padding: '16px 20px', flexDirection: 'column', gap: 8 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#0E3F8C' }}>关键设计</Text>
+            <Text style={{ fontSize: 22, color: '#1A2230', lineHeight: 1.55 }}>
+                置信度实时可视化；低于阈值自动提示人工复核，避免误诊误导农户。
+            </Text>
+        </Box>
+
+    </Box>
+
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 1280, height: 60, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>前沿技术实训 · 2026</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>10 / 15</Text>
+    </Box>
+
+</Slide>

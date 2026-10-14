@@ -1,0 +1,85 @@
+<Slide style={{ padding: 0, position: 'relative', overflow: 'hidden', background: '#FFFFFF' }}>
+
+    <Box style={{ position: 'absolute', top: 0, left: 0, width: 1280, height: 56, background: '#0E3F8C', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <FAIcon name='leaf' style={{ fill: '#8FB6E8', width: 18, height: 18 }} />
+            <Text style={{ fontSize: 15, color: '#FFFFFF' }}>农作物叶片病害识别系统</Text>
+        </Box>
+        <Text style={{ fontSize: 15, color: '#8FB6E8' }}>04 成果与总结</Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', top: 76, left: 40 }}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#0E3F8C' }}>一份模型，三种部署形态</Text>
+    </Box>
+    <Box style={{ position: 'absolute', top: 132, left: 40, width: 1200, height: 2, background: '#D6DCE5' }} />
+
+    <Box style={{ position: 'absolute', top: 152, left: 40, width: 1200, height: 348 }}>
+        <Table
+            style={{ width: '100%', height: '100%' }}
+            defaultTextStyle={{ fontSize: 19, textAlign: 'center', color: '#1A2230' }}
+            defaultCellStyle={{
+                border: {
+                    left: { width: 1, color: '#D6DCE5' },
+                    right: { width: 1, color: '#D6DCE5' },
+                    top: { width: 1, color: '#D6DCE5' },
+                    bottom: { width: 1, color: '#D6DCE5' },
+                },
+            }}
+            cells={[
+                [
+                    { text: '推理后端', textStyle: { bold: true, color: '#FFFFFF', fontSize: 20 }, cellStyle: { background: { color: '#0E3F8C' } } },
+                    { text: '体积 (MB)', textStyle: { bold: true, color: '#FFFFFF', fontSize: 20 }, cellStyle: { background: { color: '#0E3F8C' } } },
+                    { text: '体积缩减', textStyle: { bold: true, color: '#FFFFFF', fontSize: 20 }, cellStyle: { background: { color: '#0E3F8C' } } },
+                    { text: '准确率', textStyle: { bold: true, color: '#FFFFFF', fontSize: 20 }, cellStyle: { background: { color: '#0E3F8C' } } },
+                    { text: '宏 F1', textStyle: { bold: true, color: '#FFFFFF', fontSize: 20 }, cellStyle: { background: { color: '#0E3F8C' } } },
+                    { text: '单图延迟 (CPU)', textStyle: { bold: true, color: '#FFFFFF', fontSize: 20 }, cellStyle: { background: { color: '#0E3F8C' } } },
+                    { text: '加速比', textStyle: { bold: true, color: '#FFFFFF', fontSize: 20 }, cellStyle: { background: { color: '#0E3F8C' } } }
+                ],
+                [
+                    { text: 'fp32（原始基线）', textStyle: { bold: true, color: '#1A2230' } },
+                    '44.9',
+                    '—',
+                    '99.27%',
+                    '99.23%',
+                    '22.75 ms',
+                    '1.00×'
+                ],
+                [
+                    { text: 'INT8 量化（推荐）', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#FFF6DA' } } },
+                    { text: '11.2', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#FFF6DA' } } },
+                    { text: '−75%', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#FFF6DA' } } },
+                    { text: '99.23%', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#FFF6DA' } } },
+                    { text: '99.20%', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#FFF6DA' } } },
+                    { text: '11.16 ms', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#FFF6DA' } } },
+                    { text: '2.04×', textStyle: { bold: true, color: '#1E4FA8' }, cellStyle: { background: { color: '#FFF6DA' } } }
+                ],
+                [
+                    { text: '结构化剪枝', textStyle: { bold: true, color: '#1A2230' } },
+                    '36.1',
+                    '−20%',
+                    '99.02%',
+                    '98.87%',
+                    '18.98 ms',
+                    '1.20×'
+                ]
+            ]}
+        />
+    </Box>
+
+    {/* 洞察条 */}
+    <Box style={{ position: 'absolute', top: 520, left: 40, width: 1200, height: 120, background: '#0E3F8C', borderRadius: 8, padding: '20px 28px', flexDirection: 'column', gap: 10 }}>
+        <Box style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+            <FAIcon name='lightbulb' style={{ fill: '#FFC107', width: 22, height: 22 }} />
+            <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#FFFFFF' }}>选型判断</Text>
+        </Box>
+        <Text style={{ fontSize: 22, color: '#C7D8EE', lineHeight: 1.5 }}>
+            INT8 量化以仅 −0.04pp 的精度代价换来 4 倍瘦身与 2 倍加速，是 CPU / 边缘部署首选；结构化剪枝精度略降、压缩比有限，适合与量化叠加。
+        </Text>
+    </Box>
+
+    <Box style={{ position: 'absolute', bottom: 0, left: 0, width: 1280, height: 60, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '0 40px' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>前沿技术实训 · 2026</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E4FA8' }}>14 / 15</Text>
+    </Box>
+
+</Slide>
