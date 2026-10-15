@@ -106,6 +106,17 @@ file=<二进制图像>
 - 推理接口保持**无状态**，便于后续横向扩展或替换为量化模型而不改前端。
 
 ## 5. 限流与安全
-- 单 IP 识别接口限流（如 60 次/分钟），防止滥用。
-- 文件上传校验：类型白名单 + 大小上限（≤10MB）+ 魔数校验（防伪装）。
+- **接口限流（按真实客户端 IP）**：
+  - 识别接口 `/predict`：60 次/分钟；
+  - 认证接口 `/auth/login`、`/auth/register`：10 次/分钟（防口令爆破与批量注册）。
+  超限统一返回 `429`。
+- **限流 IP 取值的部署要求**：服务默认**不信任** `X-Forwarded-For` / `X-Real-IP`，
+  因此启动命令须带 `--no-proxy-headers` —— uvicorn 默认会信任来自 `127.0.0.1` 的转发头，
+  并在应用层之前覆写客户端 IP，导致限流可被一行请求头绕过。仅当确实部署在可信反向
+  代理之后时，才改为 `--proxy-headers --forwarded-allow-ips="代理服务器IP"` 并设 `TRUST_PROXY=1`。
+- **认证接口防枚举**：用户名不存在与口令错误返回完全相同的响应（`401` +
+  「用户名或密码错误」），且两条分支执行等价的 bcrypt 计算以抹平响应时间差。
+- 文件上传校验：类型白名单 + 大小上限（≤10MB）+ PIL 完整性校验（防伪装文件与解压炸弹）。
+- 统一注入基础安全响应头：`X-Content-Type-Options=nosniff`、`X-Frame-Options=DENY`、
+  `Referrer-Policy=no-referrer`、`Content-Security-Policy=default-src 'none'`。
 - 全站 HTTPS（任务书 6.2）。

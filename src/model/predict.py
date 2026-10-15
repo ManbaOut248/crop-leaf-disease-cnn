@@ -18,6 +18,7 @@
 """
 
 import json
+import warnings
 from pathlib import Path
 
 import torch
@@ -33,6 +34,48 @@ from src.data.transforms import get_val_transform
 from src.model.resnet import build_resnet18
 from src.model.quantize import load_quantized_model
 from src.model.prune import build_pruned_model, PRUNE_RATIO
+
+
+def _allow_safe_numpy_globals():
+    """放行 numpy 的纯数值类型，使 weights_only=True 能加载本项目 checkpoint。
+
+    训练脚本在 checkpoint 里写入了 numpy 标量（如 val_f1 为 np.float64），
+    而 weights_only 反序列化默认只允许张量 / 基础类型。这些类型仅承载数值、
+    不含可执行代码，显式放行不会引入 pickle RCE 风险。
+    """
+    try:
+        import numpy as np
+        allowed = [np.core.multiarray.scalar, np.ndarray, np.dtype]
+        for name in ("Float64DType", "Float32DType", "Int64DType", "Int32DType"):
+            obj = getattr(np.dtypes, name, None)
+            if isinstance(obj, type):
+                allowed.append(obj)
+        torch.serialization.add_safe_globals(allowed)
+    except Exception:  # numpy 版本差异 / 旧版 torch 无该 API —— 交给下层兜底
+        pass
+
+
+def _load_checkpoint(path, map_location):
+    """安全加载模型 checkpoint。
+
+    安全加固（审计 P2）：torch 2.5 的 torch.load 默认 weights_only=False，
+    会对权重文件执行完整 pickle 反序列化 —— 一旦权重文件被替换即可导致任意代码
+    执行。这里优先以 weights_only=True 加载（只允许张量与白名单类型）。
+
+    兼容性：本项目 checkpoint 含 numpy 数值标量，需先放行相应纯数值类型；
+    若仍失败（例如来自其他训练器的权重），退回传统加载并打印告警，
+    避免因安全加固反而令模型无法加载。
+    """
+    _allow_safe_numpy_globals()
+    try:
+        return torch.load(path, map_location=map_location, weights_only=True)
+    except Exception as exc:  # noqa: BLE001
+        warnings.warn(
+            f"以 weights_only=True 安全模式加载 {path} 失败（{exc}），"
+            "已退回传统 pickle 模式，请确认该权重文件来源可信。",
+            stacklevel=2,
+        )
+        return torch.load(path, map_location=map_location, weights_only=False)
 
 
 def _prescale(img, max_side):
@@ -92,7 +135,8 @@ class Predictor:
             # 必须用「剪枝后架构」的模型（build_pruned_model 按同一比例复现通道数），
             # 再载入微调后的剪枝权重；用 build_resnet18 会因通道数对不上而崩溃。
             # 比例优先取 checkpoint 内元数据，缺失时回退常量（兼容旧模型，见 #6）。
-            ckpt = torch.load(PRUNED_MODEL_PATH, map_location=self.device)
+            # 安全加载（weights_only=True，见 _load_checkpoint）
+            ckpt = _load_checkpoint(PRUNED_MODEL_PATH, self.device)
             pr = ckpt.get("prune_ratio", PRUNE_RATIO)
             model = build_pruned_model(pr).to(self.device)
             model.load_state_dict(ckpt["model"] if "model" in ckpt else ckpt)
@@ -108,7 +152,8 @@ class Predictor:
             raise FileNotFoundError(
                 f"未找到模型权重（{best_path}）。请先运行训练：python -m src.model.train"
             )
-        state = torch.load(best_path, map_location=self.device)
+        # 安全加载（weights_only=True，见 _load_checkpoint）；torch 2.5 默认 False
+        state = _load_checkpoint(best_path, self.device)
         sd = state["model"] if "model" in state else state
         model.load_state_dict(sd)
         print(f"[Predictor] 已加载模型: {best_path} (device={self.device})")

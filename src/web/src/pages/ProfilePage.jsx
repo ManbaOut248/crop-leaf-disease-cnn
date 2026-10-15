@@ -16,11 +16,18 @@ export default function ProfilePage() {
       return
     }
     try {
-      await http.put('/auth/me', { password: vals.password })
+      // 字段名必须对齐后端 schemas.UpdateMeRequest：old_password / new_password。
+      // 修复（审计 P1）：此前误用 { password }，后端读不到 new_password →
+      // 落入「只更新昵称」的分支，结果是「密码根本没改、昵称反被置为 NULL」，
+      // 用户误以为已改密（安全误导）。
+      await http.put('/auth/me', {
+        old_password: vals.old_password,
+        new_password: vals.password,
+      })
       message.success('密码已更新')
       form.resetFields()
     } catch (e) {
-      message.error('更新失败')
+      message.error((e.response && e.response.data && e.response.data.msg) || '更新失败')
     }
   }
 
@@ -41,11 +48,18 @@ export default function ProfilePage() {
         <Typography.Paragraph strong>修改密码</Typography.Paragraph>
         <Form form={form} onFinish={onChangePwd} layout="vertical">
           <Form.Item
+            name="old_password"
+            label="当前密码"
+            rules={[{ required: true, message: '请输入当前密码' }]}
+          >
+            <Input.Password placeholder="请输入当前密码" autoComplete="current-password" />
+          </Form.Item>
+          <Form.Item
             name="password"
             label="新密码"
             rules={[{ required: true, min: 6, message: '密码至少 6 位' }]}
           >
-            <Input.Password placeholder="请输入新密码（至少 6 位）" />
+            <Input.Password placeholder="请输入新密码（至少 6 位）" autoComplete="new-password" />
           </Form.Item>
           <Button type="primary" htmlType="submit">
             保存

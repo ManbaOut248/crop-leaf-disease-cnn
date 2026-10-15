@@ -22,6 +22,19 @@ from src.config import JWT_SECRET, JWT_EXPIRE_DAYS
 # bcrypt 哈希以 $2 开头（如 $2b$12$...），用于区分新旧账户存储格式
 _BCRYPT_PREFIXES = ("$2a$", "$2b$", "$2y$")
 
+# 占位哈希：用于「用户名不存在」分支做一次等价 bcrypt 计算。
+# 目的：抹平「用户存在（走 bcrypt，约 300ms）」与「用户不存在（直接返回，约 6ms）」
+# 之间的耗时差，否则攻击者可用响应时间枚举已注册用户名（审计 P2，实测差异 324ms）。
+_DUMMY_HASH = bcrypt.hashpw(b"constant-time-placeholder", bcrypt.gensalt())
+
+
+def dummy_verify(password: str) -> None:
+    """对不存在的用户执行一次等价的 bcrypt 校验，仅用于消耗等量时间（抹平时序差异）。"""
+    try:
+        bcrypt.checkpw(password.encode("utf-8"), _DUMMY_HASH)
+    except ValueError:
+        pass
+
 
 # ---------- base64url 工具 ----------
 def _b64url_encode(b: bytes) -> bytes:

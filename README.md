@@ -125,14 +125,23 @@ pytest            # 自动化测试
 pip install -r requirements.txt
 
 # 2) 启动 FastAPI（项目根目录执行，确保根目录在 PYTHONPATH）
-uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload --no-proxy-headers
 
 # 3) 浏览器打开接口文档
 #    http://127.0.0.1:8000/docs
 ```
 
+> **⚠️ `--no-proxy-headers` 不可省略（安全）**
+> uvicorn **默认启用代理头信任**，且默认信任来自 `127.0.0.1` 的转发头 —— 它会在应用层
+> 之前用 `X-Forwarded-For` 覆写客户端 IP，使接口限流可被一行请求头绕过（实测连续 65 次
+> 请求一次未拦）。仅当确实部署在可信反向代理之后时才应改为
+> `--proxy-headers --forwarded-allow-ips="代理服务器IP"` 并设置 `TRUST_PROXY=1`。
+>
+> 另注意：`--host 0.0.0.0` 会把服务暴露给同网段所有设备，本地开发建议改用 `127.0.0.1`。
+
 > 推理后端通过 `src/config.py` 的 `INFER_BACKEND` 选择：`"fp32"`（默认）/ `"quantized"` / `"pruned"`。
 > 生产环境请设置 `JWT_SECRET` 与 `DATA_ROOT` 环境变量（详见 `src/config.py` 注释）。
+> **未设置 `JWT_SECRET` 时服务仍可启动**（每次启动生成随机密钥），但进程重启会让所有登录态失效。
 
 ### 6.2 前端（Web 客户端）
 

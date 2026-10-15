@@ -8,6 +8,7 @@ Base URL：/api/v1；统一响应：{code, data, msg}。
 import csv
 import io
 import json
+import logging
 import os
 import tempfile
 import time
@@ -24,10 +25,18 @@ from src.config import (
     PROJECT_ROOT, UPLOAD_DIR, ALLOWED_IMAGE_EXT, MAX_UPLOAD_MB,
     THRESHOLD_LOW_CONF, MODEL_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS,
     NUM_CLASSES, CLASS_DIRS, class_name_zh,
+    TRUST_PROXY, RATE_LIMIT_LOGIN_PER_MIN,
 )
 from src.api import auth, db, schemas, thumbs
 
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+# 解压炸弹防护（审计 P2）：显式下调 PIL 像素上限，超过即抛 DecompressionBombError。
+# 默认阈值约 0.89 亿像素且**仅告警不拦截**（2 倍才报错），一张 10MB 的高度压缩
+# PNG 可解压出数百 MB 位图 —— 是廉价的内存耗尽途径。50M 像素远大于实际所需。
+from PIL import Image as _PILImage  # noqa: E402
+
+_PILImage.MAX_IMAGE_PIXELS = 50_000_000
 
 
 # ===================== 生命周期 / 中间件 =====================
@@ -50,6 +59,24 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    """统一注入基础安全响应头（审计 P2）。
+
+    本服务只返回 JSON / 文件流、不承载任何页面，故 CSP 收紧到最严
+    （default-src 'none'）—— 即便将来某处误回显了用户内容，浏览器也不会执行脚本。
+    """
+    resp = await call_next(request)
+    resp.headers.setdefault("X-Content-Type-Options", "nosniff")
+    resp.headers.setdefault("X-Frame-Options", "DENY")
+    resp.headers.setdefault("Referrer-Policy", "no-referrer")
+    resp.headers.setdefault(
+        "Content-Security-Policy",
+        "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
+    )
+    return resp
 # 安全说明：刻意不挂载任何静态目录。
 # 旧实现曾 app.mount("/static", StaticFiles(directory=data))，会把 data/app.db（全部账户与
 # 密码哈希）、data/uploads（他人上传原图）、data/split（5.4 万训练图）全部公开下载，属高危信息泄露。
@@ -64,15 +91,19 @@ _RATE = {}
 
 
 def _client_ip(request: Request) -> str:
-    """取真实客户端 IP：优先反向代理透传的 X-Forwarded-For / X-Real-IP，
-    否则退回直连 IP。避免反向代理下 request.client.host 恒为 127.0.0.1
-    导致限流 key 全部撞同一 IP 而失效或误伤。"""
-    fwd = request.headers.get("X-Forwarded-For")
-    if fwd:
-        return fwd.split(",")[0].strip()
-    real = request.headers.get("X-Real-IP")
-    if real:
-        return real.strip()
+    """取用于限流的客户端 IP。
+
+    安全修复（审计 P1）：仅当 TRUST_PROXY=1（确实部署在可信反向代理之后）时才采信
+    转发头，否则一律使用 TCP 直连地址。此前无条件信任 X-Forwarded-For / X-Real-IP，
+    攻击者每次请求换一个伪造 IP 即可让限流完全失效（实测连续 65 次请求一次未拦）。
+    """
+    if TRUST_PROXY:
+        fwd = request.headers.get("X-Forwarded-For")
+        if fwd:
+            return fwd.split(",")[0].strip()
+        real = request.headers.get("X-Real-IP")
+        if real:
+            return real.strip()
     return request.client.host if request.client else "local"
 
 
@@ -130,7 +161,11 @@ def health():
 
 # ---------- 2.1 用户认证 ----------
 @app.post("/api/v1/auth/register")
-def register(body: schemas.RegisterRequest):
+def register(body: schemas.RegisterRequest, request: Request = None):
+    # 注册限流（审计 P1）：此前该接口完全无限流，可被批量注册或用于用户名枚举探测。
+    ip = _client_ip(request) if request else "local"
+    if not _rate_ok(f"register:{ip}", limit=RATE_LIMIT_LOGIN_PER_MIN):
+        return _err(429, "注册请求过于频繁，请稍后再试", 429)
     if db.get_user_by_username(body.username):
         return _err(1001, "用户名已存在", 409)
     salt, pwd_hash = auth.hash_password(body.password)
@@ -139,9 +174,18 @@ def register(body: schemas.RegisterRequest):
 
 
 @app.post("/api/v1/auth/login")
-def login(body: schemas.LoginRequest):
+def login(body: schemas.LoginRequest, request: Request = None):
+    # 登录限流（审计 P1）：此前登录接口无限流，配合「最短 6 位口令」可被在线爆破。
+    ip = _client_ip(request) if request else "local"
+    if not _rate_ok(f"login:{ip}", limit=RATE_LIMIT_LOGIN_PER_MIN):
+        return _err(429, "登录尝试过于频繁，请稍后再试", 429)
     user = db.get_user_by_username(body.username)
-    if not user or not auth.verify_password(body.password, user["salt"], user["password_hash"]):
+    if not user:
+        # 用户不存在时也做一次等价 bcrypt 计算，抹平与「用户存在」分支的耗时差，
+        # 防止通过响应时间枚举已注册用户名（审计 P2，实测差异可达 300ms+）。
+        auth.dummy_verify(body.password)
+        return _err(1002, "用户名或密码错误", 401)
+    if not auth.verify_password(body.password, user["salt"], user["password_hash"]):
         return _err(1002, "用户名或密码错误", 401)
     # 旧 sha256 账户登录成功后，自动升级为 bcrypt（一次性迁移，提升存储安全性）
     if auth.is_legacy_hash(user["password_hash"]):
@@ -165,13 +209,16 @@ def me(user=Depends(get_current_user)):
 
 @app.put("/api/v1/auth/me")
 def update_me(body: schemas.UpdateMeRequest, user=Depends(get_current_user)):
+    # 昵称为 None 时保留原值（审计 P1 防御）：db.update_user 会无条件执行
+    # `SET nickname=?`，若调用方未提供昵称就会把用户昵称写成 NULL。
+    new_nickname = body.nickname if body.nickname is not None else user["nickname"]
     if body.new_password:
         if not body.old_password or not auth.verify_password(body.old_password, user["salt"], user["password_hash"]):
             return _err(1003, "旧密码错误", 400)
         salt, pwd_hash = auth.hash_password(body.new_password)
-        db.update_user(user["id"], nickname=body.nickname, password_hash=pwd_hash, salt=salt)
+        db.update_user(user["id"], nickname=new_nickname, password_hash=pwd_hash, salt=salt)
     else:
-        db.update_user(user["id"], nickname=body.nickname)
+        db.update_user(user["id"], nickname=new_nickname)
     return _ok({}, "资料已更新")
 
 
@@ -219,7 +266,9 @@ def predict(
         return _err(503, "模型尚未就绪，请稍候（训练进行中或权重缺失）", 503)
     except Exception as e:  # noqa: BLE001
         (UPLOAD_DIR / save_name).unlink(missing_ok=True)
-        return _err(500, f"识别失败：{e}", 500)
+        # 不回传内部异常细节（可能含服务器路径 / 库版本等实现信息），仅记入服务端日志。
+        logging.getLogger("uvicorn.error").exception("识别失败: %s", e)
+        return _err(500, "识别失败，请稍后重试", 500)
 
     top1 = results[0]
     is_healthy = _is_healthy_zh(top1["name_zh"])

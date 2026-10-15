@@ -158,22 +158,44 @@ ALLOWED_IMAGE_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 MAX_UPLOAD_MB = 10                                # 单文件上限（API 文档 5）
 
 # ===================== JWT / 安全 =====================
-# 密钥优先读环境变量 JWT_SECRET（生产必须设置）；缺失时回退到开发用默认值并打印告警，
-# 仅用于本地演示，绝不用于生产。用法：set JWT_SECRET=<一段长度>=32的随机串>
+# 密钥优先读环境变量 JWT_SECRET（生产必须设置）。
+#
+# 安全修复（审计 P0）：此前缺失环境变量时会回退到**写死在源码里、随仓库分发**的
+# 常量 "dev-only-insecure-secret-DO-NOT-USE-IN-PROD"。任何读到该常量的人都能离线
+# 伪造任意用户的 token —— 实测用它签发 {"uid":1} 可直接读取他人账户资料。
+# 现改为：未设置时**为本次进程生成随机密钥**：
+#   · 默认配置下不再存在「公开可预测的密钥」，离线伪造失效；
+#   · 不阻断启动，本地开发体验不受影响；
+#   · 代价：进程重启后此前签发的 token 全部失效，需重新登录（开发场景可接受）。
+# 生产/长期部署仍应固定设置 JWT_SECRET，否则每次重启即全员登出。
 _JWT_SECRET_ENV = os.getenv("JWT_SECRET", "").strip()
 if _JWT_SECRET_ENV:
     JWT_SECRET = _JWT_SECRET_ENV
 else:
+    import secrets as _secrets
     import warnings
-    JWT_SECRET = "dev-only-insecure-secret-DO-NOT-USE-IN-PROD"
+    JWT_SECRET = _secrets.token_urlsafe(48)
     warnings.warn(
-        "JWT_SECRET 未通过环境变量设置，已使用不安全的开发默认值。"
-        "任何能读到该默认值的人都可伪造 token。生产环境务必执行："
-        "set JWT_SECRET=<一段长度>=32的随机串>",
+        "JWT_SECRET 未通过环境变量设置，已为本次进程生成随机密钥。"
+        "进程重启后所有已签发 token 将失效（需重新登录）。"
+        "长期部署请固定设置环境变量 JWT_SECRET（建议 32 位以上随机串）。",
         stacklevel=2,
     )
 JWT_EXPIRE_DAYS = int(os.getenv("JWT_EXPIRE_DAYS", "7"))
 RATE_LIMIT_PER_MIN = 60                           # 单 IP 识别接口限流（API 文档 5）
+RATE_LIMIT_LOGIN_PER_MIN = 10                     # 单 IP 登录/注册限流（防口令爆破）
+
+# 是否信任反向代理透传的 X-Forwarded-For / X-Real-IP。
+# 安全修复（审计 P1）：默认 **不信任**。此前无条件采信这两种请求头，攻击者每次
+# 请求换一个 X-Forwarded-For 即可让限流完全失效（实测连续 65 次请求一次未拦）。
+# 仅当确实部署在可信反向代理（Nginx / 网关）之后时才设为 1；
+# 否则保持 0，限流按真实 TCP 来源地址计算。
+#
+# ⚠️ 必须与启动参数配合：uvicorn 自身默认启用 ProxyHeadersMiddleware，且默认信任
+# 来自 127.0.0.1 的转发头 —— 它会在 ASGI 层抢先覆写 scope["client"]，使应用层读到
+# 的 request.client **已经是伪造值**（应用层无从察觉）。因此本开关为 0 时，
+# 启动命令必须带 --no-proxy-headers（见 README 第 6.1 节）。
+TRUST_PROXY = os.getenv("TRUST_PROXY", "0").strip() == "1"
 
 # ===================== CORS（跨域白名单，替代原本 allow_origins=["*"]） =====================
 # 允许的前端来源，逗号分隔；演示可临时设为 *，生产应收窄为具体前端域名。
