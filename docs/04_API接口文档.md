@@ -52,11 +52,16 @@
       { "class_id": 30, "disease_cn": "番茄健康", "prob": 0.02 }
     ],
     "need_review": false,
+    "likely_not_leaf": false,
+    "leaf_prob": 0.9931,
     "knowledge": { "symptom": "...", "cause": "...", "prevention": "...", "treatment": "..." }
   }
 }
 ```
 > `need_review=true`：当 `confidence < config.threshold_low_conf`（默认 0.5）或预测为训练集外特征时，前端提示「建议人工复核」。
+
+> `likely_not_leaf=true`：**非叶片输入提示**。模型是 38 类闭集 softmax，没有"以上都不是"选项，对插画 / 风景 / 噪声等非叶片图片同样会给出高置信度判断（实测把动漫插画判成「番茄叶霉病 96.87%」）。后端用最大 softmax 概率（MSP）作兜底判据：`leaf_prob < config.OOD_MSP_THRESHOLD`（默认 0.98）时置为 `true`，前端在结果区顶部显示红色警告，提示用户重新上传。
+> 判据来源与阈值取舍见 `docs/08_OOD拒识评估.md`（AUROC 0.9425，误杀率≈5% 时非叶片拦截率≈83%）。
 
 ### 2.3 病害知识
 | 方法 | 路径 | 说明 |

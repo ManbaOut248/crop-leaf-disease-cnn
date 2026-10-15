@@ -6,6 +6,10 @@ models/backup_preC/
 # ============ 数据集切分副本（约 5.4 万张图，超大，不入库） ============
 data/split/
 
+# ============ OOD 拒识测试集 / 公开数据集下载缓存（大文件，不入库） ============
+data/ood_set/
+data/_downloads/
+
 # ============ 运行时产物 ============
 data/uploads/
 data/app.db

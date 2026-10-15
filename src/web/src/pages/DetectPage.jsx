@@ -80,7 +80,11 @@ export default function DetectPage() {
       (result.knowledge && (result.knowledge.prevention || result.knowledge.treatment)) || '',
   }
   const top3 = (result && result.top3) || []
-  const needReview = result && (result.need_review || (top1 && top1.confidence < LOW_CONF))
+  // 「大概率不是叶片」时只提示这一件事，不再叠加"置信度低"的橙色提示，避免两条信息打架
+  const needReview =
+    result &&
+    !result.likely_not_leaf &&
+    (result.need_review || (top1 && top1.confidence < LOW_CONF))
 
   return (
     <div>
@@ -138,6 +142,24 @@ export default function DetectPage() {
 
           {result && top1 && (
             <>
+              {/* 非叶片输入强提示：模型对非叶片图片同样会给出高置信度判断，
+                  这类结果对用药决策有误导性，所以用最高级别的提示压在最上面。 */}
+              {result.likely_not_leaf && (
+                <Alert
+                  type="error"
+                  showIcon
+                  style={{ marginBottom: 12 }}
+                  message="这张图片可能不是叶片照片"
+                  description={
+                    <>
+                      模型认为该图为「叶片」的把握仅 <b>{formatPercent(result.leaf_prob)}</b>，
+                      明显低于正常叶片照片的水平。请上传<b>单一叶片</b>的清晰特写、背景尽量干净。
+                      下方结果<b>不可信</b>，请勿据此用药。
+                    </>
+                  }
+                />
+              )}
+
               {needReview && (
                 <Alert
                   type="warning"

@@ -27,6 +27,7 @@ from src.config import (
     MODEL_DIR, CLASS_DIRS, class_name_zh, DISEASE_KNOWLEDGE_PATH,
     CALIBRATION_PATH, INFER_BACKEND, PRUNED_MODEL_PATH, QUANTIZED_MODEL_PATH,
     BEST_MODEL_PATH, LAST_MODEL_PATH, NUM_CLASSES, PRESCALE_SIZE,
+    OOD_MSP_THRESHOLD,
 )
 from src.data.transforms import get_val_transform
 from src.model.resnet import build_resnet18
@@ -132,9 +133,12 @@ class Predictor:
             return 1.0
 
     @torch.no_grad()
-    def predict_image(self, pil_image, top_k=3):
-        """输入 PIL.Image，返回 Top-K 结果列表。统一 fp32 推理 + 温度缩放校准。
-        top_k 为逐次调用参数（非单例缓存），k 自动夹紧到 [1, 类别数]，避免越界。"""
+    def _infer(self, pil_image, top_k=3):
+        """内部推理实现：返回 (Top-K 结果列表, 最大 softmax 概率 MSP)。
+
+        MSP（top-1 概率）除用于展示外，还是「非叶片输入」拒识的判据，
+        见 predict_image_with_ood()。
+        """
         # 1) 校正 EXIF 方向：手机照片常带旋转元数据，PIL 默认不应用，否则会把正立叶片喂歪导致误判
         img = ImageOps.exif_transpose(pil_image).convert("RGB")
         # 2) 预缩放：超大图（如 6000x4000）先缩到最长边 <= PRESCALE_SIZE，降低内存占用；
@@ -162,10 +166,45 @@ class Predictor:
                 "prevention": know.get("prevention", ""),
                 "treatment": know.get("treatment", ""),
             })
+        # topk.values[0] 即全局最大概率（k>=1），作为 MSP 返回
+        return results, float(topk.values[0].item())
+
+    def predict_image(self, pil_image, top_k=3):
+        """输入 PIL.Image，返回 Top-K 结果列表（对外接口保持不变）。
+
+        top_k 为逐次调用参数（非单例缓存），k 自动夹紧到 [1, 类别数]，避免越界。
+        """
+        results, _ = self._infer(pil_image, top_k)
         return results
+
+    def predict_image_with_ood(self, pil_image, top_k=3):
+        """返回 (results, ood_info)，额外给出「这是不是叶片照片」的判断。
+
+        为什么需要它：
+            模型是 38 类闭集 softmax，没有"以上都不是"这个选项，对任何输入都会
+            吐出一个类别。实测把一张动漫插画判成「番茄叶霉病 96.87%」，并显示
+            "结果可信" —— 对农户是误导性输出。
+
+        判据（实测数据，详见 scripts/eval_ood.py 与 outputs/ood_eval.json）：
+            · MSP 的 AUROC = 0.9425（500 张真实叶片 vs 363 张非叶片）
+            · 阈值 0.98 → 真实叶片误杀率 ≈5%、非叶片拦截率 ≈83%
+            · 置信度做拒识是**无效**的（插画 0.968、噪声 0.975 与真实叶片 0.994 重叠），
+              这里用 MSP 只是因为它在整批样本上仍可分离，弱于专门的特征距离方法。
+        """
+        results, msp = self._infer(pil_image, top_k)
+        return results, {
+            "leaf_prob": round(msp, 4),
+            "likely_not_leaf": msp < OOD_MSP_THRESHOLD,
+        }
 
 
 def predict_image(pil_image, top_k=3):
     """便捷函数：懒加载全局 Predictor 并预测。top_k 逐次生效（不受单例缓存影响）。"""
     predictor = Predictor.get_instance()
     return predictor.predict_image(pil_image, top_k=top_k)
+
+
+def predict_image_with_ood(pil_image, top_k=3):
+    """便捷函数：返回 (results, ood_info)，供 API 层做「非叶片输入」提示。"""
+    predictor = Predictor.get_instance()
+    return predictor.predict_image_with_ood(pil_image, top_k=top_k)

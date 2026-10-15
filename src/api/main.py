@@ -213,7 +213,7 @@ def predict(
     save_name = f"{uuid.uuid4().hex}{ext}"
     (UPLOAD_DIR / save_name).write_bytes(raw)
     try:
-        results = predict_image(img, top_k=top_k)
+        results, ood = predict_image_with_ood(img, top_k=top_k)
     except FileNotFoundError:
         (UPLOAD_DIR / save_name).unlink(missing_ok=True)
         return _err(503, "模型尚未就绪，请稍候（训练进行中或权重缺失）", 503)
@@ -231,6 +231,11 @@ def predict(
         "confidence": top1["confidence"],
         "top3": [{"class_id": r["class_id"], "disease_cn": r["name_zh"], "prob": r["confidence"]} for r in results],
         "need_review": top1["confidence"] < THRESHOLD_LOW_CONF,
+        # 非叶片输入提示：模型是 38 类闭集 softmax，没有"以上都不是"选项，
+        # 对非叶片图片（插画/风景/噪声）也会给出高置信度判断。这里额外返回
+        # 判据供前端强提示，避免用户被误导性结果带偏（详见 predict.py 说明）。
+        "likely_not_leaf": ood["likely_not_leaf"],
+        "leaf_prob": ood["leaf_prob"],
         "knowledge": {
             "symptom": top1.get("symptom", ""),
             "cause": top1.get("cause", ""),
@@ -322,4 +327,4 @@ def record_delete(rid: int, user=Depends(get_current_user)):
 
 
 # 延迟导入，避免应用启动时即触发模型加载
-from src.model.predict import predict_image  # noqa: E402
+from src.model.predict import predict_image_with_ood  # noqa: E402

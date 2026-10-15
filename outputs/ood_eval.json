@@ -1,0 +1,110 @@
+{
+  "n_in": 500,
+  "n_ood": 363,
+  "temperature": 1.0,
+  "auroc": {
+    "energy": 0.9272727272727272,
+    "neg_maxlogit": 0.928099173553719,
+    "neg_msp": 0.9424848484848484
+  },
+  "group_sizes": {
+    "localphoto": 228,
+    "realshot": 15,
+    "synthetic": 120
+  },
+  "scan": {
+    "energy": {
+      "0.01": {
+        "threshold": -4.935616264343262,
+        "block_rate": 0.6253443526170799
+      },
+      "0.02": {
+        "threshold": -5.612626380920411,
+        "block_rate": 0.696969696969697
+      },
+      "0.05": {
+        "threshold": -7.291951346397404,
+        "block_rate": 0.8209366391184573
+      },
+      "0.10": {
+        "threshold": -8.524962139129638,
+        "block_rate": 0.8842975206611571
+      },
+      "0.20": {
+        "threshold": -9.646064376831054,
+        "block_rate": 0.90633608815427
+      }
+    },
+    "neg_maxlogit": {
+      "0.01": {
+        "threshold": -4.853605370521546,
+        "block_rate": 0.6418732782369146
+      },
+      "0.02": {
+        "threshold": -5.561729755401612,
+        "block_rate": 0.699724517906336
+      },
+      "0.05": {
+        "threshold": -7.195049810409547,
+        "block_rate": 0.8236914600550964
+      },
+      "0.10": {
+        "threshold": -8.524010658264158,
+        "block_rate": 0.8842975206611571
+      },
+      "0.20": {
+        "threshold": -9.637766647338866,
+        "block_rate": 0.90633608815427
+      }
+    },
+    "neg_msp": {
+      "0.01": {
+        "threshold": -0.7954066598415377,
+        "block_rate": 0.6253443526170799
+      },
+      "0.02": {
+        "threshold": -0.8981154358386993,
+        "block_rate": 0.7245179063360881
+      },
+      "0.05": {
+        "threshold": -0.9813932478427887,
+        "block_rate": 0.8319559228650137
+      },
+      "0.10": {
+        "threshold": -0.9962599992752075,
+        "block_rate": 0.90633608815427
+      },
+      "0.20": {
+        "threshold": -0.9993961930274964,
+        "block_rate": 0.928374655647383
+      }
+    }
+  },
+  "best_metric": "neg_msp",
+  "recommendations": {
+    "conservative": {
+      "metric": "neg_msp",
+      "max_fpr": 0.02,
+      "threshold": -0.8981154358386993,
+      "false_reject_rate": 0.02,
+      "overall_block_rate": 0.7245179063360881,
+      "per_group": {
+        "localphoto": 0.7719298245614035,
+        "realshot": 0.8666666666666667,
+        "synthetic": 0.6166666666666667
+      }
+    },
+    "balanced": {
+      "metric": "neg_msp",
+      "max_fpr": 0.05,
+      "threshold": -0.9813932478427887,
+      "false_reject_rate": 0.05,
+      "overall_block_rate": 0.8319559228650137,
+      "per_group": {
+        "localphoto": 0.8859649122807017,
+        "realshot": 1.0,
+        "synthetic": 0.7083333333333334
+      }
+    }
+  }
+}

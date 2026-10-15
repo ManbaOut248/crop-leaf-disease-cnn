@@ -132,6 +132,19 @@ MODEL_VERSION = "resnet18-plantvillage-38-v1"   # 经 API 暴露，便于灰度/
 CALIBRATION_PATH = PROJECT_ROOT / "outputs" / "calibration.json"
 THRESHOLD_LOW_CONF = 0.5                         # 置信度低于此值 → 提示人工复核（API 文档 2.2）
 
+# ===================== OOD（非叶片输入）拒识 =====================
+# 背景：模型是 38 类闭集 softmax，没有"以上都不是"选项，对任何输入都会吐出
+# 一个类别。实测把动漫插画判成「番茄叶霉病 96.87%」—— 对农户是误导性输出。
+#
+# 判据：最大 softmax 概率（MSP）。在 500 张真实叶片 + 363 张非叶片样本上实测：
+#   MSP 的 AUROC = 0.9425（优于 Energy 0.9273 / MaxLogit 0.9281）；
+#   阈值 0.98 时真实叶片误杀率≈5%、非叶片拦截率≈83%。
+# 详见 scripts/eval_ood.py 与 outputs/ood_eval.json。
+#
+# 注意：这里只做「标记 + 前端强提示」，不硬阻断识别 —— 误杀真实叶片时
+# 用户仍可查看结果，避免把可用功能一刀切掉。
+OOD_MSP_THRESHOLD = float(os.getenv("OOD_MSP_THRESHOLD", "0.98"))
+
 # ===================== 模型压缩推理后端（D 方案：量化 / 剪枝） =====================
 # 推理后端选择：fp32（默认，原始防泄漏 best） / quantized（INT8 量化，CPU 专用） / pruned（结构化通道剪枝）
 # 由本开关统一切换 predict.py 的加载逻辑，predict_image() 对外接口不变。
