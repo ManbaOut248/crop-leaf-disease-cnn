@@ -12,7 +12,6 @@ import {
   Typography,
   Descriptions,
   Alert,
-  Space,
   App,
   Divider,
 } from 'antd'
@@ -149,21 +148,48 @@ export default function DetectPage() {
                 />
               )}
 
-              <div style={{ marginBottom: 16 }}>
-                <Space align="center">
+              {/* 结论区：左「Tag + 病害名」，右「大号置信度 + 标签」，左右分列，
+                  与高保真原型（docs/prototype）结论卡一致。
+                  原实现的问题：<Space> 只负责其内部子元素之间的 gap，
+                  管不到紧跟在它后面的那个 Text 兄弟节点；而 Title 又被 margin:0
+                  抹掉了默认外边距 —— 两者因此零间距，文字直接粘在一起。 */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  gap: 16,
+                  marginBottom: 20,
+                  paddingBottom: 20,
+                  borderBottom: '1px solid var(--c-border-split)',
+                }}
+              >
+                <div style={{ minWidth: 0 }}>
                   <Tag
                     color={top1.is_healthy ? 'green' : 'volcano'}
                     style={{ fontSize: 14, padding: '4px 10px' }}
                   >
                     {top1.is_healthy ? '健康' : '病害'}
                   </Tag>
-                  <Typography.Title level={4} style={{ margin: 0 }}>
+                  <Typography.Title level={4} style={{ margin: '10px 0 0' }}>
                     {top1.name}
                   </Typography.Title>
-                </Space>
-                <Typography.Text type="secondary">
-                  置信度 {formatPercent(top1.confidence)}
-                </Typography.Text>
+                </div>
+                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  <div
+                    style={{
+                      fontSize: 28,
+                      fontWeight: 600,
+                      lineHeight: 1.2,
+                      color: 'var(--c-primary-600)',
+                    }}
+                  >
+                    {formatPercent(top1.confidence)}
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--c-text-sub)', marginTop: 2 }}>
+                    Top-1 置信度
+                  </div>
+                </div>
               </div>
 
               <Typography.Paragraph strong>Top-3 可能性</Typography.Paragraph>
