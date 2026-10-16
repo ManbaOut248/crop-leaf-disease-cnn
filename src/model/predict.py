@@ -21,6 +21,7 @@ import json
 import warnings
 from pathlib import Path
 
+import numpy as np
 import torch
 from PIL import Image, ImageOps
 
@@ -28,7 +29,7 @@ from src.config import (
     MODEL_DIR, CLASS_DIRS, class_name_zh, DISEASE_KNOWLEDGE_PATH,
     CALIBRATION_PATH, INFER_BACKEND, PRUNED_MODEL_PATH, QUANTIZED_MODEL_PATH,
     BEST_MODEL_PATH, LAST_MODEL_PATH, NUM_CLASSES, PRESCALE_SIZE,
-    OOD_MSP_THRESHOLD,
+    OOD_MSP_THRESHOLD, OOD_CHROMA_THRESHOLD,
 )
 from src.data.transforms import get_val_transform
 from src.model.resnet import build_resnet18
@@ -177,11 +178,24 @@ class Predictor:
             print("[Predictor] 未找到校准参数文件，使用 T=1.0（不校准）")
             return 1.0
 
+    @staticmethod
+    def _mean_chroma(img, size=160):
+        """平均色度 = mean(max(R,G,B) - min(R,G,B))，取值约 0~255。
+
+        灰阶图（黑白漫画 / 线稿 / 扫描件 / 纯色块）接近 0；
+        彩色叶片照片显著大于 0 —— 实测真实叶片最低 10.6，而非叶片大量为 0。
+        先等比缩到最长边 size 再统计：色度对分辨率不敏感，缩图可显著提速。
+        """
+        small = img.copy()
+        small.thumbnail((size, size), Image.BILINEAR)
+        a = np.asarray(small).astype(np.float32)
+        return float((a.max(axis=2) - a.min(axis=2)).mean())
+
     @torch.no_grad()
     def _infer(self, pil_image, top_k=3):
-        """内部推理实现：返回 (Top-K 结果列表, 最大 softmax 概率 MSP)。
+        """内部推理实现：返回 (Top-K 结果列表, 最大 softmax 概率 MSP, 平均色度)。
 
-        MSP（top-1 概率）除用于展示外，还是「非叶片输入」拒识的判据，
+        MSP（top-1 概率）与平均色度共同构成「非叶片输入」拒识判据，
         见 predict_image_with_ood()。
         """
         # 1) 校正 EXIF 方向：手机照片常带旋转元数据，PIL 默认不应用，否则会把正立叶片喂歪导致误判
@@ -189,6 +203,7 @@ class Predictor:
         # 2) 预缩放：超大图（如 6000x4000）先缩到最长边 <= PRESCALE_SIZE，降低内存占用；
         #    不改变模型输入尺寸（仍为 IMAGE_SIZE=224），对精度无实质影响
         img = _prescale(img, PRESCALE_SIZE)
+        chroma = self._mean_chroma(img)
         x = self.transform(img).unsqueeze(0).to(self.device)
         logits = self.model(x)                  # 统一 fp32，不使用 AMP（与评估一致）
         logits = logits / self.temperature      # 温度缩放：T>1 抑制过自信，使置信度更可靠
@@ -212,14 +227,14 @@ class Predictor:
                 "treatment": know.get("treatment", ""),
             })
         # topk.values[0] 即全局最大概率（k>=1），作为 MSP 返回
-        return results, float(topk.values[0].item())
+        return results, float(topk.values[0].item()), chroma
 
     def predict_image(self, pil_image, top_k=3):
         """输入 PIL.Image，返回 Top-K 结果列表（对外接口保持不变）。
 
         top_k 为逐次调用参数（非单例缓存），k 自动夹紧到 [1, 类别数]，避免越界。
         """
-        results, _ = self._infer(pil_image, top_k)
+        results, _, _ = self._infer(pil_image, top_k)
         return results
 
     def predict_image_with_ood(self, pil_image, top_k=3):
@@ -230,16 +245,32 @@ class Predictor:
             吐出一个类别。实测把一张动漫插画判成「番茄叶霉病 96.87%」，并显示
             "结果可信" —— 对农户是误导性输出。
 
-        判据（实测数据，详见 scripts/eval_ood.py 与 outputs/ood_eval.json）：
-            · MSP 的 AUROC = 0.9425（500 张真实叶片 vs 363 张非叶片）
-            · 阈值 0.98 → 真实叶片误杀率 ≈5%、非叶片拦截率 ≈83%
-            · 置信度做拒识是**无效**的（插画 0.968、噪声 0.975 与真实叶片 0.994 重叠），
-              这里用 MSP 只是因为它在整批样本上仍可分离，弱于专门的特征距离方法。
+        判据 = MSP **或** 平均色度（两者互补，任一命中即提示）：
+
+            · MSP（最大 softmax 概率）—— 抓「模型自己也没把握」的输入，阈值 0.98。
+              实测 400 张真实叶片 vs 363 张非叶片：误杀 6.2%、拦截 82.9%。
+
+            · 平均色度 —— 抓「灰阶图」这类 MSP 会失效的输入。黑白漫画 / 线稿 /
+              扫描件的色度接近 0，却可能被模型以高置信度误判（实测某漫画
+              MSP=0.984 > 0.98 直接漏过）；而真实叶片照片实测色度最低 10.6，
+              故阈值取 8.0，几乎零误伤。
+
+            组合后实测：误杀仍为 6.2%，拦截率由 82.9% 提升到 93.1%，
+            其中色度补拦了 MSP 漏掉样本的 59.7%。详见 docs/08_OOD拒识评估.md。
+
+        返回字段：
+            leaf_prob       —— MSP，前端用于展示「模型认为这是叶片的把握」
+            mean_chroma     —— 平均色度，前端用于区分提示语（灰阶图 / 低置信）
+            grayscale       —— 是否判定为灰阶图
+            likely_not_leaf —— 组合判定结果
         """
-        results, msp = self._infer(pil_image, top_k)
+        results, msp, chroma = self._infer(pil_image, top_k)
+        grayscale = chroma < OOD_CHROMA_THRESHOLD
         return results, {
             "leaf_prob": round(msp, 4),
-            "likely_not_leaf": msp < OOD_MSP_THRESHOLD,
+            "mean_chroma": round(chroma, 1),
+            "grayscale": grayscale,
+            "likely_not_leaf": (msp < OOD_MSP_THRESHOLD) or grayscale,
         }
 
 

@@ -54,14 +54,26 @@
     "need_review": false,
     "likely_not_leaf": false,
     "leaf_prob": 0.9931,
+    "mean_chroma": 37.7,
+    "grayscale": false,
     "knowledge": { "symptom": "...", "cause": "...", "prevention": "...", "treatment": "..." }
   }
 }
 ```
 > `need_review=true`：当 `confidence < config.threshold_low_conf`（默认 0.5）或预测为训练集外特征时，前端提示「建议人工复核」。
 
-> `likely_not_leaf=true`：**非叶片输入提示**。模型是 38 类闭集 softmax，没有"以上都不是"选项，对插画 / 风景 / 噪声等非叶片图片同样会给出高置信度判断（实测把动漫插画判成「番茄叶霉病 96.87%」）。后端用最大 softmax 概率（MSP）作兜底判据：`leaf_prob < config.OOD_MSP_THRESHOLD`（默认 0.98）时置为 `true`，前端在结果区顶部显示红色警告，提示用户重新上传。
-> 判据来源与阈值取舍见 `docs/08_OOD拒识评估.md`（AUROC 0.9425，误杀率≈5% 时非叶片拦截率≈83%）。
+> `likely_not_leaf=true`：**非叶片输入提示**。模型是 38 类闭集 softmax，没有"以上都不是"选项，
+> 对插画 / 风景 / 噪声等非叶片图片同样会给出高置信度判断（实测把动漫插画判成「番茄叶霉病 96.87%」）。
+> 判据为**组合条件，满足其一即置 `true`**：
+> - `leaf_prob`（最大 softmax 概率 MSP）`< config.OOD_MSP_THRESHOLD`（默认 0.98）；
+> - 或 `mean_chroma`（平均色度）`< config.OOD_CHROMA_THRESHOLD`（默认 8.0）—— 用于抓
+>   **黑白 / 灰度图**这类 MSP 会失效的输入（实测某黑白漫画 MSP=0.984 漏过，但色度=0）。
+>
+> 辅助字段：`mean_chroma` 为平均色度（`mean(max(R,G,B)-min(R,G,B))`，真实叶片实测最低 10.6）；
+> `grayscale` 标记是否判定为灰阶图，前端据此给出不同提示文案。
+>
+> 判据来源、阈值取舍与实测数据见 `docs/08_OOD拒识评估.md`
+> （组合判据：真实叶片误杀 6.2%、非叶片拦截 93.1%）。
 
 ### 2.3 病害知识
 | 方法 | 路径 | 说明 |

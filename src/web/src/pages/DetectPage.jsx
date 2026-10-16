@@ -143,7 +143,9 @@ export default function DetectPage() {
           {result && top1 && (
             <>
               {/* 非叶片输入强提示：模型对非叶片图片同样会给出高置信度判断，
-                  这类结果对用药决策有误导性，所以用最高级别的提示压在最上面。 */}
+                  这类结果对用药决策有误导性，所以用最高级别的提示压在最上面。
+                  判据为「MSP 低」或「平均色度低（灰阶图）」二者命中其一，
+                  两种成因给不同文案 —— 说清「为什么」用户才知道怎么改。 */}
               {result.likely_not_leaf && (
                 <Alert
                   type="error"
@@ -151,11 +153,19 @@ export default function DetectPage() {
                   style={{ marginBottom: 12 }}
                   message="这张图片可能不是叶片照片"
                   description={
-                    <>
-                      模型认为该图为「叶片」的把握仅 <b>{formatPercent(result.leaf_prob)}</b>，
-                      明显低于正常叶片照片的水平。请上传<b>单一叶片</b>的清晰特写、背景尽量干净。
-                      下方结果<b>不可信</b>，请勿据此用药。
-                    </>
+                    result.grayscale ? (
+                      <>
+                        检测到这是一张<b>黑白 / 灰度图片</b>（平均色度 {result.mean_chroma}），
+                        而植物叶片照片应为彩色。请上传<b>彩色</b>的单一叶片清晰特写、背景尽量干净。
+                        下方结果<b>不可信</b>，请勿据此用药。
+                      </>
+                    ) : (
+                      <>
+                        模型认为该图为「叶片」的把握仅 <b>{formatPercent(result.leaf_prob)}</b>，
+                        明显低于正常叶片照片的水平。请上传<b>单一叶片</b>的清晰特写、背景尽量干净。
+                        下方结果<b>不可信</b>，请勿据此用药。
+                      </>
+                    )
                   }
                 />
               )}
