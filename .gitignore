@@ -10,6 +10,10 @@ data/split/
 data/ood_set/
 data/_downloads/
 
+# 真实场景测试图（PlantDoc 下载，100+ 张约 56MB；可由 scripts/fetch_plantdoc.py 一键重建）
+# 注意只忽略子目录，outputs/realtest/README.md 仍入库（记录来源与 CC BY 4.0 署名要求）
+outputs/realtest/*/
+
 # ============ 运行时产物 ============
 data/uploads/
 data/app.db
