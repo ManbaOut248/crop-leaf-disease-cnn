@@ -30,6 +30,7 @@ from src.config import (
     CALIBRATION_PATH, INFER_BACKEND, PRUNED_MODEL_PATH, QUANTIZED_MODEL_PATH,
     BEST_MODEL_PATH, LAST_MODEL_PATH, NUM_CLASSES, PRESCALE_SIZE,
     OOD_MSP_THRESHOLD, OOD_CHROMA_THRESHOLD,
+    OOD_HEAD_PATH, OOD_HEAD_ENABLE,
 )
 from src.data.transforms import get_val_transform
 from src.model.resnet import build_resnet18
@@ -91,6 +92,48 @@ def _prescale(img, max_side):
     return img.resize((nw, nh), Image.Resampling.LANCZOS)
 
 
+class _LeafHead:
+    """叶片 / 非叶片二分类检测头（方案 C2）。
+
+    在**冻结的** 38 类模型 512 维池化特征上做逻辑回归，与病害识别完全解耦。
+
+    为什么不再依赖 MSP：
+        38 类 softmax 的 top-1 概率衡量的是「在 38 个病害里最像哪个」，对非叶片
+        输入也必须挑一个，置信度虚高、且跨域不可用。实测真实田间叶片与非叶片的
+        MSP 分布几乎重合（AUROC 0.553，误杀 10% 只拦下 16.8%）。
+    本检测头直接学「是不是叶片」：真实叶 vs 非叶 AUROC 0.99（同分布留出）、
+    0.77~0.99（负样本留一来源的严格验证），且不修改原模型任何权重。
+
+    产物为纯数值 npz（mean / scale / coef / intercept / threshold），
+    加载时 allow_pickle=False，不存在 pickle 反序列化风险。
+    """
+
+    def __init__(self, path):
+        self.ready = False
+        self.threshold = 0.5
+        try:
+            d = np.load(path, allow_pickle=False)
+            self.mean = d["mean"].astype(np.float32)
+            self.scale = d["scale"].astype(np.float32)
+            self.coef = d["coef"].astype(np.float32)
+            self.bias = float(d["intercept"][0])
+            self.threshold = float(d["threshold"][0])
+            self.ready = True
+        except Exception as e:  # noqa: BLE001
+            warnings.warn(
+                f"叶片检测头未加载（{path}）：{e}。将回退到 MSP + 色度判据 —— "
+                "该组合在真实田间照片上误杀率很高，建议运行 "
+                "scripts/train_ood_head.py 重新生成。",
+                stacklevel=2,
+            )
+
+    def score(self, feat):
+        """feat: torch.Tensor (1, 512) → 「是叶片」的概率（0~1）。"""
+        x = feat.detach().cpu().numpy().reshape(-1).astype(np.float32)
+        z = float(((x - self.mean) / self.scale) @ self.coef + self.bias)
+        return 1.0 / (1.0 + float(np.exp(-z)))
+
+
 class Predictor:
     """单例式推理器，懒加载模型。"""
 
@@ -104,6 +147,13 @@ class Predictor:
             self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.transform = get_val_transform()
         self.model = self._load_model()
+        # 叶片检测头只在 fp32 后端启用：量化 / 剪枝模型的池化特征分布与训练时
+        # 不一致，复用会失准；这两种后端自动回退到 MSP + 色度判据。
+        self.leaf_head = (
+            _LeafHead(OOD_HEAD_PATH)
+            if (OOD_HEAD_ENABLE and INFER_BACKEND == "fp32")
+            else None
+        )
         self.model.eval()
         self.knowledge = self._load_knowledge()
         self.temperature = self._load_calibration()  # 温度缩放校准参数
@@ -193,10 +243,11 @@ class Predictor:
 
     @torch.no_grad()
     def _infer(self, pil_image, top_k=3):
-        """内部推理实现：返回 (Top-K 结果列表, 最大 softmax 概率 MSP, 平均色度)。
+        """内部推理实现：返回 (Top-K 结果列表, MSP, 平均色度, 池化特征)。
 
-        MSP（top-1 概率）与平均色度共同构成「非叶片输入」拒识判据，
-        见 predict_image_with_ood()。
+        MSP 与平均色度是**回退判据**（检测头不可用时使用）；
+        池化特征是**主判据**的输入 —— 交给 _LeafHead 判断「是不是叶片」。
+        未启用检测头时池化特征为 None。
         """
         # 1) 校正 EXIF 方向：手机照片常带旋转元数据，PIL 默认不应用，否则会把正立叶片喂歪导致误判
         img = ImageOps.exif_transpose(pil_image).convert("RGB")
@@ -205,7 +256,19 @@ class Predictor:
         img = _prescale(img, PRESCALE_SIZE)
         chroma = self._mean_chroma(img)
         x = self.transform(img).unsqueeze(0).to(self.device)
-        logits = self.model(x)                  # 统一 fp32，不使用 AMP（与评估一致）
+        # 3) 用 forward hook 顺带取出 avgpool 的 512 维池化特征，
+        #    避免为了拿特征而多跑一次前向（成本翻倍）
+        pooled = {}
+        hook = None
+        if getattr(self, "leaf_head", None) is not None and hasattr(self.model, "avgpool"):
+            def _grab(_module, _inp, out):
+                pooled["f"] = out.flatten(1)
+            hook = self.model.avgpool.register_forward_hook(_grab)
+        try:
+            logits = self.model(x)              # 统一 fp32，不使用 AMP（与评估一致）
+        finally:
+            if hook is not None:
+                hook.remove()
         logits = logits / self.temperature      # 温度缩放：T>1 抑制过自信，使置信度更可靠
         probs = torch.softmax(logits, dim=1)[0]
         k = max(1, min(int(top_k), self.num_classes))
@@ -227,50 +290,71 @@ class Predictor:
                 "treatment": know.get("treatment", ""),
             })
         # topk.values[0] 即全局最大概率（k>=1），作为 MSP 返回
-        return results, float(topk.values[0].item()), chroma
+        return results, float(topk.values[0].item()), chroma, pooled.get("f")
 
     def predict_image(self, pil_image, top_k=3):
         """输入 PIL.Image，返回 Top-K 结果列表（对外接口保持不变）。
 
         top_k 为逐次调用参数（非单例缓存），k 自动夹紧到 [1, 类别数]，避免越界。
         """
-        results, _, _ = self._infer(pil_image, top_k)
+        results, _, _, _ = self._infer(pil_image, top_k)
         return results
 
     def predict_image_with_ood(self, pil_image, top_k=3):
         """返回 (results, ood_info)，额外给出「这是不是叶片照片」的判断。
 
         为什么需要它：
-            模型是 38 类闭集 softmax，没有"以上都不是"这个选项，对任何输入都会
+            模型是 38 类闭集 softmax，没有「以上都不是」这个选项，对任何输入都会
             吐出一个类别。实测把一张动漫插画判成「番茄叶霉病 96.87%」，并显示
-            "结果可信" —— 对农户是误导性输出。
+            「结果可信」—— 对农户是误导性输出。
 
-        判据 = MSP **或** 平均色度（两者互补，任一命中即提示）：
+        三级判据（优先级从高到低）：
 
-            · MSP（最大 softmax 概率）—— 抓「模型自己也没把握」的输入，阈值 0.98。
-              实测 400 张真实叶片 vs 363 张非叶片：误杀 6.2%、拦截 82.9%。
+            1. **叶片检测头**（主判据，_LeafHead）
+               在冻结模型的 512 维池化特征上做二分类，直接学「是不是叶片」。
+               实测真实叶 vs 非叶 AUROC 0.99（同分布留出）、0.77~0.99
+               （负样本留一来源的严格验证）—— 对真实田间场景是唯一可用判据。
+               且不修改原模型，PlantVillage 精度保持 99.34%。
 
-            · 平均色度 —— 抓「灰阶图」这类 MSP 会失效的输入。黑白漫画 / 线稿 /
-              扫描件的色度接近 0，却可能被模型以高置信度误判（实测某漫画
-              MSP=0.984 > 0.98 直接漏过）；而真实叶片照片实测色度最低 10.6，
-              故阈值取 8.0，几乎零误伤。
+            2. **MSP**（回退判据，阈值 0.98）
+               38 类 top-1 概率。跨域不可靠：真实田间 AUROC 仅 0.553，
+               误杀 10% 只能拦下 16.8%。仅在检测头缺失/后端不支持时启用。
 
-            组合后实测：误杀仍为 6.2%，拦截率由 82.9% 提升到 93.1%，
-            其中色度补拦了 MSP 漏掉样本的 59.7%。详见 docs/08_OOD拒识评估.md。
+            3. **平均色度**（始终叠加，阈值 8.0）
+               抓灰阶图（黑白漫画 / 线稿 / 扫描件）—— 这类图 MSP 会失效，
+               而真实叶片照片色度最低 10.6，故对 755 张真实叶片零误伤。
+
+        组合语义：色度命中 **或** 主判据命中 → likely_not_leaf。
+        「提示而非硬阻断」：误杀真实叶片的代价（重拍一张）远小于漏放
+        （据此施药），但也不直接拒绝，交由用户判断。
 
         返回字段：
-            leaf_prob       —— MSP，前端用于展示「模型认为这是叶片的把握」
-            mean_chroma     —— 平均色度，前端用于区分提示语（灰阶图 / 低置信）
-            grayscale       —— 是否判定为灰阶图
-            likely_not_leaf —— 组合判定结果
+            leaf_prob        —— 「是叶片」的把握（检测头输出；回退时为 MSP）
+            leaf_prob_source —— "head" / "msp"，标明判据来源（便于诊断）
+            mean_chroma      —— 平均色度，前端区分提示语（灰阶图 / 低置信）
+            grayscale        —— 是否判定为灰阶图
+            likely_not_leaf  —— 综合判定
+            msp              —— 原始 softmax 置信度（诊断 / 日志用）
         """
-        results, msp, chroma = self._infer(pil_image, top_k)
+        results, msp, chroma, feat = self._infer(pil_image, top_k)
         grayscale = chroma < OOD_CHROMA_THRESHOLD
+
+        if self.leaf_head is not None and self.leaf_head.ready and feat is not None:
+            leaf_prob = self.leaf_head.score(feat)
+            low_leaf = leaf_prob < self.leaf_head.threshold
+            source = "head"
+        else:
+            leaf_prob = msp
+            low_leaf = msp < OOD_MSP_THRESHOLD
+            source = "msp"
+
         return results, {
-            "leaf_prob": round(msp, 4),
+            "leaf_prob": round(float(leaf_prob), 4),
+            "leaf_prob_source": source,
             "mean_chroma": round(chroma, 1),
             "grayscale": grayscale,
-            "likely_not_leaf": (msp < OOD_MSP_THRESHOLD) or grayscale,
+            "likely_not_leaf": bool(low_leaf or grayscale),
+            "msp": round(float(msp), 4),
         }
 
 

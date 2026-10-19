@@ -157,6 +157,20 @@ OOD_MSP_THRESHOLD = float(os.getenv("OOD_MSP_THRESHOLD", "0.98"))
 # 详见 docs/08_OOD拒识评估.md。
 OOD_CHROMA_THRESHOLD = float(os.getenv("OOD_CHROMA_THRESHOLD", "8.0"))
 
+# ===================== 叶片/非叶片检测头（方案 C2，当前主判据） =====================
+# 起因：MSP + 色度在**真实田间**场景失效 —— 实测 651 张真实田间叶片中 53.8% 被判
+# 「非叶片」（色度零误伤，误杀全部由 MSP 触发）。根因是 PlantVillage（黑底居中）
+# 与真实田间是两个域，softmax 置信度无法跨域使用；而对 38 类模型做参数微调来修
+# 会陷入跷跷板（改善 OOD 就把 PV 精度从 99.34% 打到 86.89%）。
+#
+# 方案：训练独立的二分类检测头（冻结模型的 512 维池化特征 → 逻辑回归），
+# 与 38 类识别**解耦**，原模型权重分毫不动。
+#   真实叶 vs 非叶 AUROC：0.99（同分布留出）/ 0.77~0.99（负样本留一来源的严格验证）
+#   对照：38 类模型 MSP 仅 0.553
+# 训练：scripts/train_ood_head.py  →  产物 models/ood_head.npz（纯数值，无 pickle）
+OOD_HEAD_PATH = MODEL_DIR / "ood_head.npz"
+OOD_HEAD_ENABLE = os.getenv("OOD_HEAD_ENABLE", "1").strip() == "1"
+
 # ===================== 模型压缩推理后端（D 方案：量化 / 剪枝） =====================
 # 推理后端选择：fp32（默认，原始防泄漏 best） / quantized（INT8 量化，CPU 专用） / pruned（结构化通道剪枝）
 # 由本开关统一切换 predict.py 的加载逻辑，predict_image() 对外接口不变。

@@ -1,6 +1,9 @@
 # ============ 模型权重（大文件，训练产物，不入库） ============
 models/*.pth
 models/*.pt
+# OOD 检测头（由 scripts/train_ood_head.py 生成，可一键重建）
+models/*.pkl
+models/*.npz
 models/backup_preC/
 
 # ============ 数据集切分副本（约 5.4 万张图，超大，不入库） ============

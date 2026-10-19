@@ -53,27 +53,40 @@
     ],
     "need_review": false,
     "likely_not_leaf": false,
-    "leaf_prob": 0.9931,
+    "leaf_prob": 0.9997,
+    "leaf_prob_source": "head",
     "mean_chroma": 37.7,
     "grayscale": false,
+    "msp": 0.9772,
     "knowledge": { "symptom": "...", "cause": "...", "prevention": "...", "treatment": "..." }
   }
 }
 ```
 > `need_review=true`：当 `confidence < config.threshold_low_conf`（默认 0.5）或预测为训练集外特征时，前端提示「建议人工复核」。
 
-> `likely_not_leaf=true`：**非叶片输入提示**。模型是 38 类闭集 softmax，没有"以上都不是"选项，
+> `likely_not_leaf=true`：**非叶片输入提示**。模型是 38 类闭集 softmax，没有「以上都不是」选项，
 > 对插画 / 风景 / 噪声等非叶片图片同样会给出高置信度判断（实测把动漫插画判成「番茄叶霉病 96.87%」）。
-> 判据为**组合条件，满足其一即置 `true`**：
-> - `leaf_prob`（最大 softmax 概率 MSP）`< config.OOD_MSP_THRESHOLD`（默认 0.98）；
-> - 或 `mean_chroma`（平均色度）`< config.OOD_CHROMA_THRESHOLD`（默认 8.0）—— 用于抓
->   **黑白 / 灰度图**这类 MSP 会失效的输入（实测某黑白漫画 MSP=0.984 漏过，但色度=0）。
 >
-> 辅助字段：`mean_chroma` 为平均色度（`mean(max(R,G,B)-min(R,G,B))`，真实叶片实测最低 10.6）；
-> `grayscale` 标记是否判定为灰阶图，前端据此给出不同提示文案。
+> 判据按优先级分三级，**色度条件始终生效**：
 >
-> 判据来源、阈值取舍与实测数据见 `docs/08_OOD拒识评估.md`
-> （组合判据：真实叶片误杀 6.2%、非叶片拦截 93.1%）。
+> | 优先级 | 判据 | 阈值 | 说明 |
+> |---|---|---|---|
+> | ① 主 | **叶片检测头**（`leaf_prob`） | 0.50 | 冻结模型的 512 维池化特征 → 逻辑回归，直接学「是不是叶片」。真实叶 vs 非叶 AUROC 0.77~0.99 |
+> | ② 回退 | MSP（`msp`） | 0.98 | 仅在检测头缺失或后端为 quantized / pruned 时启用；跨域不可靠（真实田间 AUROC 仅 0.553） |
+> | ③ 叠加 | 平均色度（`mean_chroma`） | 8.0 | 抓黑白 / 灰度图这类 MSP 会失效的输入（实测某漫画 MSP=0.984 漏过，色度=0） |
+>
+> 即：`likely_not_leaf = (leaf_prob < 阈值) or (mean_chroma < 8.0)`
+>
+> 字段说明：
+> - `leaf_prob` —— 「是叶片」的把握。判据来源为检测头时是分类器输出，回退时为 MSP
+> - `leaf_prob_source` —— `"head"` / `"msp"`，标明实际使用的判据（便于诊断与前端文案分级）
+> - `msp` —— 原始 softmax 置信度（诊断 / 日志用）
+> - `mean_chroma` —— 平均色度（`mean(max(R,G,B)-min(R,G,B))`），真实叶片实测最低 10.6
+> - `grayscale` —— 是否判定为灰阶图，前端据此给出最强语气提示
+>
+> 判据来源、阈值取舍与实测数据见 `docs/08_OOD拒识评估.md` 与
+> `docs/11_域适应与OOD检测实验.md`（检测头端到端实测：真实田间叶片 0/11 误杀，
+> 漫画 / 截图 / 非叶片照片 12/12 拦截）。
 
 ### 2.3 病害知识
 | 方法 | 路径 | 说明 |

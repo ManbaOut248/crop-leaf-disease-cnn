@@ -280,14 +280,16 @@ def predict(
         "confidence": top1["confidence"],
         "top3": [{"class_id": r["class_id"], "disease_cn": r["name_zh"], "prob": r["confidence"]} for r in results],
         "need_review": top1["confidence"] < THRESHOLD_LOW_CONF,
-        # 非叶片输入提示：模型是 38 类闭集 softmax，没有"以上都不是"选项，
-        # 对非叶片图片（插画/风景/噪声）也会给出高置信度判断。这里额外返回
-        # 组合判据（MSP 或 平均色度）供前端强提示，避免用户被误导性结果带偏
-        # （详见 predict.py 的 predict_image_with_ood 说明）。
+        # 非叶片输入提示：38 类闭集 softmax 没有「以上都不是」选项，对非叶片图片
+        # （插画 / 风景 / 噪声）也会给出高置信度判断。判据优先级：
+        #   叶片检测头（主，512 维特征二分类）→ MSP（回退）→ 平均色度（始终叠加，抓灰阶图）。
+        # 详见 predict.py 的 predict_image_with_ood 说明。
         "likely_not_leaf": ood["likely_not_leaf"],
         "leaf_prob": ood["leaf_prob"],
+        "leaf_prob_source": ood["leaf_prob_source"],
         "mean_chroma": ood["mean_chroma"],
         "grayscale": ood["grayscale"],
+        "msp": ood["msp"],
         "knowledge": {
             "symptom": top1.get("symptom", ""),
             "cause": top1.get("cause", ""),
