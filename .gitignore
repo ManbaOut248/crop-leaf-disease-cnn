@@ -12,6 +12,10 @@ data/split/
 # ============ OOD 拒识测试集 / 公开数据集下载缓存（大文件，不入库） ============
 data/ood_set/
 data/_downloads/
+# 归因实验的对照组数据（仅原始 363 张，可用 expand_ood_set.py 前状态重建，19MB）
+data/_ood_baseline/
+# 验证脚本运行时生成的灰阶临时图
+outputs/_tmp_verify_gray/
 
 # 真实场景测试图（PlantDoc 下载，100+ 张约 56MB；可由 scripts/fetch_plantdoc.py 一键重建）
 # 注意只忽略子目录，outputs/realtest/README.md 仍入库（记录来源与 CC BY 4.0 署名要求）

@@ -70,7 +70,11 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 # ========================= 配置 =========================
 SEED = 42
-PV_PER_CLASS_TRAIN = 30      # PlantVillage 每类抽多少张作正样本
+# PlantVillage 每类取多少张作正样本。**实测 30 优于 80**：
+# 每类 80 张（3040 张，正样本 ×2.7）时，跨来源最悲观 AUROC 0.7949 → 0.7826，
+# 真实叶误杀 4.6% → 6.2%。原因：正样本越多，检测头对「叶片」整体越自信，
+# 反而抬高了对真实田间叶片的误判。故保持 30（实验见 outputs/ood_ab_result.json）。
+PV_PER_CLASS_TRAIN = 30
 PV_PER_CLASS_TEST = 20       # 评估时每类抽多少张
 REAL_TRAIN_RATIO = 0.8       # 真实田间叶片：8 成训练 / 2 成留出评估
 OOD_TRAIN_RATIO = 0.8        # 非叶片样本同理
@@ -94,9 +98,15 @@ LEAF_DIRS = [
 _ap = argparse.ArgumentParser()
 _ap.add_argument("--no-gray-aug", action="store_true", help="关闭灰度增强（对照实验用）")
 _ap.add_argument("--tag", default="", help="产物后缀，便于多组实验并存")
+_ap.add_argument("--pv-per-class", type=int, default=PV_PER_CLASS_TRAIN,
+                 help="PlantVillage 每类取多少张作正样本（默认 30，实测 30 优于 80）")
+_ap.add_argument("--ood-root", default="data/ood_set",
+                 help="负样本根目录（可指向旧版 363 张的子集做对照）")
 ARGS, _ = _ap.parse_known_args()
 if ARGS.no_gray_aug:
     GRAY_AUG_RATIO = 0.0
+PV_PER_CLASS_TRAIN = ARGS.pv_per_class
+OOD_ROOT = Path(ARGS.ood_root)
 TAG = ARGS.tag
 
 random.seed(SEED)
@@ -147,20 +157,48 @@ random.shuffle(real_all)
 n_tr = int(len(real_all) * REAL_TRAIN_RATIO)
 real_train, real_test = real_all[:n_tr], real_all[n_tr:]
 
-ood_all = []
-for sub in ("synthetic", "localphoto", "realshot"):
-    ood_all += list_imgs(f"data/ood_set/{sub}")
-random.shuffle(ood_all)
-n_otr = int(len(ood_all) * OOD_TRAIN_RATIO)
-ood_train, ood_test = ood_all[:n_otr], ood_all[n_otr:]
+# 负样本：自动扫描 OOD 根目录下所有子目录（不再硬编码来源列表），
+# 并按「源图分组」划分 —— 增强图（<stem>__aug<N>）必须与源图落在同一侧。
+# 若按文件随机划分，测试集会混入训练图的近邻副本，导致 AUROC 显著虚高。
+def group_of(p):
+    return f"{p.parent.name}/{p.stem.split('__aug')[0]}"
 
-print(f"正样本  PlantVillage {len(pv_train)} 张（训练） / {len(pv_test)} 张（评估）")
+
+ood_by_source = {}
+if OOD_ROOT.is_dir():
+    for d in sorted(OOD_ROOT.iterdir()):
+        if d.is_dir():
+            fs = list_imgs(d)
+            if fs:
+                ood_by_source[d.name] = fs
+
+ood_train, ood_test = [], []
+for src, fs in ood_by_source.items():
+    groups = {}
+    for p in fs:
+        groups.setdefault(group_of(p), []).append(p)
+    keys = sorted(groups)
+    random.shuffle(keys)
+    n_grp = max(1, int(len(keys) * OOD_TRAIN_RATIO))
+    for k in keys[:n_grp]:
+        ood_train += groups[k]
+    for k in keys[n_grp:]:
+        ood_test += groups[k]
+random.shuffle(ood_train)
+random.shuffle(ood_test)
+
+print(f"正样本  PlantVillage {len(pv_train)} 张（训练） / {len(pv_test)} 张（评估）"
+      f"   每类 {PV_PER_CLASS_TRAIN} 张")
 print(f"        真实田间   {len(real_train)} 张（训练） / {len(real_test)} 张（评估）")
 print(f"负样本  非叶片     {len(ood_train)} 张（训练） / {len(ood_test)} 张（评估）")
+for src, fs in ood_by_source.items():
+    ng = len({group_of(p) for p in fs})
+    print(f"          · {src:<12} {len(fs):>4} 张 / {ng:>3} 组")
 print(f"灰度增强: {GRAY_AUG_RATIO:.0%}（{'开启' if GRAY_AUG_RATIO > 0 else '关闭'}）")
 
-if not real_all or not ood_all:
-    raise SystemExit("数据不足：请先运行 scripts/fetch_plantdoc.py 与 scripts/build_ood_set.py")
+if not real_all or not ood_train:
+    raise SystemExit("数据不足：请先运行 scripts/fetch_plantdoc.py、"
+                     "scripts/build_ood_set.py 与 scripts/expand_ood_set.py")
 
 # ========================= 2) 提取特征 =========================
 print("\n" + "=" * 72)
@@ -174,22 +212,35 @@ model.to(DEVICE).eval()
 body = nn.Sequential(*list(model.children())[:-1])   # 去掉 Dropout 与 fc
 
 
+_FEAT_CACHE = {}
+
+
 @torch.no_grad()
 def extract(paths, tag, gray=False):
-    """批量提特征。gray=True 时先把图转灰度再转回 RGB（保持 3 通道输入）。"""
+    """批量提特征。gray=True 时先把图转灰度再转回 RGB（保持 3 通道输入）。
+
+    结果按 (路径, 是否灰度) 缓存 —— 跨来源验证需要按不同分组重复提同一批图，
+    有缓存可避免重复前向。
+    """
     out = []
     t0 = time.time()
     for i in range(0, len(paths), FEAT_BATCH):
-        xs = []
-        for p in paths[i:i + FEAT_BATCH]:
-            try:
-                im = Image.open(p).convert("RGB")
-                if gray:
-                    im = im.convert("L").convert("RGB")
-                xs.append(TF(im))
-            except Exception:
-                xs.append(torch.zeros(3, 224, 224))   # 坏图用零图占位，不影响其余
-        out.append(body(torch.stack(xs).to(DEVICE)).flatten(1).cpu().numpy())
+        chunk = paths[i:i + FEAT_BATCH]
+        need = [(p, ) for p in chunk if (str(p), gray) not in _FEAT_CACHE]
+        if need:
+            xs = []
+            for (p, ) in need:
+                try:
+                    im = Image.open(p).convert("RGB")
+                    if gray:
+                        im = im.convert("L").convert("RGB")
+                    xs.append(TF(im))
+                except Exception:
+                    xs.append(torch.zeros(3, 224, 224))   # 坏图用零图占位
+            feats = body(torch.stack(xs).to(DEVICE)).flatten(1).cpu().numpy()
+            for (p, ), f in zip(need, feats):
+                _FEAT_CACHE[(str(p), gray)] = f
+        out.append(np.stack([_FEAT_CACHE[(str(p), gray)] for p in chunk]))
     print(f"  {tag:<22} {len(paths):>4} 张   {time.time()-t0:>5.1f}s")
     return np.concatenate(out)
 
@@ -200,6 +251,8 @@ F_pv_te = extract(pv_test, "PV 评估")
 F_real_te = extract(real_test, "真实田间 评估")
 F_ood_tr = extract(ood_train, "非叶片 训练")
 F_ood_te = extract(ood_test, "非叶片 评估")
+# 跨来源验证按「来源」整组取特征（与上面的训练/评估划分无关）
+F_by_source = {src: extract(fs, f"非叶片·{src}") for src, fs in ood_by_source.items()}
 
 # 灰度增强特征（只对训练集，评估集单独提灰度版本用于验收）
 F_pv_gray = F_real_gray = None
@@ -260,6 +313,34 @@ pos_eval = [F_pv_tr, F_real_tr] + ([F_pv_gray, F_real_gray] if GRAY_AUG_RATIO > 
 sc_eval, clf_eval = fit(pos_eval, F_ood_tr)
 eval_metrics = report(sc_eval, clf_eval, "留出集评估（真实田间 20% / 非叶片 20%）")
 
+# ========================= 跨来源验证 =========================
+# 同分布留出会高估：训练/测试的负样本来自同一批来源，测不到「面对全新类型」的表现
+# （MSP 判据当初就是这么被高估的）。故额外做「负样本留一来源」：
+# 训练时完全排除某个来源，再用该来源的全部样本作测试 —— 这是最严格的泛化检验。
+print("\n" + "=" * 72)
+print("跨来源验证（留一来源：训练时完全没见过该类非叶片）")
+print("=" * 72)
+print(f"  {'留出来源':<12} {'张数':>5} {'AUROC':>8} {'拦截率':>8}  说明")
+xsrc = {}
+pos_cv = [np.vstack(pos_eval)]
+for src, fs in ood_by_source.items():
+    if len(ood_by_source) < 2:
+        break
+    neg_tr = np.vstack([F_by_source[s] for s in ood_by_source if s != src])
+    sc_s, clf_s = fit(pos_cv, neg_tr)
+    s_held = score(sc_s, clf_s, F_by_source[src])
+    s_real = score(sc_s, clf_s, F_real_te)
+    auc = float(roc_auc_score(
+        np.concatenate([np.ones(len(s_real)), np.zeros(len(s_held))]),
+        np.concatenate([s_real, s_held])))
+    block = float((s_held < THRESHOLD).mean())
+    xsrc[src] = {"auc": auc, "block": block, "n": len(fs)}
+    print(f"  {src:<12} {len(fs):>5} {auc:>8.4f} {block:>7.1%}  训练时该类完全缺席")
+if xsrc:
+    worst = min(xsrc.items(), key=lambda kv: kv[1]["auc"])
+    print(f"  跨来源 AUROC 区间：{worst[1]['auc']:.4f} ~ "
+          f"{max(v['auc'] for v in xsrc.values()):.4f}   （最悲观 = {worst[0]}）")
+
 # 参考信息：该阈值在留出集上对应的误杀率分位
 print("\n" + "=" * 72)
 print("阈值参考（仅记录，不参与判定）")
@@ -298,6 +379,9 @@ np.savez(
         "n_neg": int(len(F_ood_tr) + len(F_ood_te)),
         "train_ratio": {"real": REAL_TRAIN_RATIO, "ood": OOD_TRAIN_RATIO},
         "eval": eval_metrics,
+        "xsource": xsrc,
+        "pv_per_class": PV_PER_CLASS_TRAIN,
+        "sources": {k: len(v) for k, v in ood_by_source.items()},
         "seed": SEED,
     })]),
 )
@@ -307,6 +391,5 @@ print(f"\n评估摘要: 真实叶 AUROC={eval_metrics['real_auroc']:.4f}  "
       f"误杀={eval_metrics['real_false_reject']:.1%}  "
       f"拦截={eval_metrics['real_block_rate']:.1%}  "
       f"灰度叶通过={eval_metrics['gray_pass_rate']:.0%}")
-print("\n注意：上述 AUROC 是**同分布留出**结果，会高估泛化能力。")
-print("跨来源检验（负样本留一来源）实测 AUROC 在 0.77~0.99 之间，"
-      "详见 docs/11_域适应与OOD检测实验.md。")
+print("\n注意：上述 AUROC 是**同分布留出**结果，会高估泛化能力；")
+print("跨来源留一验证见上方表格（本版已内置，不再依赖外部实验脚本）。")
