@@ -58,10 +58,17 @@ def init_db():
         pred_class_id INTEGER NOT NULL,
         confidence REAL NOT NULL,
         top3_json TEXT,
+        -- 非叶片判据的运行期快照（2026-10-19 加入）：
+        -- 用于观察线上输入分布是否漂移。历史行留 NULL，聚合查询会自动跳过。
+        leaf_prob REAL,
+        leaf_prob_source TEXT,
+        mean_chroma REAL,
+        likely_not_leaf INTEGER,
         created_at TEXT DEFAULT (datetime('now','localtime')),
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
     CREATE INDEX IF NOT EXISTS idx_records_user ON recognition_records(user_id, created_at DESC);
+
 
     CREATE TABLE IF NOT EXISTS disease_knowledge (
         id INTEGER PRIMARY KEY,
@@ -82,6 +89,7 @@ def init_db():
         updated_at TEXT DEFAULT (datetime('now','localtime'))
     );
     """)
+    _migrate_records(cur)
     conn.commit()
 
     # 首次导入知识库（仅当为空时）
@@ -90,6 +98,29 @@ def init_db():
         _import_knowledge(cur)
     conn.commit()
     conn.close()
+
+
+def _migrate_records(cur):
+    """为已存在的旧库补齐 OOD 监控列。
+
+    SQLite 不支持 `ADD COLUMN IF NOT EXISTS`，只能先读 `PRAGMA table_info` 再补。
+    索引必须在这之后建 —— 否则在旧库上 `CREATE INDEX ... (leaf_prob)` 会因
+    列不存在直接抛错，导致整个 init_db 失败。
+    """
+    cur.execute("PRAGMA table_info(recognition_records)")
+    have = {r["name"] for r in cur.fetchall()}
+    added = []
+    for name, typ in (("leaf_prob", "REAL"),
+                      ("leaf_prob_source", "TEXT"),
+                      ("mean_chroma", "REAL"),
+                      ("likely_not_leaf", "INTEGER")):
+        if name not in have:
+            cur.execute(f"ALTER TABLE recognition_records ADD COLUMN {name} {typ}")
+            added.append(name)
+    cur.execute("CREATE INDEX IF NOT EXISTS idx_records_leafprob "
+                "ON recognition_records(created_at DESC, leaf_prob)")
+    if added:
+        print(f"[db] recognition_records 已补列: {', '.join(added)}")
 
 
 def _split_crop_disease(en, zh, info):
@@ -186,19 +217,79 @@ def update_user(uid, nickname=None, password_hash=None, salt=None):
 
 
 # ===================== 识别记录 CRUD =====================
-def add_record(user_id, image_name, pred_class_id, confidence, top3):
+def add_record(user_id, image_name, pred_class_id, confidence, top3, ood=None):
+    """写入一条识别记录。
+
+    ood: `predict_image_with_ood()` 返回的判据字典（可选）。
+        落库目的是**运行期监控** —— 只有把 leaf_prob 等值存下来，
+        才能回答「线上输入是否偏离训练分布」，也才能为下一轮重训积累素材。
+        传 None 时四列为 NULL（兼容旧调用方与单元测试）。
+    """
+    ood = ood or {}
     conn = get_conn()
     cur = conn.cursor()
     cur.execute(
         """INSERT INTO recognition_records
-           (user_id, image_name, pred_class_id, confidence, top3_json)
-           VALUES (?,?,?,?,?)""",
-        (user_id, image_name, pred_class_id, confidence, json.dumps(top3, ensure_ascii=False)),
+           (user_id, image_name, pred_class_id, confidence, top3_json,
+            leaf_prob, leaf_prob_source, mean_chroma, likely_not_leaf)
+           VALUES (?,?,?,?,?,?,?,?,?)""",
+        (user_id, image_name, pred_class_id, confidence,
+         json.dumps(top3, ensure_ascii=False),
+         ood.get("leaf_prob"),
+         ood.get("leaf_prob_source"),
+         ood.get("mean_chroma"),
+         None if "likely_not_leaf" not in ood else int(bool(ood["likely_not_leaf"]))),
     )
     rid = cur.lastrowid
     conn.commit()
     conn.close()
     return rid
+
+
+def get_ood_stats(user_id, days=7, low_leaf=0.2):
+    """近 N 天的非叶片判据分布，用于发现线上数据漂移。
+
+    关心三个信号：
+      · `flagged_ratio` —— 被判定为非叶片的占比。突增说明用户在传别的东西，
+        或模型/检测头退化了（例如切了量化后端，`msp_fallback` 会同步上涨）。
+      · `low_leaf_ratio` —— `leaf_prob < low_leaf` 的占比，比 flagged 更敏感，
+        能在正式拦截之前给出早期预警。
+      · `msp_fallback` —— 有多少条走了 MSP 回退判据。>0 说明检测头没生效，
+        此时真实场景误杀率会显著上升，需要立刻排查。
+    """
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(
+        """SELECT COUNT(*) AS total,
+                  SUM(CASE WHEN leaf_prob IS NOT NULL THEN 1 ELSE 0 END) AS monitored,
+                  SUM(CASE WHEN likely_not_leaf = 1 THEN 1 ELSE 0 END) AS flagged,
+                  SUM(CASE WHEN leaf_prob < ? THEN 1 ELSE 0 END) AS low,
+                  SUM(CASE WHEN leaf_prob_source = 'msp' THEN 1 ELSE 0 END) AS msp_fallback,
+                  AVG(leaf_prob) AS avg_leaf_prob,
+                  AVG(mean_chroma) AS avg_chroma
+           FROM recognition_records
+           WHERE user_id = ?
+             AND created_at >= datetime('now','localtime','-' || ? || ' days')""",
+        (low_leaf, user_id, int(days)),
+    )
+    r = dict(cur.fetchone())
+    conn.close()
+
+    total = r["total"] or 0
+    monitored = r["monitored"] or 0
+    return {
+        "days": int(days),
+        "total": total,
+        "monitored": monitored,
+        "flagged": r["flagged"] or 0,
+        "msp_fallback": r["msp_fallback"] or 0,
+        "avg_leaf_prob": round(r["avg_leaf_prob"], 4) if r["avg_leaf_prob"] is not None else None,
+        "avg_chroma": round(r["avg_chroma"], 1) if r["avg_chroma"] is not None else None,
+        # 分母用 monitored（有判据快照的记录），避免把历史 NULL 行算成"正常"
+        "flagged_ratio": round((r["flagged"] or 0) / monitored, 4) if monitored else None,
+        "low_leaf_ratio": round((r["low"] or 0) / monitored, 4) if monitored else None,
+        "low_leaf_threshold": low_leaf,
+    }
 
 
 def get_records_by_user(user_id, page=1, size=20):

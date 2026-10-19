@@ -300,7 +300,10 @@ def predict(
 
     if user:
         top3_json = [{"class_id": r["class_id"], "prob": r["confidence"]} for r in results]
-        db.add_record(user["id"], save_name, top1["class_id"], top1["confidence"], top3_json)
+        # 连同 OOD 判据一起落库：否则「线上输入是否漂移」无从观测，
+        # 改完模型也只能靠离线实验集自说自话（2026-10-19 加入运行期监控）。
+        db.add_record(user["id"], save_name, top1["class_id"], top1["confidence"],
+                      top3_json, ood=ood)
 
     return _ok(data)
 
@@ -363,6 +366,16 @@ def record_export(user=Depends(get_current_user), fmt: str = Query("json")):
             background=BackgroundTask(os.unlink, path),
         )
     return _ok(rows)
+
+
+@app.get("/api/v1/records/ood-stats")
+def record_ood_stats(days: int = Query(7, ge=1, le=365), user=Depends(get_current_user)):
+    """近 N 天「非叶片判据」的分布，用于发现线上输入漂移。
+
+    注意路由声明顺序：必须排在 `/records/{rid}` **之前**，
+    否则 `ood-stats` 会被当成 rid 去解析（FastAPI 按声明顺序匹配）。
+    """
+    return _ok(db.get_ood_stats(user["id"], days=days))
 
 
 @app.get("/api/v1/records/{rid}")

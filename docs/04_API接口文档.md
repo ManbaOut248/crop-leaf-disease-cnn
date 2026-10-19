@@ -105,6 +105,10 @@
 | GET | `/records/{id}` | 历史详情（图 + Top-3 对比） |
 | DELETE | `/records/{id}` | 删除单条 |
 | GET | `/records/export` | 导出 CSV/JSON（`?fmt=csv|json`） |
+| GET | `/records/ood-stats` | **非叶片判据的近 N 天分布**（`?days=7`），用于发现线上输入漂移 |
+
+> 路由声明顺序：`/records/ood-stats` 与 `/records/export` 必须排在 `/records/{id}` **之前**，
+> 否则会被当成 `id` 解析（FastAPI 按声明顺序匹配）。
 
 **历史列表响应**（分页）
 ```json
@@ -119,6 +123,30 @@
   "msg": "ok"
 }
 ```
+
+**运行期监控响应**（`GET /records/ood-stats?days=7`）
+```json
+{
+  "code": 0,
+  "data": {
+    "days": 7, "total": 22, "monitored": 2,
+    "flagged": 1, "msp_fallback": 0,
+    "avg_leaf_prob": 0.514, "avg_chroma": 55.2,
+    "flagged_ratio": 0.5, "low_leaf_ratio": 0.5,
+    "low_leaf_threshold": 0.2
+  },
+  "msg": "ok"
+}
+```
+
+| 字段 | 含义 |
+|---|---|
+| `monitored` | 有判据快照的记录数。**比例类字段的分母就是它** —— 历史行（加监控列之前写入的）为 NULL，若用 `total` 作分母，比例会被稀释成"一切正常" |
+| `flagged_ratio` | 判定为非叶片的占比。突增说明用户在传别的东西，或判据退化 |
+| `low_leaf_ratio` | `leaf_prob < low_leaf_threshold` 的占比，比 `flagged` 更敏感，是**早期预警** |
+| `msp_fallback` | 走 MSP 回退判据的条数。**>0 说明检测头没生效**（如切了 quantized / pruned 后端），此时真实场景误杀率会显著上升 |
+
+每次 `/predict` 都会把 `leaf_prob` / `leaf_prob_source` / `mean_chroma` / `likely_not_leaf` 一并落库（仅登录用户）。
 
 ## 3. 前端调用示例（识别）
 ```http
