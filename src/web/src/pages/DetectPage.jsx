@@ -142,36 +142,34 @@ export default function DetectPage() {
 
           {result && top1 && (
             <>
-              {/* 非叶片输入提示：三级判据（详见 src/model/predict.py）——
-                    · 平均色度（始终叠加）→ 灰阶图，对 755 张真实叶片零误伤，语气可最强；
-                    · 叶片检测头（主判据，512 维特征二分类）→ 真实叶 vs 非叶 AUROC 0.99，
-                      跨来源留一验证 0.77~0.99，故可明确说「可能不是叶片照片」；
-                    · MSP（回退判据）→ 跨域不可靠（真实田间 AUROC 仅 0.553，曾把 13 张
-                      真叶片中的 7 张误判），故只说「结果可能不可靠」，不断言不是叶片。
-                  实测接入检测头后：真实田间叶片 0/11 误杀，漫画/截图/非叶照片 12/12 拦截。 */}
+              {/* 非叶片输入提示：判定只看主判据（详见 src/model/predict.py）——
+                    · 叶片检测头（主）→ 真实叶 vs 非叶 AUROC 0.97~0.99，跨来源留一 0.77~0.99，
+                      故可明确说「可能不是叶片照片」；
+                    · MSP（回退，仅检测头不可用时）→ 跨域不可靠（真实田间 AUROC 仅 0.553，
+                      曾把 13 张真叶片中的 7 张误判），故只说「结果可能不可靠」。
+                    · 平均色度**不再参与判定**：它隐含「叶片必为彩色」的假设，会把灰阶真实叶片
+                      100% 误杀；现仅用于选择措辞，并对「灰阶但放行」的情况给一条温和提醒。
+                  实测（灰度增强后）：真实田间叶片误杀 4.6%，非叶片拦截 95.9%，灰度叶通过 93%。 */}
               {result.likely_not_leaf && (
                 <Alert
                   type="error"
                   showIcon
                   style={{ marginBottom: 12 }}
                   message={
-                    result.grayscale
-                      ? '这张图片不是叶片照片'
-                      : result.leaf_prob_source === 'head'
-                        ? '这张图片可能不是叶片照片'
-                        : '识别结果可能不可靠'
+                    result.leaf_prob_source === 'head'
+                      ? '这张图片可能不是叶片照片'
+                      : '识别结果可能不可靠'
                   }
                   description={
-                    result.grayscale ? (
+                    result.leaf_prob_source === 'head' ? (
                       <>
-                        检测到这是一张<b>黑白 / 灰度图片</b>（平均色度 {result.mean_chroma}），
-                        而植物叶片照片应为彩色。请上传<b>彩色</b>的单一叶片清晰特写、背景尽量干净。
-                        下方结果<b>不可信</b>，请勿据此用药。
-                      </>
-                    ) : result.leaf_prob_source === 'head' ? (
-                      <>
-                        系统判断该图为「叶片」的把握仅 <b>{formatPercent(result.leaf_prob)}</b>。
-                        请上传<b>单一叶片</b>的清晰特写、背景尽量干净。
+                        系统判断该图为「叶片」的把握仅 <b>{formatPercent(result.leaf_prob)}</b>
+                        {result.grayscale ? (
+                          <>
+                            ，且这是一张<b>黑白 / 灰度图片</b>（平均色度 {result.mean_chroma}）
+                          </>
+                        ) : null}
+                        。请上传<b>单一叶片</b>的清晰特写、背景尽量干净，
                         下方结果<b>不可信</b>，请勿据此用药。
                       </>
                     ) : (
@@ -184,6 +182,24 @@ export default function DetectPage() {
                         提示：上传<b>单一叶片</b>的清晰特写、背景尽量干净，识别会更可靠。
                       </>
                     )
+                  }
+                />
+              )}
+
+              {/* 灰阶但判定为叶片：不拦截，只提醒 —— 模型主要在彩色图上训练，
+                  灰度化会损失病斑颜色信息（黄化、褐变等关键症状），准确率可能下降。 */}
+              {!result.likely_not_leaf && result.grayscale && (
+                <Alert
+                  type="warning"
+                  showIcon
+                  style={{ marginBottom: 12 }}
+                  message="检测到黑白 / 灰度图片"
+                  description={
+                    <>
+                      系统仍判断这是一张叶片照片，但病害识别主要依赖<b>颜色信息</b>
+                      （黄化、褐变、霉层等），灰度图可能影响判断准确率。
+                      建议改用<b>彩色</b>照片；下方结果请结合人工经验复核。
+                    </>
                   }
                 />
               )}

@@ -171,6 +171,18 @@ OOD_CHROMA_THRESHOLD = float(os.getenv("OOD_CHROMA_THRESHOLD", "8.0"))
 OOD_HEAD_PATH = MODEL_DIR / "ood_head.npz"
 OOD_HEAD_ENABLE = os.getenv("OOD_HEAD_ENABLE", "1").strip() == "1"
 
+# 决策阈值覆盖：默认 None → 使用 npz 内记录的 0.5（逻辑回归概率的自然边界）。
+# 设为 0~1 的值可在运行期调整：调高 → 拦得更严；调低 → 更宽松。
+# 只影响判定，不改模型，可随时回退。
+_HEAD_THR_ENV = os.getenv("OOD_HEAD_THRESHOLD", "").strip()
+OOD_HEAD_THRESHOLD = float(_HEAD_THR_ENV) if _HEAD_THR_ENV else None
+
+# ⚠️ 语义变更（2026-10-19 审计后）：平均色度**不再参与「是否非叶片」的判定**。
+# 原因：该判据隐含「叶片照片必为彩色」这一强假设，而实测 40 张真实叶片转灰度后
+# 检测头（灰度增强版）可判对 93%，色度却会一票否决、造成 100% 误杀。
+# 现色度只用于**选择提示语措辞**（"这是黑白图" vs "把握不足"），以及给灰阶图
+# 加一条"结果可能受影响"的温和提醒，不影响是否拦截。
+
 # ===================== 模型压缩推理后端（D 方案：量化 / 剪枝） =====================
 # 推理后端选择：fp32（默认，原始防泄漏 best） / quantized（INT8 量化，CPU 专用） / pruned（结构化通道剪枝）
 # 由本开关统一切换 predict.py 的加载逻辑，predict_image() 对外接口不变。

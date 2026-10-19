@@ -30,7 +30,7 @@ from src.config import (
     CALIBRATION_PATH, INFER_BACKEND, PRUNED_MODEL_PATH, QUANTIZED_MODEL_PATH,
     BEST_MODEL_PATH, LAST_MODEL_PATH, NUM_CLASSES, PRESCALE_SIZE,
     OOD_MSP_THRESHOLD, OOD_CHROMA_THRESHOLD,
-    OOD_HEAD_PATH, OOD_HEAD_ENABLE,
+    OOD_HEAD_PATH, OOD_HEAD_ENABLE, OOD_HEAD_THRESHOLD,
 )
 from src.data.transforms import get_val_transform
 from src.model.resnet import build_resnet18
@@ -108,7 +108,7 @@ class _LeafHead:
     加载时 allow_pickle=False，不存在 pickle 反序列化风险。
     """
 
-    def __init__(self, path):
+    def __init__(self, path, threshold_override=None):
         self.ready = False
         self.threshold = 0.5
         try:
@@ -118,11 +118,14 @@ class _LeafHead:
             self.coef = d["coef"].astype(np.float32)
             self.bias = float(d["intercept"][0])
             self.threshold = float(d["threshold"][0])
+            # 运行期阈值覆盖（OOD_HEAD_THRESHOLD），只影响判定、不改模型
+            if threshold_override is not None:
+                self.threshold = float(threshold_override)
             self.ready = True
         except Exception as e:  # noqa: BLE001
             warnings.warn(
-                f"叶片检测头未加载（{path}）：{e}。将回退到 MSP + 色度判据 —— "
-                "该组合在真实田间照片上误杀率很高，建议运行 "
+                f"叶片检测头未加载（{path}）：{e}。将回退到 MSP 判据 —— "
+                "该判据在真实田间照片上误杀率很高，建议运行 "
                 "scripts/train_ood_head.py 重新生成。",
                 stacklevel=2,
             )
@@ -148,12 +151,20 @@ class Predictor:
         self.transform = get_val_transform()
         self.model = self._load_model()
         # 叶片检测头只在 fp32 后端启用：量化 / 剪枝模型的池化特征分布与训练时
-        # 不一致，复用会失准；这两种后端自动回退到 MSP + 色度判据。
-        self.leaf_head = (
-            _LeafHead(OOD_HEAD_PATH)
-            if (OOD_HEAD_ENABLE and INFER_BACKEND == "fp32")
-            else None
-        )
+        # 不一致，复用会失准，这两个后端一律回退到 MSP。
+        if OOD_HEAD_ENABLE and INFER_BACKEND == "fp32":
+            self.leaf_head = _LeafHead(OOD_HEAD_PATH, OOD_HEAD_THRESHOLD)
+        else:
+            self.leaf_head = None
+            # 必须显式告警：MSP 判据在真实田间只有 AUROC 0.553、误杀率可达 50%+，
+            # 静默降级会让使用者误以为防护仍然存在。
+            if OOD_HEAD_ENABLE:
+                warnings.warn(
+                    f"INFER_BACKEND={INFER_BACKEND} 下不启用叶片检测头，已回退到 MSP 判据。"
+                    "MSP 在真实田间照片上不可靠（误杀率可能超过 50%）；"
+                    "需要该能力请改用 INFER_BACKEND=fp32。",
+                    stacklevel=2,
+                )
         self.model.eval()
         self.knowledge = self._load_knowledge()
         self.temperature = self._load_calibration()  # 温度缩放校准参数
@@ -320,20 +331,23 @@ class Predictor:
                38 类 top-1 概率。跨域不可靠：真实田间 AUROC 仅 0.553，
                误杀 10% 只能拦下 16.8%。仅在检测头缺失/后端不支持时启用。
 
-            3. **平均色度**（始终叠加，阈值 8.0）
-               抓灰阶图（黑白漫画 / 线稿 / 扫描件）—— 这类图 MSP 会失效，
-               而真实叶片照片色度最低 10.6，故对 755 张真实叶片零误伤。
+            3. **平均色度**（仅用于文案，**不参与判定**）
+               标记「灰阶图」（黑白漫画 / 线稿 / 扫描件），供前端选择提示语措辞，
+               并对灰阶图额外给一条「结果可能受影响」的温和提醒。
+               注意语义变更：它**不再**是拦截条件 —— 该判据隐含「叶片照片必为彩色」
+               这一强假设，实测把 40 张真实叶片转灰度后会 100% 误杀
+               （而灰度增强后的检测头能判对 93%）。
 
-        组合语义：色度命中 **或** 主判据命中 → likely_not_leaf。
+        判定语义：**只看主判据**（检测头或 MSP），色度不参与。
         「提示而非硬阻断」：误杀真实叶片的代价（重拍一张）远小于漏放
         （据此施药），但也不直接拒绝，交由用户判断。
 
         返回字段：
             leaf_prob        —— 「是叶片」的把握（检测头输出；回退时为 MSP）
             leaf_prob_source —— "head" / "msp"，标明判据来源（便于诊断）
-            mean_chroma      —— 平均色度，前端区分提示语（灰阶图 / 低置信）
-            grayscale        —— 是否判定为灰阶图
-            likely_not_leaf  —— 综合判定
+            mean_chroma      —— 平均色度
+            grayscale        —— 是否标记为灰阶图（仅影响文案与提醒，不影响判定）
+            likely_not_leaf  —— 判定结果（由主判据决定）
             msp              —— 原始 softmax 置信度（诊断 / 日志用）
         """
         results, msp, chroma, feat = self._infer(pil_image, top_k)
@@ -341,11 +355,11 @@ class Predictor:
 
         if self.leaf_head is not None and self.leaf_head.ready and feat is not None:
             leaf_prob = self.leaf_head.score(feat)
-            low_leaf = leaf_prob < self.leaf_head.threshold
+            likely_not_leaf = leaf_prob < self.leaf_head.threshold
             source = "head"
         else:
             leaf_prob = msp
-            low_leaf = msp < OOD_MSP_THRESHOLD
+            likely_not_leaf = msp < OOD_MSP_THRESHOLD
             source = "msp"
 
         return results, {
@@ -353,7 +367,7 @@ class Predictor:
             "leaf_prob_source": source,
             "mean_chroma": round(chroma, 1),
             "grayscale": grayscale,
-            "likely_not_leaf": bool(low_leaf or grayscale),
+            "likely_not_leaf": bool(likely_not_leaf),
             "msp": round(float(msp), 4),
         }
 
