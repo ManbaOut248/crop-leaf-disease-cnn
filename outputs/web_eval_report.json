@@ -1,0 +1,4228 @@
+{
+  "source": "PlantDoc test split (CC BY 4.0)",
+  "n": 120,
+  "top1": 0.175,
+  "top1_ci": [
+    0.11740448670592564,
+    0.25275868948042857
+  ],
+  "top3": 0.38333333333333336,
+  "top3_ci": [
+    0.30124387764148153,
+    0.47266085227156884
+  ],
+  "crop_level": 0.325,
+  "crop_level_ci": [
+    0.24775726408835427,
+    0.41309983078122114
+  ],
+  "false_flagged": 0.05,
+  "false_flagged_ci": [
+    0.023114049304474242,
+    0.10480419464586235
+  ],
+  "per_class": {
+    "苹果雪松锈病": {
+      "n": 5,
+      "ok": 0
+    },
+    "苹果（健康）": {
+      "n": 5,
+      "ok": 1
+    },
+    "苹果黑星病": {
+      "n": 3,
+      "ok": 0
+    },
+    "蓝莓（健康）": {
+      "n": 5,
+      "ok": 2
+    },
+    "樱桃（健康）": {
+      "n": 5,
+      "ok": 0
+    },
+    "玉米灰斑病": {
+      "n": 3,
+      "ok": 2
+    },
+    "玉米北方叶枯病": {
+      "n": 5,
+      "ok": 2
+    },
+    "玉米普通锈病": {
+      "n": 5,
+      "ok": 2
+    },
+    "葡萄黑腐病": {
+      "n": 3,
+      "ok": 0
+    },
+    "葡萄（健康）": {
+      "n": 5,
+      "ok": 0
+    },
+    "桃（健康）": {
+      "n": 5,
+      "ok": 1
+    },
+    "甜椒细菌性斑点病": {
+      "n": 5,
+      "ok": 0
+    },
+    "甜椒（健康）": {
+      "n": 3,
+      "ok": 2
+    },
+    "马铃薯早疫病": {
+      "n": 5,
+      "ok": 2
+    },
+    "马铃薯晚疫病": {
+      "n": 4,
+      "ok": 0
+    },
+    "树莓（健康）": {
+      "n": 5,
+      "ok": 0
+    },
+    "大豆（健康）": {
+      "n": 4,
+      "ok": 0
+    },
+    "南瓜白粉病": {
+      "n": 5,
+      "ok": 3
+    },
+    "草莓（健康）": {
+      "n": 5,
+      "ok": 1
+    },
+    "番茄细菌性斑点病": {
+      "n": 4,
+      "ok": 0
+    },
+    "番茄早疫病": {
+      "n": 5,
+      "ok": 0
+    },
+    "番茄（健康）": {
+      "n": 5,
+      "ok": 0
+    },
+    "番茄晚疫病": {
+      "n": 4,
+      "ok": 2
+    },
+    "番茄叶霉病": {
+      "n": 3,
+      "ok": 0
+    },
+    "番茄花叶病毒病": {
+      "n": 4,
+      "ok": 0
+    },
+    "番茄 Septoria 叶斑病": {
+      "n": 5,
+      "ok": 0
+    },
+    "番茄黄化曲叶病毒病": {
+      "n": 5,
+      "ok": 1
+    }
+  },
+  "confusions": [
+    {
+      "true": "苹果雪松锈病",
+      "pred": "玉米灰斑病",
+      "count": 4
+    },
+    {
+      "true": "葡萄（健康）",
+      "pred": "番茄晚疫病",
+      "count": 4
+    },
+    {
+      "true": "马铃薯晚疫病",
+      "pred": "番茄晚疫病",
+      "count": 4
+    },
+    {
+      "true": "苹果黑星病",
+      "pred": "草莓叶焦病",
+      "count": 3
+    },
+    {
+      "true": "玉米北方叶枯病",
+      "pred": "玉米灰斑病",
+      "count": 3
+    },
+    {
+      "true": "苹果（健康）",
+      "pred": "甜椒（健康）",
+      "count": 2
+    },
+    {
+      "true": "樱桃（健康）",
+      "pred": "甜椒（健康）",
+      "count": 2
+    },
+    {
+      "true": "樱桃（健康）",
+      "pred": "苹果（健康）",
+      "count": 2
+    },
+    {
+      "true": "玉米普通锈病",
+      "pred": "玉米灰斑病",
+      "count": 2
+    },
+    {
+      "true": "葡萄黑腐病",
+      "pred": "玉米灰斑病",
+      "count": 2
+    },
+    {
+      "true": "桃（健康）",
+      "pred": "草莓叶焦病",
+      "count": 2
+    },
+    {
+      "true": "甜椒细菌性斑点病",
+      "pred": "玉米灰斑病",
+      "count": 2
+    },
+    {
+      "true": "马铃薯早疫病",
+      "pred": "番茄早疫病",
+      "count": 2
+    },
+    {
+      "true": "草莓（健康）",
+      "pred": "葡萄（健康）",
+      "count": 2
+    },
+    {
+      "true": "番茄早疫病",
+      "pred": "番茄晚疫病",
+      "count": 2
+    },
+    {
+      "true": "番茄花叶病毒病",
+      "pred": "玉米（健康）",
+      "count": 2
+    },
+    {
+      "true": "番茄 Septoria 叶斑病",
+      "pred": "玉米普通锈病",
+      "count": 2
+    },
+    {
+      "true": "苹果雪松锈病",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "苹果（健康）",
+      "pred": "樱桃（健康）",
+      "count": 1
+    },
+    {
+      "true": "苹果（健康）",
+      "pred": "玉米（健康）",
+      "count": 1
+    },
+    {
+      "true": "蓝莓（健康）",
+      "pred": "马铃薯早疫病",
+      "count": 1
+    },
+    {
+      "true": "蓝莓（健康）",
+      "pred": "甜椒（健康）",
+      "count": 1
+    },
+    {
+      "true": "蓝莓（健康）",
+      "pred": "玉米北方叶枯病",
+      "count": 1
+    },
+    {
+      "true": "樱桃（健康）",
+      "pred": "蓝莓（健康）",
+      "count": 1
+    },
+    {
+      "true": "玉米灰斑病",
+      "pred": "番茄早疫病",
+      "count": 1
+    },
+    {
+      "true": "玉米普通锈病",
+      "pred": "玉米北方叶枯病",
+      "count": 1
+    },
+    {
+      "true": "葡萄黑腐病",
+      "pred": "玉米普通锈病",
+      "count": 1
+    },
+    {
+      "true": "葡萄（健康）",
+      "pred": "草莓叶焦病",
+      "count": 1
+    },
+    {
+      "true": "桃（健康）",
+      "pred": "桃细菌性斑点病",
+      "count": 1
+    },
+    {
+      "true": "桃（健康）",
+      "pred": "樱桃（健康）",
+      "count": 1
+    },
+    {
+      "true": "甜椒细菌性斑点病",
+      "pred": "草莓叶焦病",
+      "count": 1
+    },
+    {
+      "true": "甜椒细菌性斑点病",
+      "pred": "马铃薯早疫病",
+      "count": 1
+    },
+    {
+      "true": "甜椒细菌性斑点病",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "甜椒（健康）",
+      "pred": "玉米普通锈病",
+      "count": 1
+    },
+    {
+      "true": "马铃薯早疫病",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "树莓（健康）",
+      "pred": "草莓（健康）",
+      "count": 1
+    },
+    {
+      "true": "树莓（健康）",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "树莓（健康）",
+      "pred": "甜椒（健康）",
+      "count": 1
+    },
+    {
+      "true": "树莓（健康）",
+      "pred": "番茄红蜘蛛（二斑叶螨）",
+      "count": 1
+    },
+    {
+      "true": "树莓（健康）",
+      "pred": "番茄黄化曲叶病毒病",
+      "count": 1
+    },
+    {
+      "true": "大豆（健康）",
+      "pred": "马铃薯早疫病",
+      "count": 1
+    },
+    {
+      "true": "大豆（健康）",
+      "pred": "蓝莓（健康）",
+      "count": 1
+    },
+    {
+      "true": "大豆（健康）",
+      "pred": "甜椒（健康）",
+      "count": 1
+    },
+    {
+      "true": "大豆（健康）",
+      "pred": "玉米（健康）",
+      "count": 1
+    },
+    {
+      "true": "南瓜白粉病",
+      "pred": "樱桃白粉病",
+      "count": 1
+    },
+    {
+      "true": "南瓜白粉病",
+      "pred": "玉米灰斑病",
+      "count": 1
+    },
+    {
+      "true": "草莓（健康）",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "草莓（健康）",
+      "pred": "葡萄黑腐病",
+      "count": 1
+    },
+    {
+      "true": "番茄细菌性斑点病",
+      "pred": "草莓叶焦病",
+      "count": 1
+    },
+    {
+      "true": "番茄细菌性斑点病",
+      "pred": "马铃薯早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄细菌性斑点病",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄细菌性斑点病",
+      "pred": "玉米（健康）",
+      "count": 1
+    },
+    {
+      "true": "番茄早疫病",
+      "pred": "草莓叶焦病",
+      "count": 1
+    },
+    {
+      "true": "番茄早疫病",
+      "pred": "马铃薯早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄早疫病",
+      "pred": "玉米（健康）",
+      "count": 1
+    },
+    {
+      "true": "番茄（健康）",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄（健康）",
+      "pred": "甜椒（健康）",
+      "count": 1
+    },
+    {
+      "true": "番茄（健康）",
+      "pred": "番茄早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄（健康）",
+      "pred": "马铃薯早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄（健康）",
+      "pred": "玉米（健康）",
+      "count": 1
+    },
+    {
+      "true": "番茄晚疫病",
+      "pred": "玉米灰斑病",
+      "count": 1
+    },
+    {
+      "true": "番茄晚疫病",
+      "pred": "番茄早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄叶霉病",
+      "pred": "番茄 Septoria 叶斑病",
+      "count": 1
+    },
+    {
+      "true": "番茄叶霉病",
+      "pred": "番茄早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄叶霉病",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄花叶病毒病",
+      "pred": "玉米灰斑病",
+      "count": 1
+    },
+    {
+      "true": "番茄花叶病毒病",
+      "pred": "草莓叶焦病",
+      "count": 1
+    },
+    {
+      "true": "番茄 Septoria 叶斑病",
+      "pred": "番茄晚疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄 Septoria 叶斑病",
+      "pred": "马铃薯早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄 Septoria 叶斑病",
+      "pred": "草莓叶焦病",
+      "count": 1
+    },
+    {
+      "true": "番茄黄化曲叶病毒病",
+      "pred": "马铃薯早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄黄化曲叶病毒病",
+      "pred": "番茄早疫病",
+      "count": 1
+    },
+    {
+      "true": "番茄黄化曲叶病毒病",
+      "pred": "南瓜白粉病",
+      "count": 1
+    },
+    {
+      "true": "番茄黄化曲叶病毒病",
+      "pred": "甜椒细菌性斑点病",
+      "count": 1
+    }
+  ],
+  "rows": [
+    {
+      "path": "outputs/realtest_test/apple_cedar_rust/02.-Rust-2017-207u24s.jpg.jpg",
+      "gh_dir": "Apple rust leaf",
+      "true_id": 2,
+      "true_name": "苹果雪松锈病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9315,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9315
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0362
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0208
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9997
+    },
+    {
+      "path": "outputs/realtest_test/apple_cedar_rust/0605_Rust-induced_leafspot.jpg.jpg",
+      "gh_dir": "Apple rust leaf",
+      "true_id": 2,
+      "true_name": "苹果雪松锈病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.9613,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.9613
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.034
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.002
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/apple_cedar_rust/185161-004-EAF28842.jpg.jpg",
+      "gh_dir": "Apple rust leaf",
+      "true_id": 2,
+      "true_name": "苹果雪松锈病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.9999,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.9999
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.0
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/apple_cedar_rust/2011-011.jpg.jpg",
+      "gh_dir": "Apple rust leaf",
+      "true_id": 2,
+      "true_name": "苹果雪松锈病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.9746,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.9746
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0071
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.0062
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/apple_cedar_rust/20130519cedarapplerust.jpg.jpg",
+      "gh_dir": "Apple rust leaf",
+      "true_id": 2,
+      "true_name": "苹果雪松锈病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.9608,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.9608
+        },
+        {
+          "id": 2,
+          "name": "苹果雪松锈病",
+          "prob": 0.0379
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.001
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/apple_healthy/20180511_090912-14gtw8a-e1526047952754.jpg.jpg",
+      "gh_dir": "Apple leaf",
+      "true_id": 3,
+      "true_name": "苹果（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.4671,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.4671
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.3901
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0417
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9941
+    },
+    {
+      "path": "outputs/realtest_test/apple_healthy/20180511_091133-24l1vhg-e1526047988236.jpg.jpg",
+      "gh_dir": "Apple leaf",
+      "true_id": 3,
+      "true_name": "苹果（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.2562,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.2562
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.1193
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.1097
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/apple_healthy/20180511_091252-1gy5xf5-e1526048000596.jpg.jpg",
+      "gh_dir": "Apple leaf",
+      "true_id": 3,
+      "true_name": "苹果（健康）",
+      "pred_id": 3,
+      "pred_name": "苹果（健康）",
+      "confidence": 0.46,
+      "top3": [
+        {
+          "id": 3,
+          "name": "苹果（健康）",
+          "prob": 0.46
+        },
+        {
+          "id": 0,
+          "name": "苹果黑星病",
+          "prob": 0.1796
+        },
+        {
+          "id": 15,
+          "name": "柑橘黄龙病",
+          "prob": 0.1234
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/apple_healthy/4120978-single-green-leaf-of-apple-tree.jpg.jpg",
+      "gh_dir": "Apple leaf",
+      "true_id": 3,
+      "true_name": "苹果（健康）",
+      "pred_id": 6,
+      "pred_name": "樱桃（健康）",
+      "confidence": 0.3303,
+      "top3": [
+        {
+          "id": 6,
+          "name": "樱桃（健康）",
+          "prob": 0.3303
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.2499
+        },
+        {
+          "id": 27,
+          "name": "草莓（健康）",
+          "prob": 0.1625
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9935
+    },
+    {
+      "path": "outputs/realtest_test/apple_healthy/Apple-Leaf-Wallpaper-17.jpg.jpg",
+      "gh_dir": "Apple leaf",
+      "true_id": 3,
+      "true_name": "苹果（健康）",
+      "pred_id": 10,
+      "pred_name": "玉米（健康）",
+      "confidence": 0.8038,
+      "top3": [
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.8038
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.1061
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0795
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9991
+    },
+    {
+      "path": "outputs/realtest_test/apple_scab/1b321015-6e33-4f18-aade-888f4383fe92.jpeg.jpg.jpg",
+      "gh_dir": "Apple Scab Leaf",
+      "true_id": 0,
+      "true_name": "苹果黑星病",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.3994,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.3994
+        },
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.2414
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.1516
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9607
+    },
+    {
+      "path": "outputs/realtest_test/apple_scab/28-500x375.jpg.jpg",
+      "gh_dir": "Apple Scab Leaf",
+      "true_id": 0,
+      "true_name": "苹果黑星病",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.8311,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.8311
+        },
+        {
+          "id": 13,
+          "name": "葡萄叶枯病（房枯病）",
+          "prob": 0.1654
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.0019
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9943
+    },
+    {
+      "path": "outputs/realtest_test/apple_scab/816.jpg.jpg",
+      "gh_dir": "Apple Scab Leaf",
+      "true_id": 0,
+      "true_name": "苹果黑星病",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.3026,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.3026
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.2972
+        },
+        {
+          "id": 21,
+          "name": "马铃薯晚疫病",
+          "prob": 0.0878
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9994
+    },
+    {
+      "path": "outputs/realtest_test/blueberry_healthy/blueberry-leaves-normal-above-and-iron-deficient-below-bgahf8.jpg.jpg",
+      "gh_dir": "Blueberry leaf",
+      "true_id": 4,
+      "true_name": "蓝莓（健康）",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.2921,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.2921
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.1228
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.1083
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/blueberry_healthy/blueberrysilverleaf16-1372b.jpg.jpg",
+      "gh_dir": "Blueberry leaf",
+      "true_id": 4,
+      "true_name": "蓝莓（健康）",
+      "pred_id": 4,
+      "pred_name": "蓝莓（健康）",
+      "confidence": 0.9669,
+      "top3": [
+        {
+          "id": 4,
+          "name": "蓝莓（健康）",
+          "prob": 0.9669
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.0135
+        },
+        {
+          "id": 0,
+          "name": "苹果黑星病",
+          "prob": 0.0057
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/blueberry_healthy/leaf-blueberry-15281271.jpg.jpg",
+      "gh_dir": "Blueberry leaf",
+      "true_id": 4,
+      "true_name": "蓝莓（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.9373,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.9373
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0621
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.0001
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9997
+    },
+    {
+      "path": "outputs/realtest_test/blueberry_healthy/P1200665%2BVaccinium%2Balaskaense%2Bvs%2Bovalifolium%2Bleaf%2Band%2B%2Btwig%2Bcr.jpg",
+      "gh_dir": "Blueberry leaf",
+      "true_id": 4,
+      "true_name": "蓝莓（健康）",
+      "pred_id": 4,
+      "pred_name": "蓝莓（健康）",
+      "confidence": 0.9974,
+      "top3": [
+        {
+          "id": 4,
+          "name": "蓝莓（健康）",
+          "prob": 0.9974
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0015
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.0003
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9112
+    },
+    {
+      "path": "outputs/realtest_test/blueberry_healthy/P1200701%2BVaccinium%2Bovalifolium%2BOval-leaf%2BBlueberry%2Bleaf%2Bmargin%2BHea.jpg",
+      "gh_dir": "Blueberry leaf",
+      "true_id": 4,
+      "true_name": "蓝莓（健康）",
+      "pred_id": 9,
+      "pred_name": "玉米北方叶枯病",
+      "confidence": 0.4947,
+      "top3": [
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.4947
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.2676
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0583
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9991
+    },
+    {
+      "path": "outputs/realtest_test/cherry_healthy/d7b79dbc0bca0eb3e63fbe5dfb256ccd53d90a4eb1413_1260x1260.jpg.jpg",
+      "gh_dir": "Cherry leaf",
+      "true_id": 6,
+      "true_name": "樱桃（健康）",
+      "pred_id": 4,
+      "pred_name": "蓝莓（健康）",
+      "confidence": 0.6812,
+      "top3": [
+        {
+          "id": 4,
+          "name": "蓝莓（健康）",
+          "prob": 0.6812
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0997
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.0595
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": true,
+      "leaf_prob": 0.0217
+    },
+    {
+      "path": "outputs/realtest_test/cherry_healthy/e52bbb9a08ede2948ba0c006f02fe7b053ad7831d1df6_1260x1260.jpg.jpg",
+      "gh_dir": "Cherry leaf",
+      "true_id": 6,
+      "true_name": "樱桃（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.981,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.981
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.0096
+        },
+        {
+          "id": 4,
+          "name": "蓝莓（健康）",
+          "prob": 0.0043
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": true,
+      "leaf_prob": 0.1867
+    },
+    {
+      "path": "outputs/realtest_test/cherry_healthy/ed12ff77ce021883de241830dee55e2e53d2c93231699_1260x1260.jpg.jpg",
+      "gh_dir": "Cherry leaf",
+      "true_id": 6,
+      "true_name": "樱桃（健康）",
+      "pred_id": 3,
+      "pred_name": "苹果（健康）",
+      "confidence": 0.9435,
+      "top3": [
+        {
+          "id": 3,
+          "name": "苹果（健康）",
+          "prob": 0.9435
+        },
+        {
+          "id": 23,
+          "name": "树莓（健康）",
+          "prob": 0.0302
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0111
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9968
+    },
+    {
+      "path": "outputs/realtest_test/cherry_healthy/fc729af279e9087d00bd32d89a1552a756a3ad9de7f2b_1260x1260.jpg.jpg",
+      "gh_dir": "Cherry leaf",
+      "true_id": 6,
+      "true_name": "樱桃（健康）",
+      "pred_id": 3,
+      "pred_name": "苹果（健康）",
+      "confidence": 0.9992,
+      "top3": [
+        {
+          "id": 3,
+          "name": "苹果（健康）",
+          "prob": 0.9992
+        },
+        {
+          "id": 6,
+          "name": "樱桃（健康）",
+          "prob": 0.0004
+        },
+        {
+          "id": 0,
+          "name": "苹果黑星病",
+          "prob": 0.0001
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9933
+    },
+    {
+      "path": "outputs/realtest_test/cherry_healthy/five-cherry-tree-green-leaves-white-isolated-background-34493587.jpg.jpg",
+      "gh_dir": "Cherry leaf",
+      "true_id": 6,
+      "true_name": "樱桃（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.7423,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.7423
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.2576
+        },
+        {
+          "id": 17,
+          "name": "桃（健康）",
+          "prob": 0.0001
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9815
+    },
+    {
+      "path": "outputs/realtest_test/corn_gray_leaf_spot/IMG_42231.jpg.jpg",
+      "gh_dir": "Corn Gray leaf spot",
+      "true_id": 7,
+      "true_name": "玉米灰斑病",
+      "pred_id": 29,
+      "pred_name": "番茄早疫病",
+      "confidence": 0.9731,
+      "top3": [
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.9731
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0168
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0078
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9998
+    },
+    {
+      "path": "outputs/realtest_test/corn_gray_leaf_spot/rsz0803Figure6.jpg.jpg",
+      "gh_dir": "Corn Gray leaf spot",
+      "true_id": 7,
+      "true_name": "玉米灰斑病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.2929,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.2929
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.2409
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.2033
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9928
+    },
+    {
+      "path": "outputs/realtest_test/corn_gray_leaf_spot/strom5.jpg.jpg",
+      "gh_dir": "Corn Gray leaf spot",
+      "true_id": 7,
+      "true_name": "玉米灰斑病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 1.0,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 1.0
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.0
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.0
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/corn_northern_leaf_blight/02c.jpg.jpg",
+      "gh_dir": "Corn leaf blight",
+      "true_id": 9,
+      "true_name": "玉米北方叶枯病",
+      "pred_id": 9,
+      "pred_name": "玉米北方叶枯病",
+      "confidence": 0.5867,
+      "top3": [
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.5867
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.168
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.0771
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9984
+    },
+    {
+      "path": "outputs/realtest_test/corn_northern_leaf_blight/0796.20graylssymt.jpg.jpg",
+      "gh_dir": "Corn leaf blight",
+      "true_id": 9,
+      "true_name": "玉米北方叶枯病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.8083,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.8083
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.1736
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0174
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/corn_northern_leaf_blight/07c.jpg.jpg",
+      "gh_dir": "Corn leaf blight",
+      "true_id": 9,
+      "true_name": "玉米北方叶枯病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.9993,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.9993
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.0003
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0003
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9996
+    },
+    {
+      "path": "outputs/realtest_test/corn_northern_leaf_blight/0c.jpg.jpg",
+      "gh_dir": "Corn leaf blight",
+      "true_id": 9,
+      "true_name": "玉米北方叶枯病",
+      "pred_id": 9,
+      "pred_name": "玉米北方叶枯病",
+      "confidence": 0.9849,
+      "top3": [
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.9849
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0144
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.0006
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/corn_northern_leaf_blight/1321189.jpg.jpg",
+      "gh_dir": "Corn leaf blight",
+      "true_id": 9,
+      "true_name": "玉米北方叶枯病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.7236,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.7236
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.2607
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0092
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.8937
+    },
+    {
+      "path": "outputs/realtest_test/corn_rust/0796.39maizerust.jpg.jpg",
+      "gh_dir": "Corn rust leaf",
+      "true_id": 8,
+      "true_name": "玉米普通锈病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.9422,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.9422
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0303
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.0165
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.998
+    },
+    {
+      "path": "outputs/realtest_test/corn_rust/0796.40comrust.jpg.jpg",
+      "gh_dir": "Corn rust leaf",
+      "true_id": 8,
+      "true_name": "玉米普通锈病",
+      "pred_id": 9,
+      "pred_name": "玉米北方叶枯病",
+      "confidence": 0.861,
+      "top3": [
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.861
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.1085
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0164
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/corn_rust/0796.47southrust.jpg.jpg",
+      "gh_dir": "Corn rust leaf",
+      "true_id": 8,
+      "true_name": "玉米普通锈病",
+      "pred_id": 8,
+      "pred_name": "玉米普通锈病",
+      "confidence": 0.9252,
+      "top3": [
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.9252
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0274
+        },
+        {
+          "id": 13,
+          "name": "葡萄叶枯病（房枯病）",
+          "prob": 0.0123
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/corn_rust/0796.52srusttelia.jpg.jpg",
+      "gh_dir": "Corn rust leaf",
+      "true_id": 8,
+      "true_name": "玉米普通锈病",
+      "pred_id": 8,
+      "pred_name": "玉米普通锈病",
+      "confidence": 0.8245,
+      "top3": [
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.8245
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.0783
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0264
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9941
+    },
+    {
+      "path": "outputs/realtest_test/corn_rust/12-19striprustJIM.jpg.jpg",
+      "gh_dir": "Corn rust leaf",
+      "true_id": 8,
+      "true_name": "玉米普通锈病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.9999,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.9999
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.0
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.0
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9977
+    },
+    {
+      "path": "outputs/realtest_test/grape_black_rot/03gb.jpg.jpg",
+      "gh_dir": "grape leaf black rot",
+      "true_id": 11,
+      "true_name": "葡萄黑腐病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.8892,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.8892
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0639
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0267
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.8515
+    },
+    {
+      "path": "outputs/realtest_test/grape_black_rot/35589125035_662dd5b258_b.jpg.jpg",
+      "gh_dir": "grape leaf black rot",
+      "true_id": 11,
+      "true_name": "葡萄黑腐病",
+      "pred_id": 8,
+      "pred_name": "玉米普通锈病",
+      "confidence": 0.7003,
+      "top3": [
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.7003
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.2208
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0264
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9971
+    },
+    {
+      "path": "outputs/realtest_test/grape_black_rot/5-29black-rot-chardRR.jpg.jpg",
+      "gh_dir": "grape leaf black rot",
+      "true_id": 11,
+      "true_name": "葡萄黑腐病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.2811,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.2811
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.2597
+        },
+        {
+          "id": 1,
+          "name": "苹果黑腐病",
+          "prob": 0.1695
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9971
+    },
+    {
+      "path": "outputs/realtest_test/grape_healthy/0000.jpg.jpg",
+      "gh_dir": "grape leaf",
+      "true_id": 14,
+      "true_name": "葡萄（健康）",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9999,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9999
+        },
+        {
+          "id": 14,
+          "name": "葡萄（健康）",
+          "prob": 0.0001
+        },
+        {
+          "id": 32,
+          "name": "番茄 Septoria 叶斑病",
+          "prob": 0.0
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/grape_healthy/730-grape-leaf-2560x1600-nature-wallpaper.jpg.jpg",
+      "gh_dir": "grape leaf",
+      "true_id": 14,
+      "true_name": "葡萄（健康）",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.8016,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.8016
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.074
+        },
+        {
+          "id": 32,
+          "name": "番茄 Septoria 叶斑病",
+          "prob": 0.0437
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.8349
+    },
+    {
+      "path": "outputs/realtest_test/grape_healthy/depositphotos_3443387-stock-photo-the-green-grape-leaf-on.jpg.jpg",
+      "gh_dir": "grape leaf",
+      "true_id": 14,
+      "true_name": "葡萄（健康）",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.4448,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.4448
+        },
+        {
+          "id": 14,
+          "name": "葡萄（健康）",
+          "prob": 0.4184
+        },
+        {
+          "id": 6,
+          "name": "樱桃（健康）",
+          "prob": 0.042
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9782
+    },
+    {
+      "path": "outputs/realtest_test/grape_healthy/DSCN7317.JPG.jpg.jpg",
+      "gh_dir": "grape leaf",
+      "true_id": 14,
+      "true_name": "葡萄（健康）",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.5268,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.5268
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.1103
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.107
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.998
+    },
+    {
+      "path": "outputs/realtest_test/grape_healthy/P1130286.jpg.jpg",
+      "gh_dir": "grape leaf",
+      "true_id": 14,
+      "true_name": "葡萄（健康）",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9703,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9703
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0176
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0088
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9996
+    },
+    {
+      "path": "outputs/realtest_test/peach_healthy/00pe.jpg.jpg",
+      "gh_dir": "Peach leaf",
+      "true_id": 17,
+      "true_name": "桃（健康）",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.5771,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.5771
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.1348
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.1139
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.8484
+    },
+    {
+      "path": "outputs/realtest_test/peach_healthy/7190f27ead55c0f6e3ff8b982972810a5446a9713a49d_1260x1260.jpg.jpg",
+      "gh_dir": "Peach leaf",
+      "true_id": 17,
+      "true_name": "桃（健康）",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.3226,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.3226
+        },
+        {
+          "id": 17,
+          "name": "桃（健康）",
+          "prob": 0.2174
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.1896
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": true,
+      "leaf_prob": 0.0173
+    },
+    {
+      "path": "outputs/realtest_test/peach_healthy/depositphotos_3786198-Peach-leaf.jpg.jpg",
+      "gh_dir": "Peach leaf",
+      "true_id": 17,
+      "true_name": "桃（健康）",
+      "pred_id": 17,
+      "pred_name": "桃（健康）",
+      "confidence": 0.6044,
+      "top3": [
+        {
+          "id": 17,
+          "name": "桃（健康）",
+          "prob": 0.6044
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.1953
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0881
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": true,
+      "leaf_prob": 0.1298
+    },
+    {
+      "path": "outputs/realtest_test/peach_healthy/peach-leaf-10223898.jpg.jpg",
+      "gh_dir": "Peach leaf",
+      "true_id": 17,
+      "true_name": "桃（健康）",
+      "pred_id": 16,
+      "pred_name": "桃细菌性斑点病",
+      "confidence": 0.7937,
+      "top3": [
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.7937
+        },
+        {
+          "id": 4,
+          "name": "蓝莓（健康）",
+          "prob": 0.087
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0581
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9763
+    },
+    {
+      "path": "outputs/realtest_test/peach_healthy/peach-leaf-16690421.jpg.jpg",
+      "gh_dir": "Peach leaf",
+      "true_id": 17,
+      "true_name": "桃（健康）",
+      "pred_id": 6,
+      "pred_name": "樱桃（健康）",
+      "confidence": 0.2846,
+      "top3": [
+        {
+          "id": 6,
+          "name": "樱桃（健康）",
+          "prob": 0.2846
+        },
+        {
+          "id": 4,
+          "name": "蓝莓（健康）",
+          "prob": 0.2419
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.1998
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9165
+    },
+    {
+      "path": "outputs/realtest_test/pepper_bacterial_spot/00.jpg.jpg",
+      "gh_dir": "Bell_pepper leaf spot",
+      "true_id": 18,
+      "true_name": "甜椒细菌性斑点病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.9348,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.9348
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.032
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.0105
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/pepper_bacterial_spot/000.jpg.jpg",
+      "gh_dir": "Bell_pepper leaf spot",
+      "true_id": 18,
+      "true_name": "甜椒细菌性斑点病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.5391,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.5391
+        },
+        {
+          "id": 9,
+          "name": "玉米北方叶枯病",
+          "prob": 0.3362
+        },
+        {
+          "id": 28,
+          "name": "番茄细菌性斑点病",
+          "prob": 0.0435
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/pepper_bacterial_spot/01.jpg.jpg",
+      "gh_dir": "Bell_pepper leaf spot",
+      "true_id": 18,
+      "true_name": "甜椒细菌性斑点病",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.3199,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.3199
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.2503
+        },
+        {
+          "id": 32,
+          "name": "番茄 Septoria 叶斑病",
+          "prob": 0.1601
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9784
+    },
+    {
+      "path": "outputs/realtest_test/pepper_bacterial_spot/Bacterial-spot-pepper2.jpg.jpg",
+      "gh_dir": "Bell_pepper leaf spot",
+      "true_id": 18,
+      "true_name": "甜椒细菌性斑点病",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.7743,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.7743
+        },
+        {
+          "id": 32,
+          "name": "番茄 Septoria 叶斑病",
+          "prob": 0.1098
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.0496
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9996
+    },
+    {
+      "path": "outputs/realtest_test/pepper_bacterial_spot/CMVpepperLeafShock-copy-50QUALITY-1ge8umw.jpg.jpg",
+      "gh_dir": "Bell_pepper leaf spot",
+      "true_id": 18,
+      "true_name": "甜椒细菌性斑点病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.349,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.349
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.3131
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.2718
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/pepper_healthy/10148582-green-leaf-of-pepper.jpg.jpg",
+      "gh_dir": "Bell_pepper leaf",
+      "true_id": 19,
+      "true_name": "甜椒（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.9981,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.9981
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.0007
+        },
+        {
+          "id": 4,
+          "name": "蓝莓（健康）",
+          "prob": 0.0002
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9994
+    },
+    {
+      "path": "outputs/realtest_test/pepper_healthy/4825902504_5fa80b65b8_z.jpg.jpg",
+      "gh_dir": "Bell_pepper leaf",
+      "true_id": 19,
+      "true_name": "甜椒（健康）",
+      "pred_id": 8,
+      "pred_name": "玉米普通锈病",
+      "confidence": 0.5786,
+      "top3": [
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.5786
+        },
+        {
+          "id": 15,
+          "name": "柑橘黄龙病",
+          "prob": 0.4025
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0147
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/pepper_healthy/RnGnC.jpg.jpg",
+      "gh_dir": "Bell_pepper leaf",
+      "true_id": 19,
+      "true_name": "甜椒（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.4668,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.4668
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.3898
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0907
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9996
+    },
+    {
+      "path": "outputs/realtest_test/potato_early_blight/3023.jpg.jpg",
+      "gh_dir": "Potato leaf early blight",
+      "true_id": 20,
+      "true_name": "马铃薯早疫病",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.9136,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.9136
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0645
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0101
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/potato_early_blight/backus-056-potato-blight.jpg.jpg",
+      "gh_dir": "Potato leaf early blight",
+      "true_id": 20,
+      "true_name": "马铃薯早疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9524,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9524
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0241
+        },
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.0095
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9998
+    },
+    {
+      "path": "outputs/realtest_test/potato_early_blight/early-blight-alternaria-alternata-leaf-spotting-on-potato-leaf-X91XJE.jpg.jpg",
+      "gh_dir": "Potato leaf early blight",
+      "true_id": 20,
+      "true_name": "马铃薯早疫病",
+      "pred_id": 29,
+      "pred_name": "番茄早疫病",
+      "confidence": 0.8469,
+      "top3": [
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.8469
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0699
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0364
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9983
+    },
+    {
+      "path": "outputs/realtest_test/potato_early_blight/early-blight-or-target-spot-alternaria-solani-lesions-on-a-tomato-AXK6AY.jpg.jpg",
+      "gh_dir": "Potato leaf early blight",
+      "true_id": 20,
+      "true_name": "马铃薯早疫病",
+      "pred_id": 29,
+      "pred_name": "番茄早疫病",
+      "confidence": 0.9999,
+      "top3": [
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.9999
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0001
+        },
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.0
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.8912
+    },
+    {
+      "path": "outputs/realtest_test/potato_early_blight/earlyblightpotato.jpg.jpg",
+      "gh_dir": "Potato leaf early blight",
+      "true_id": 20,
+      "true_name": "马铃薯早疫病",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.9695,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.9695
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0079
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0073
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9998
+    },
+    {
+      "path": "outputs/realtest_test/potato_late_blight/20090710-lateblight.jpg.jpg",
+      "gh_dir": "Potato leaf late blight",
+      "true_id": 21,
+      "true_name": "马铃薯晚疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.8543,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.8543
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.1216
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0047
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9977
+    },
+    {
+      "path": "outputs/realtest_test/potato_late_blight/2540_600.jpg.jpg",
+      "gh_dir": "Potato leaf late blight",
+      "true_id": 21,
+      "true_name": "马铃薯晚疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.6594,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.6594
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.1628
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.1602
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.999
+    },
+    {
+      "path": "outputs/realtest_test/potato_late_blight/5816740026_d42ef24413_Phytophthora-Infestans.jpg.jpg",
+      "gh_dir": "Potato leaf late blight",
+      "true_id": 21,
+      "true_name": "马铃薯晚疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9941,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9941
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.0051
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0003
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9633
+    },
+    {
+      "path": "outputs/realtest_test/potato_late_blight/B2750109-Late_blight_on_a_potato_plant-SPL.jpg.jpg",
+      "gh_dir": "Potato leaf late blight",
+      "true_id": 21,
+      "true_name": "马铃薯晚疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.7997,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.7997
+        },
+        {
+          "id": 18,
+          "name": "甜椒细菌性斑点病",
+          "prob": 0.1681
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0172
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/raspberry_healthy/depositphotos_1323264-Raspberry-leaf-on-white.jpg.jpg",
+      "gh_dir": "Raspberry leaf",
+      "true_id": 23,
+      "true_name": "树莓（健康）",
+      "pred_id": 27,
+      "pred_name": "草莓（健康）",
+      "confidence": 0.9298,
+      "top3": [
+        {
+          "id": 27,
+          "name": "草莓（健康）",
+          "prob": 0.9298
+        },
+        {
+          "id": 23,
+          "name": "树莓（健康）",
+          "prob": 0.063
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0023
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9996
+    },
+    {
+      "path": "outputs/realtest_test/raspberry_healthy/depositphotos_1323551-stock-photo-raspberry-leaves.jpg.jpg",
+      "gh_dir": "Raspberry leaf",
+      "true_id": 23,
+      "true_name": "树莓（健康）",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9235,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9235
+        },
+        {
+          "id": 27,
+          "name": "草莓（健康）",
+          "prob": 0.0301
+        },
+        {
+          "id": 31,
+          "name": "番茄叶霉病",
+          "prob": 0.0091
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9109
+    },
+    {
+      "path": "outputs/realtest_test/raspberry_healthy/depositphotos_2795312-stock-photo-green-raspberry-leaf.jpg.jpg",
+      "gh_dir": "Raspberry leaf",
+      "true_id": 23,
+      "true_name": "树莓（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.9957,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.9957
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.0018
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0016
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/raspberry_healthy/iron-deficiency-raspberry-leaf-chlorosis-isolated-32457798.jpg.jpg",
+      "gh_dir": "Raspberry leaf",
+      "true_id": 23,
+      "true_name": "树莓（健康）",
+      "pred_id": 33,
+      "pred_name": "番茄红蜘蛛（二斑叶螨）",
+      "confidence": 0.6466,
+      "top3": [
+        {
+          "id": 33,
+          "name": "番茄红蜘蛛（二斑叶螨）",
+          "prob": 0.6466
+        },
+        {
+          "id": 35,
+          "name": "番茄黄化曲叶病毒病",
+          "prob": 0.1514
+        },
+        {
+          "id": 27,
+          "name": "草莓（健康）",
+          "prob": 0.0707
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9684
+    },
+    {
+      "path": "outputs/realtest_test/raspberry_healthy/Raspberry-leaf.jpg.jpg",
+      "gh_dir": "Raspberry leaf",
+      "true_id": 23,
+      "true_name": "树莓（健康）",
+      "pred_id": 35,
+      "pred_name": "番茄黄化曲叶病毒病",
+      "confidence": 0.7996,
+      "top3": [
+        {
+          "id": 35,
+          "name": "番茄黄化曲叶病毒病",
+          "prob": 0.7996
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.1685
+        },
+        {
+          "id": 23,
+          "name": "树莓（健康）",
+          "prob": 0.0187
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9965
+    },
+    {
+      "path": "outputs/realtest_test/soybean_healthy/07feb_ma_sbr3.JPG.jpg.jpg",
+      "gh_dir": "Soyabean leaf",
+      "true_id": 24,
+      "true_name": "大豆（健康）",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.5461,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.5461
+        },
+        {
+          "id": 32,
+          "name": "番茄 Septoria 叶斑病",
+          "prob": 0.3523
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0458
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9986
+    },
+    {
+      "path": "outputs/realtest_test/soybean_healthy/fresh-soy-leaves-isolated-on-260nw-667193923.jpg.jpg",
+      "gh_dir": "Soyabean leaf",
+      "true_id": 24,
+      "true_name": "大豆（健康）",
+      "pred_id": 4,
+      "pred_name": "蓝莓（健康）",
+      "confidence": 0.7716,
+      "top3": [
+        {
+          "id": 4,
+          "name": "蓝莓（健康）",
+          "prob": 0.7716
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.124
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.088
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": true,
+      "leaf_prob": 0.0731
+    },
+    {
+      "path": "outputs/realtest_test/soybean_healthy/leaf-raspberry-isolated-on-a-white-stock-photography-image-10106222-1625198.jpg.jpg",
+      "gh_dir": "Soyabean leaf",
+      "true_id": 24,
+      "true_name": "大豆（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.7965,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.7965
+        },
+        {
+          "id": 24,
+          "name": "大豆（健康）",
+          "prob": 0.0797
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0478
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9253
+    },
+    {
+      "path": "outputs/realtest_test/soybean_healthy/resistance1c.jpg.jpg",
+      "gh_dir": "Soyabean leaf",
+      "true_id": 24,
+      "true_name": "大豆（健康）",
+      "pred_id": 10,
+      "pred_name": "玉米（健康）",
+      "confidence": 0.6355,
+      "top3": [
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.6355
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.1174
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.1041
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/squash_powdery_mildew/powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg.jpg",
+      "gh_dir": "Squash Powdery mildew leaf",
+      "true_id": 25,
+      "true_name": "南瓜白粉病",
+      "pred_id": 25,
+      "pred_name": "南瓜白粉病",
+      "confidence": 0.6095,
+      "top3": [
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.6095
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.1752
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0894
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/squash_powdery_mildew/powdery-mildew-on-pumpkin-leaves-close-up-2.jpg.jpg",
+      "gh_dir": "Squash Powdery mildew leaf",
+      "true_id": 25,
+      "true_name": "南瓜白粉病",
+      "pred_id": 25,
+      "pred_name": "南瓜白粉病",
+      "confidence": 1.0,
+      "top3": [
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 1.0
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.0
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/squash_powdery_mildew/Powdery-Mildew-on-squash.jpg.jpg",
+      "gh_dir": "Squash Powdery mildew leaf",
+      "true_id": 25,
+      "true_name": "南瓜白粉病",
+      "pred_id": 5,
+      "pred_name": "樱桃白粉病",
+      "confidence": 0.5876,
+      "top3": [
+        {
+          "id": 5,
+          "name": "樱桃白粉病",
+          "prob": 0.5876
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.1516
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0762
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/squash_powdery_mildew/powdery-mildew-sphaerotheca-fuliginea-infection-on-pumpkin-leaves-ajdkkx.jpg.jpg",
+      "gh_dir": "Squash Powdery mildew leaf",
+      "true_id": 25,
+      "true_name": "南瓜白粉病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.5535,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.5535
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.423
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0208
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/squash_powdery_mildew/squash-leave-w-powd-mild.jpg.jpg",
+      "gh_dir": "Squash Powdery mildew leaf",
+      "true_id": 25,
+      "true_name": "南瓜白粉病",
+      "pred_id": 25,
+      "pred_name": "南瓜白粉病",
+      "confidence": 0.9107,
+      "top3": [
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.9107
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0467
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0289
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/strawberry_healthy/strawberry-leaf--stock-photo-1431216.jpg.jpg",
+      "gh_dir": "Strawberry leaf",
+      "true_id": 27,
+      "true_name": "草莓（健康）",
+      "pred_id": 27,
+      "pred_name": "草莓（健康）",
+      "confidence": 0.8489,
+      "top3": [
+        {
+          "id": 27,
+          "name": "草莓（健康）",
+          "prob": 0.8489
+        },
+        {
+          "id": 14,
+          "name": "葡萄（健康）",
+          "prob": 0.0639
+        },
+        {
+          "id": 23,
+          "name": "树莓（健康）",
+          "prob": 0.0535
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/strawberry_healthy/strawberry-leaf-22360816.jpg.jpg",
+      "gh_dir": "Strawberry leaf",
+      "true_id": 27,
+      "true_name": "草莓（健康）",
+      "pred_id": 14,
+      "pred_name": "葡萄（健康）",
+      "confidence": 0.6467,
+      "top3": [
+        {
+          "id": 14,
+          "name": "葡萄（健康）",
+          "prob": 0.6467
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.2656
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0447
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/strawberry_healthy/strawberry-leaves-collection-white-background-36684676.jpg.jpg",
+      "gh_dir": "Strawberry leaf",
+      "true_id": 27,
+      "true_name": "草莓（健康）",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.8475,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.8475
+        },
+        {
+          "id": 14,
+          "name": "葡萄（健康）",
+          "prob": 0.1123
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0217
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/strawberry_healthy/strawberry-leaves-isolated-white-17473157.jpg.jpg",
+      "gh_dir": "Strawberry leaf",
+      "true_id": 27,
+      "true_name": "草莓（健康）",
+      "pred_id": 14,
+      "pred_name": "葡萄（健康）",
+      "confidence": 0.572,
+      "top3": [
+        {
+          "id": 14,
+          "name": "葡萄（健康）",
+          "prob": 0.572
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.2419
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0605
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/strawberry_healthy/strawberry-leaves-isolated-white-34722259.jpg.jpg",
+      "gh_dir": "Strawberry leaf",
+      "true_id": 27,
+      "true_name": "草莓（健康）",
+      "pred_id": 11,
+      "pred_name": "葡萄黑腐病",
+      "confidence": 0.5768,
+      "top3": [
+        {
+          "id": 11,
+          "name": "葡萄黑腐病",
+          "prob": 0.5768
+        },
+        {
+          "id": 14,
+          "name": "葡萄（健康）",
+          "prob": 0.1697
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.1371
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9843
+    },
+    {
+      "path": "outputs/realtest_test/tomato_bacterial_spot/07.17.18-Common_Tomato_Diseases_Canker-258x300.jpg.jpg",
+      "gh_dir": "Tomato leaf bacterial spot",
+      "true_id": 28,
+      "true_name": "番茄细菌性斑点病",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.8642,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.8642
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.0951
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0174
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9141
+    },
+    {
+      "path": "outputs/realtest_test/tomato_bacterial_spot/Bacterial_spots563.jpg.jpg",
+      "gh_dir": "Tomato leaf bacterial spot",
+      "true_id": 28,
+      "true_name": "番茄细菌性斑点病",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.6307,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.6307
+        },
+        {
+          "id": 18,
+          "name": "甜椒细菌性斑点病",
+          "prob": 0.2871
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.0327
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9997
+    },
+    {
+      "path": "outputs/realtest_test/tomato_bacterial_spot/Tom_Bact3.jpg.jpg",
+      "gh_dir": "Tomato leaf bacterial spot",
+      "true_id": 28,
+      "true_name": "番茄细菌性斑点病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9305,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9305
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0578
+        },
+        {
+          "id": 15,
+          "name": "柑橘黄龙病",
+          "prob": 0.0039
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9998
+    },
+    {
+      "path": "outputs/realtest_test/tomato_bacterial_spot/Tom_Bact7.jpg.jpg",
+      "gh_dir": "Tomato leaf bacterial spot",
+      "true_id": 28,
+      "true_name": "番茄细菌性斑点病",
+      "pred_id": 10,
+      "pred_name": "玉米（健康）",
+      "confidence": 0.404,
+      "top3": [
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.404
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.3983
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.1036
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.929
+    },
+    {
+      "path": "outputs/realtest_test/tomato_early_blight/039b47d574bc4bb8a14259a1cd96a741.jpg.jpg",
+      "gh_dir": "Tomato Early blight leaf",
+      "true_id": 29,
+      "true_name": "番茄早疫病",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.7836,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.7836
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.1101
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.0388
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9921
+    },
+    {
+      "path": "outputs/realtest_test/tomato_early_blight/100983448.jpg.jpg",
+      "gh_dir": "Tomato Early blight leaf",
+      "true_id": 29,
+      "true_name": "番茄早疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9978,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9978
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.0012
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0009
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.6692
+    },
+    {
+      "path": "outputs/realtest_test/tomato_early_blight/1234080-Early-Blight.jpg.jpg",
+      "gh_dir": "Tomato Early blight leaf",
+      "true_id": 29,
+      "true_name": "番茄早疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.7487,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.7487
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.123
+        },
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.0306
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.7863
+    },
+    {
+      "path": "outputs/realtest_test/tomato_early_blight/bugs-and-blight-061.jpg.jpg",
+      "gh_dir": "Tomato Early blight leaf",
+      "true_id": 29,
+      "true_name": "番茄早疫病",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.9294,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.9294
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0331
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0155
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9625
+    },
+    {
+      "path": "outputs/realtest_test/tomato_early_blight/Shoemaker_7068.JPG.jpg.jpg",
+      "gh_dir": "Tomato Early blight leaf",
+      "true_id": 29,
+      "true_name": "番茄早疫病",
+      "pred_id": 10,
+      "pred_name": "玉米（健康）",
+      "confidence": 0.8552,
+      "top3": [
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.8552
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.056
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.0238
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9961
+    },
+    {
+      "path": "outputs/realtest_test/tomato_healthy/1684.jpg.jpg",
+      "gh_dir": "Tomato leaf",
+      "true_id": 37,
+      "true_name": "番茄（健康）",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9965,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9965
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0024
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0003
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.998
+    },
+    {
+      "path": "outputs/realtest_test/tomato_healthy/2013-08-20-06.jpg.jpg",
+      "gh_dir": "Tomato leaf",
+      "true_id": 37,
+      "true_name": "番茄（健康）",
+      "pred_id": 19,
+      "pred_name": "甜椒（健康）",
+      "confidence": 0.6401,
+      "top3": [
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.6401
+        },
+        {
+          "id": 37,
+          "name": "番茄（健康）",
+          "prob": 0.1589
+        },
+        {
+          "id": 31,
+          "name": "番茄叶霉病",
+          "prob": 0.093
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": true,
+      "leaf_prob": 0.0106
+    },
+    {
+      "path": "outputs/realtest_test/tomato_healthy/90e2c0.jpg.jpg",
+      "gh_dir": "Tomato leaf",
+      "true_id": 37,
+      "true_name": "番茄（健康）",
+      "pred_id": 29,
+      "pred_name": "番茄早疫病",
+      "confidence": 0.9965,
+      "top3": [
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.9965
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0024
+        },
+        {
+          "id": 31,
+          "name": "番茄叶霉病",
+          "prob": 0.0004
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.8722
+    },
+    {
+      "path": "outputs/realtest_test/tomato_healthy/DSCN1015.JPG.jpg.jpg",
+      "gh_dir": "Tomato leaf",
+      "true_id": 37,
+      "true_name": "番茄（健康）",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.9928,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.9928
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0022
+        },
+        {
+          "id": 37,
+          "name": "番茄（健康）",
+          "prob": 0.0012
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9913
+    },
+    {
+      "path": "outputs/realtest_test/tomato_healthy/IMG_1246.jpg.jpg",
+      "gh_dir": "Tomato leaf",
+      "true_id": 37,
+      "true_name": "番茄（健康）",
+      "pred_id": 10,
+      "pred_name": "玉米（健康）",
+      "confidence": 0.8362,
+      "top3": [
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.8362
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.128
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0316
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/tomato_late_blight/110822-206-Tomato-blight.jpg.jpg",
+      "gh_dir": "Tomato leaf late blight",
+      "true_id": 30,
+      "true_name": "番茄晚疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9999,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9999
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0001
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.0
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/tomato_late_blight/18c.jpg.jpg",
+      "gh_dir": "Tomato leaf late blight",
+      "true_id": 30,
+      "true_name": "番茄晚疫病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.1823,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.1823
+        },
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.1772
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.147
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9927
+    },
+    {
+      "path": "outputs/realtest_test/tomato_late_blight/636368370164094909-late-blight-15-.jpg.jpg",
+      "gh_dir": "Tomato leaf late blight",
+      "true_id": 30,
+      "true_name": "番茄晚疫病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.4705,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.4705
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.1738
+        },
+        {
+          "id": 0,
+          "name": "苹果黑星病",
+          "prob": 0.0755
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9994
+    },
+    {
+      "path": "outputs/realtest_test/tomato_late_blight/70.jpg.jpg",
+      "gh_dir": "Tomato leaf late blight",
+      "true_id": 30,
+      "true_name": "番茄晚疫病",
+      "pred_id": 29,
+      "pred_name": "番茄早疫病",
+      "confidence": 0.2814,
+      "top3": [
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.2814
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.2276
+        },
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.1973
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.8574
+    },
+    {
+      "path": "outputs/realtest_test/tomato_leaf_mold/BIGSD.jpg.jpg",
+      "gh_dir": "Tomato mold leaf",
+      "true_id": 31,
+      "true_name": "番茄叶霉病",
+      "pred_id": 32,
+      "pred_name": "番茄 Septoria 叶斑病",
+      "confidence": 0.4245,
+      "top3": [
+        {
+          "id": 32,
+          "name": "番茄 Septoria 叶斑病",
+          "prob": 0.4245
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.2415
+        },
+        {
+          "id": 31,
+          "name": "番茄叶霉病",
+          "prob": 0.1235
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.8991
+    },
+    {
+      "path": "outputs/realtest_test/tomato_leaf_mold/black_leaf_mold_in_zina_tina.jpg.jpg",
+      "gh_dir": "Tomato mold leaf",
+      "true_id": 31,
+      "true_name": "番茄叶霉病",
+      "pred_id": 29,
+      "pred_name": "番茄早疫病",
+      "confidence": 0.8028,
+      "top3": [
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.8028
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.1376
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.0319
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9954
+    },
+    {
+      "path": "outputs/realtest_test/tomato_leaf_mold/dscn6689.jpg.jpg",
+      "gh_dir": "Tomato mold leaf",
+      "true_id": 31,
+      "true_name": "番茄叶霉病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.9169,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.9169
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.0632
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0141
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/tomato_mosaic_virus/9511.img.jpg.jpg",
+      "gh_dir": "Tomato leaf mosaic virus",
+      "true_id": 36,
+      "true_name": "番茄花叶病毒病",
+      "pred_id": 10,
+      "pred_name": "玉米（健康）",
+      "confidence": 0.5658,
+      "top3": [
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.5658
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.1838
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.1146
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9998
+    },
+    {
+      "path": "outputs/realtest_test/tomato_mosaic_virus/everystockphoto-21099455-l.jpg.jpg",
+      "gh_dir": "Tomato leaf mosaic virus",
+      "true_id": 36,
+      "true_name": "番茄花叶病毒病",
+      "pred_id": 7,
+      "pred_name": "玉米灰斑病",
+      "confidence": 0.5274,
+      "top3": [
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.5274
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.1407
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.0906
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9981
+    },
+    {
+      "path": "outputs/realtest_test/tomato_mosaic_virus/ill-tomato-of-tomato-mosaic-virus-DBE17N.jpg.jpg",
+      "gh_dir": "Tomato leaf mosaic virus",
+      "true_id": 36,
+      "true_name": "番茄花叶病毒病",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.4367,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.4367
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.2861
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.0974
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9988
+    },
+    {
+      "path": "outputs/realtest_test/tomato_mosaic_virus/Tomato-Mosaic-1wdr2jx-300x225.jpg.jpg",
+      "gh_dir": "Tomato leaf mosaic virus",
+      "true_id": 36,
+      "true_name": "番茄花叶病毒病",
+      "pred_id": 10,
+      "pred_name": "玉米（健康）",
+      "confidence": 0.9969,
+      "top3": [
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.9969
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0014
+        },
+        {
+          "id": 15,
+          "name": "柑橘黄龙病",
+          "prob": 0.0004
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9979
+    },
+    {
+      "path": "outputs/realtest_test/tomato_septoria_leaf_spot/0.jpg.jpg",
+      "gh_dir": "Tomato Septoria leaf spot",
+      "true_id": 32,
+      "true_name": "番茄 Septoria 叶斑病",
+      "pred_id": 30,
+      "pred_name": "番茄晚疫病",
+      "confidence": 0.3191,
+      "top3": [
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.3191
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.2057
+        },
+        {
+          "id": 16,
+          "name": "桃细菌性斑点病",
+          "prob": 0.1702
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/tomato_septoria_leaf_spot/2septoria-tomato.jpg.jpg",
+      "gh_dir": "Tomato Septoria leaf spot",
+      "true_id": 32,
+      "true_name": "番茄 Septoria 叶斑病",
+      "pred_id": 8,
+      "pred_name": "玉米普通锈病",
+      "confidence": 0.9587,
+      "top3": [
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.9587
+        },
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.0396
+        },
+        {
+          "id": 13,
+          "name": "葡萄叶枯病（房枯病）",
+          "prob": 0.0016
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    },
+    {
+      "path": "outputs/realtest_test/tomato_septoria_leaf_spot/2STEM.jpg.jpg",
+      "gh_dir": "Tomato Septoria leaf spot",
+      "true_id": 32,
+      "true_name": "番茄 Septoria 叶斑病",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.9627,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.9627
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.02
+        },
+        {
+          "id": 32,
+          "name": "番茄 Septoria 叶斑病",
+          "prob": 0.0132
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": true,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9834
+    },
+    {
+      "path": "outputs/realtest_test/tomato_septoria_leaf_spot/55830b60a7cf2.image.jpg.jpg",
+      "gh_dir": "Tomato Septoria leaf spot",
+      "true_id": 32,
+      "true_name": "番茄 Septoria 叶斑病",
+      "pred_id": 26,
+      "pred_name": "草莓叶焦病",
+      "confidence": 0.4346,
+      "top3": [
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.4346
+        },
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.3184
+        },
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.0491
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9992
+    },
+    {
+      "path": "outputs/realtest_test/tomato_septoria_leaf_spot/6134794031202304.jpeg.jpg.jpg",
+      "gh_dir": "Tomato Septoria leaf spot",
+      "true_id": 32,
+      "true_name": "番茄 Septoria 叶斑病",
+      "pred_id": 8,
+      "pred_name": "玉米普通锈病",
+      "confidence": 0.1947,
+      "top3": [
+        {
+          "id": 8,
+          "name": "玉米普通锈病",
+          "prob": 0.1947
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.1609
+        },
+        {
+          "id": 7,
+          "name": "玉米灰斑病",
+          "prob": 0.1434
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/11-40580_5.jpg.jpg",
+      "gh_dir": "Tomato leaf yellow virus",
+      "true_id": 35,
+      "true_name": "番茄黄化曲叶病毒病",
+      "pred_id": 35,
+      "pred_name": "番茄黄化曲叶病毒病",
+      "confidence": 0.5384,
+      "top3": [
+        {
+          "id": 35,
+          "name": "番茄黄化曲叶病毒病",
+          "prob": 0.5384
+        },
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.1324
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0981
+        }
+      ],
+      "top1_ok": true,
+      "top3_ok": true,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9996
+    },
+    {
+      "path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/17fc47.jpg.jpg",
+      "gh_dir": "Tomato leaf yellow virus",
+      "true_id": 35,
+      "true_name": "番茄黄化曲叶病毒病",
+      "pred_id": 20,
+      "pred_name": "马铃薯早疫病",
+      "confidence": 0.6632,
+      "top3": [
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.6632
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.1758
+        },
+        {
+          "id": 30,
+          "name": "番茄晚疫病",
+          "prob": 0.0548
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9999
+    },
+    {
+      "path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/8226402877_9abf151b5b_b.jpg.jpg",
+      "gh_dir": "Tomato leaf yellow virus",
+      "true_id": 35,
+      "true_name": "番茄黄化曲叶病毒病",
+      "pred_id": 29,
+      "pred_name": "番茄早疫病",
+      "confidence": 0.4787,
+      "top3": [
+        {
+          "id": 29,
+          "name": "番茄早疫病",
+          "prob": 0.4787
+        },
+        {
+          "id": 26,
+          "name": "草莓叶焦病",
+          "prob": 0.2653
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0842
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": true,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.9992
+    },
+    {
+      "path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/fwa2013313115151.jpg.jpg",
+      "gh_dir": "Tomato leaf yellow virus",
+      "true_id": 35,
+      "true_name": "番茄黄化曲叶病毒病",
+      "pred_id": 25,
+      "pred_name": "南瓜白粉病",
+      "confidence": 0.8425,
+      "top3": [
+        {
+          "id": 25,
+          "name": "南瓜白粉病",
+          "prob": 0.8425
+        },
+        {
+          "id": 12,
+          "name": "葡萄埃斯卡病（黑麻疹）",
+          "prob": 0.0557
+        },
+        {
+          "id": 10,
+          "name": "玉米（健康）",
+          "prob": 0.0188
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 0.983
+    },
+    {
+      "path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/glyphosate.jpg.jpg",
+      "gh_dir": "Tomato leaf yellow virus",
+      "true_id": 35,
+      "true_name": "番茄黄化曲叶病毒病",
+      "pred_id": 18,
+      "pred_name": "甜椒细菌性斑点病",
+      "confidence": 0.8357,
+      "top3": [
+        {
+          "id": 18,
+          "name": "甜椒细菌性斑点病",
+          "prob": 0.8357
+        },
+        {
+          "id": 20,
+          "name": "马铃薯早疫病",
+          "prob": 0.0922
+        },
+        {
+          "id": 19,
+          "name": "甜椒（健康）",
+          "prob": 0.0685
+        }
+      ],
+      "top1_ok": false,
+      "top3_ok": false,
+      "crop_ok": false,
+      "likely_not_leaf": false,
+      "leaf_prob": 1.0
+    }
+  ]
+}

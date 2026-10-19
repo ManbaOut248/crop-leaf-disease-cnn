@@ -1,0 +1,120 @@
+{"path": "outputs/realtest_test/apple_cedar_rust/02.-Rust-2017-207u24s.jpg.jpg", "class_id": 2, "gh_dir": "Apple rust leaf", "origin": "02.-Rust-2017-207u24s.jpg"}
+{"path": "outputs/realtest_test/apple_cedar_rust/0605_Rust-induced_leafspot.jpg.jpg", "class_id": 2, "gh_dir": "Apple rust leaf", "origin": "0605_Rust-induced_leafspot.jpg"}
+{"path": "outputs/realtest_test/apple_cedar_rust/185161-004-EAF28842.jpg.jpg", "class_id": 2, "gh_dir": "Apple rust leaf", "origin": "185161-004-EAF28842.jpg"}
+{"path": "outputs/realtest_test/apple_cedar_rust/2011-011.jpg.jpg", "class_id": 2, "gh_dir": "Apple rust leaf", "origin": "2011-011.jpg"}
+{"path": "outputs/realtest_test/apple_cedar_rust/20130519cedarapplerust.jpg.jpg", "class_id": 2, "gh_dir": "Apple rust leaf", "origin": "20130519cedarapplerust.jpg"}
+{"path": "outputs/realtest_test/apple_healthy/20180511_090912-14gtw8a-e1526047952754.jpg.jpg", "class_id": 3, "gh_dir": "Apple leaf", "origin": "20180511_090912-14gtw8a-e1526047952754.jpg"}
+{"path": "outputs/realtest_test/apple_healthy/20180511_091133-24l1vhg-e1526047988236.jpg.jpg", "class_id": 3, "gh_dir": "Apple leaf", "origin": "20180511_091133-24l1vhg-e1526047988236.jpg"}
+{"path": "outputs/realtest_test/apple_healthy/20180511_091252-1gy5xf5-e1526048000596.jpg.jpg", "class_id": 3, "gh_dir": "Apple leaf", "origin": "20180511_091252-1gy5xf5-e1526048000596.jpg"}
+{"path": "outputs/realtest_test/apple_healthy/4120978-single-green-leaf-of-apple-tree.jpg.jpg", "class_id": 3, "gh_dir": "Apple leaf", "origin": "4120978-single-green-leaf-of-apple-tree.jpg"}
+{"path": "outputs/realtest_test/apple_healthy/Apple-Leaf-Wallpaper-17.jpg.jpg", "class_id": 3, "gh_dir": "Apple leaf", "origin": "Apple-Leaf-Wallpaper-17.jpg"}
+{"path": "outputs/realtest_test/apple_scab/1b321015-6e33-4f18-aade-888f4383fe92.jpeg.jpg.jpg", "class_id": 0, "gh_dir": "Apple Scab Leaf", "origin": "1b321015-6e33-4f18-aade-888f4383fe92.jpeg.jpg"}
+{"path": "outputs/realtest_test/apple_scab/28-500x375.jpg.jpg", "class_id": 0, "gh_dir": "Apple Scab Leaf", "origin": "28-500x375.jpg"}
+{"path": "outputs/realtest_test/apple_scab/816.jpg.jpg", "class_id": 0, "gh_dir": "Apple Scab Leaf", "origin": "816.jpg"}
+{"path": "outputs/realtest_test/blueberry_healthy/blueberry-leaves-normal-above-and-iron-deficient-below-bgahf8.jpg.jpg", "class_id": 4, "gh_dir": "Blueberry leaf", "origin": "blueberry-leaves-normal-above-and-iron-deficient-below-bgahf8.jpg"}
+{"path": "outputs/realtest_test/blueberry_healthy/blueberrysilverleaf16-1372b.jpg.jpg", "class_id": 4, "gh_dir": "Blueberry leaf", "origin": "blueberrysilverleaf16-1372b.jpg"}
+{"path": "outputs/realtest_test/blueberry_healthy/leaf-blueberry-15281271.jpg.jpg", "class_id": 4, "gh_dir": "Blueberry leaf", "origin": "leaf-blueberry-15281271.jpg"}
+{"path": "outputs/realtest_test/blueberry_healthy/P1200665%2BVaccinium%2Balaskaense%2Bvs%2Bovalifolium%2Bleaf%2Band%2B%2Btwig%2Bcr.jpg", "class_id": 4, "gh_dir": "Blueberry leaf", "origin": "P1200665+Vaccinium+alaskaense+vs+ovalifolium+leaf+and++twig+cr.jpg"}
+{"path": "outputs/realtest_test/blueberry_healthy/P1200701%2BVaccinium%2Bovalifolium%2BOval-leaf%2BBlueberry%2Bleaf%2Bmargin%2BHea.jpg", "class_id": 4, "gh_dir": "Blueberry leaf", "origin": "P1200701+Vaccinium+ovalifolium+Oval-leaf+Blueberry+leaf+margin+Heather+Meadows+cr.jpg"}
+{"path": "outputs/realtest_test/cherry_healthy/d7b79dbc0bca0eb3e63fbe5dfb256ccd53d90a4eb1413_1260x1260.jpg.jpg", "class_id": 6, "gh_dir": "Cherry leaf", "origin": "d7b79dbc0bca0eb3e63fbe5dfb256ccd53d90a4eb1413_1260x1260.jpg"}
+{"path": "outputs/realtest_test/cherry_healthy/e52bbb9a08ede2948ba0c006f02fe7b053ad7831d1df6_1260x1260.jpg.jpg", "class_id": 6, "gh_dir": "Cherry leaf", "origin": "e52bbb9a08ede2948ba0c006f02fe7b053ad7831d1df6_1260x1260.jpg"}
+{"path": "outputs/realtest_test/cherry_healthy/ed12ff77ce021883de241830dee55e2e53d2c93231699_1260x1260.jpg.jpg", "class_id": 6, "gh_dir": "Cherry leaf", "origin": "ed12ff77ce021883de241830dee55e2e53d2c93231699_1260x1260.jpg"}
+{"path": "outputs/realtest_test/cherry_healthy/fc729af279e9087d00bd32d89a1552a756a3ad9de7f2b_1260x1260.jpg.jpg", "class_id": 6, "gh_dir": "Cherry leaf", "origin": "fc729af279e9087d00bd32d89a1552a756a3ad9de7f2b_1260x1260.jpg"}
+{"path": "outputs/realtest_test/cherry_healthy/five-cherry-tree-green-leaves-white-isolated-background-34493587.jpg.jpg", "class_id": 6, "gh_dir": "Cherry leaf", "origin": "five-cherry-tree-green-leaves-white-isolated-background-34493587.jpg"}
+{"path": "outputs/realtest_test/corn_gray_leaf_spot/IMG_42231.jpg.jpg", "class_id": 7, "gh_dir": "Corn Gray leaf spot", "origin": "IMG_42231.jpg"}
+{"path": "outputs/realtest_test/corn_gray_leaf_spot/rsz0803Figure6.jpg.jpg", "class_id": 7, "gh_dir": "Corn Gray leaf spot", "origin": "rsz0803Figure6.jpg"}
+{"path": "outputs/realtest_test/corn_gray_leaf_spot/strom5.jpg.jpg", "class_id": 7, "gh_dir": "Corn Gray leaf spot", "origin": "strom5.jpg"}
+{"path": "outputs/realtest_test/corn_northern_leaf_blight/02c.jpg.jpg", "class_id": 9, "gh_dir": "Corn leaf blight", "origin": "02c.jpg"}
+{"path": "outputs/realtest_test/corn_northern_leaf_blight/0796.20graylssymt.jpg.jpg", "class_id": 9, "gh_dir": "Corn leaf blight", "origin": "0796.20graylssymt.jpg"}
+{"path": "outputs/realtest_test/corn_northern_leaf_blight/07c.jpg.jpg", "class_id": 9, "gh_dir": "Corn leaf blight", "origin": "07c.jpg"}
+{"path": "outputs/realtest_test/corn_northern_leaf_blight/0c.jpg.jpg", "class_id": 9, "gh_dir": "Corn leaf blight", "origin": "0c.jpg"}
+{"path": "outputs/realtest_test/corn_northern_leaf_blight/1321189.jpg.jpg", "class_id": 9, "gh_dir": "Corn leaf blight", "origin": "1321189.jpg"}
+{"path": "outputs/realtest_test/corn_rust/0796.39maizerust.jpg.jpg", "class_id": 8, "gh_dir": "Corn rust leaf", "origin": "0796.39maizerust.jpg"}
+{"path": "outputs/realtest_test/corn_rust/0796.40comrust.jpg.jpg", "class_id": 8, "gh_dir": "Corn rust leaf", "origin": "0796.40comrust.jpg"}
+{"path": "outputs/realtest_test/corn_rust/0796.47southrust.jpg.jpg", "class_id": 8, "gh_dir": "Corn rust leaf", "origin": "0796.47southrust.jpg"}
+{"path": "outputs/realtest_test/corn_rust/0796.52srusttelia.jpg.jpg", "class_id": 8, "gh_dir": "Corn rust leaf", "origin": "0796.52srusttelia.jpg"}
+{"path": "outputs/realtest_test/corn_rust/12-19striprustJIM.jpg.jpg", "class_id": 8, "gh_dir": "Corn rust leaf", "origin": "12-19striprustJIM.jpg"}
+{"path": "outputs/realtest_test/grape_black_rot/03gb.jpg.jpg", "class_id": 11, "gh_dir": "grape leaf black rot", "origin": "03gb.jpg"}
+{"path": "outputs/realtest_test/grape_black_rot/35589125035_662dd5b258_b.jpg.jpg", "class_id": 11, "gh_dir": "grape leaf black rot", "origin": "35589125035_662dd5b258_b.jpg"}
+{"path": "outputs/realtest_test/grape_black_rot/5-29black-rot-chardRR.jpg.jpg", "class_id": 11, "gh_dir": "grape leaf black rot", "origin": "5-29black-rot-chardRR.jpg"}
+{"path": "outputs/realtest_test/grape_healthy/0000.jpg.jpg", "class_id": 14, "gh_dir": "grape leaf", "origin": "0000.jpg"}
+{"path": "outputs/realtest_test/grape_healthy/730-grape-leaf-2560x1600-nature-wallpaper.jpg.jpg", "class_id": 14, "gh_dir": "grape leaf", "origin": "730-grape-leaf-2560x1600-nature-wallpaper.jpg"}
+{"path": "outputs/realtest_test/grape_healthy/depositphotos_3443387-stock-photo-the-green-grape-leaf-on.jpg.jpg", "class_id": 14, "gh_dir": "grape leaf", "origin": "depositphotos_3443387-stock-photo-the-green-grape-leaf-on.jpg"}
+{"path": "outputs/realtest_test/grape_healthy/DSCN7317.JPG.jpg.jpg", "class_id": 14, "gh_dir": "grape leaf", "origin": "DSCN7317.JPG.jpg"}
+{"path": "outputs/realtest_test/grape_healthy/P1130286.jpg.jpg", "class_id": 14, "gh_dir": "grape leaf", "origin": "P1130286.jpg"}
+{"path": "outputs/realtest_test/peach_healthy/00pe.jpg.jpg", "class_id": 17, "gh_dir": "Peach leaf", "origin": "00pe.jpg"}
+{"path": "outputs/realtest_test/peach_healthy/7190f27ead55c0f6e3ff8b982972810a5446a9713a49d_1260x1260.jpg.jpg", "class_id": 17, "gh_dir": "Peach leaf", "origin": "7190f27ead55c0f6e3ff8b982972810a5446a9713a49d_1260x1260.jpg"}
+{"path": "outputs/realtest_test/peach_healthy/depositphotos_3786198-Peach-leaf.jpg.jpg", "class_id": 17, "gh_dir": "Peach leaf", "origin": "depositphotos_3786198-Peach-leaf.jpg"}
+{"path": "outputs/realtest_test/peach_healthy/peach-leaf-10223898.jpg.jpg", "class_id": 17, "gh_dir": "Peach leaf", "origin": "peach-leaf-10223898.jpg"}
+{"path": "outputs/realtest_test/peach_healthy/peach-leaf-16690421.jpg.jpg", "class_id": 17, "gh_dir": "Peach leaf", "origin": "peach-leaf-16690421.jpg"}
+{"path": "outputs/realtest_test/pepper_bacterial_spot/00.jpg.jpg", "class_id": 18, "gh_dir": "Bell_pepper leaf spot", "origin": "00.jpg"}
+{"path": "outputs/realtest_test/pepper_bacterial_spot/000.jpg.jpg", "class_id": 18, "gh_dir": "Bell_pepper leaf spot", "origin": "000.jpg"}
+{"path": "outputs/realtest_test/pepper_bacterial_spot/01.jpg.jpg", "class_id": 18, "gh_dir": "Bell_pepper leaf spot", "origin": "01.jpg"}
+{"path": "outputs/realtest_test/pepper_bacterial_spot/Bacterial-spot-pepper2.jpg.jpg", "class_id": 18, "gh_dir": "Bell_pepper leaf spot", "origin": "Bacterial-spot-pepper2.jpg"}
+{"path": "outputs/realtest_test/pepper_bacterial_spot/CMVpepperLeafShock-copy-50QUALITY-1ge8umw.jpg.jpg", "class_id": 18, "gh_dir": "Bell_pepper leaf spot", "origin": "CMVpepperLeafShock-copy-50QUALITY-1ge8umw.jpg"}
+{"path": "outputs/realtest_test/pepper_healthy/10148582-green-leaf-of-pepper.jpg.jpg", "class_id": 19, "gh_dir": "Bell_pepper leaf", "origin": "10148582-green-leaf-of-pepper.jpg"}
+{"path": "outputs/realtest_test/pepper_healthy/4825902504_5fa80b65b8_z.jpg.jpg", "class_id": 19, "gh_dir": "Bell_pepper leaf", "origin": "4825902504_5fa80b65b8_z.jpg"}
+{"path": "outputs/realtest_test/pepper_healthy/RnGnC.jpg.jpg", "class_id": 19, "gh_dir": "Bell_pepper leaf", "origin": "RnGnC.jpg"}
+{"path": "outputs/realtest_test/potato_early_blight/3023.jpg.jpg", "class_id": 20, "gh_dir": "Potato leaf early blight", "origin": "3023.jpg"}
+{"path": "outputs/realtest_test/potato_early_blight/backus-056-potato-blight.jpg.jpg", "class_id": 20, "gh_dir": "Potato leaf early blight", "origin": "backus-056-potato-blight.jpg"}
+{"path": "outputs/realtest_test/potato_early_blight/early-blight-alternaria-alternata-leaf-spotting-on-potato-leaf-X91XJE.jpg.jpg", "class_id": 20, "gh_dir": "Potato leaf early blight", "origin": "early-blight-alternaria-alternata-leaf-spotting-on-potato-leaf-X91XJE.jpg"}
+{"path": "outputs/realtest_test/potato_early_blight/early-blight-or-target-spot-alternaria-solani-lesions-on-a-tomato-AXK6AY.jpg.jpg", "class_id": 20, "gh_dir": "Potato leaf early blight", "origin": "early-blight-or-target-spot-alternaria-solani-lesions-on-a-tomato-AXK6AY.jpg"}
+{"path": "outputs/realtest_test/potato_early_blight/earlyblightpotato.jpg.jpg", "class_id": 20, "gh_dir": "Potato leaf early blight", "origin": "earlyblightpotato.jpg"}
+{"path": "outputs/realtest_test/potato_late_blight/20090710-lateblight.jpg.jpg", "class_id": 21, "gh_dir": "Potato leaf late blight", "origin": "20090710-lateblight.jpg"}
+{"path": "outputs/realtest_test/potato_late_blight/2540_600.jpg.jpg", "class_id": 21, "gh_dir": "Potato leaf late blight", "origin": "2540_600.jpg"}
+{"path": "outputs/realtest_test/potato_late_blight/5816740026_d42ef24413_Phytophthora-Infestans.jpg.jpg", "class_id": 21, "gh_dir": "Potato leaf late blight", "origin": "5816740026_d42ef24413_Phytophthora-Infestans.jpg"}
+{"path": "outputs/realtest_test/potato_late_blight/B2750109-Late_blight_on_a_potato_plant-SPL.jpg.jpg", "class_id": 21, "gh_dir": "Potato leaf late blight", "origin": "B2750109-Late_blight_on_a_potato_plant-SPL.jpg"}
+{"path": "outputs/realtest_test/raspberry_healthy/depositphotos_1323264-Raspberry-leaf-on-white.jpg.jpg", "class_id": 23, "gh_dir": "Raspberry leaf", "origin": "depositphotos_1323264-Raspberry-leaf-on-white.jpg"}
+{"path": "outputs/realtest_test/raspberry_healthy/depositphotos_1323551-stock-photo-raspberry-leaves.jpg.jpg", "class_id": 23, "gh_dir": "Raspberry leaf", "origin": "depositphotos_1323551-stock-photo-raspberry-leaves.jpg"}
+{"path": "outputs/realtest_test/raspberry_healthy/depositphotos_2795312-stock-photo-green-raspberry-leaf.jpg.jpg", "class_id": 23, "gh_dir": "Raspberry leaf", "origin": "depositphotos_2795312-stock-photo-green-raspberry-leaf.jpg"}
+{"path": "outputs/realtest_test/raspberry_healthy/iron-deficiency-raspberry-leaf-chlorosis-isolated-32457798.jpg.jpg", "class_id": 23, "gh_dir": "Raspberry leaf", "origin": "iron-deficiency-raspberry-leaf-chlorosis-isolated-32457798.jpg"}
+{"path": "outputs/realtest_test/raspberry_healthy/Raspberry-leaf.jpg.jpg", "class_id": 23, "gh_dir": "Raspberry leaf", "origin": "Raspberry-leaf.jpg"}
+{"path": "outputs/realtest_test/soybean_healthy/07feb_ma_sbr3.JPG.jpg.jpg", "class_id": 24, "gh_dir": "Soyabean leaf", "origin": "07feb_ma_sbr3.JPG.jpg"}
+{"path": "outputs/realtest_test/soybean_healthy/fresh-soy-leaves-isolated-on-260nw-667193923.jpg.jpg", "class_id": 24, "gh_dir": "Soyabean leaf", "origin": "fresh-soy-leaves-isolated-on-260nw-667193923.jpg"}
+{"path": "outputs/realtest_test/soybean_healthy/leaf-raspberry-isolated-on-a-white-stock-photography-image-10106222-1625198.jpg.jpg", "class_id": 24, "gh_dir": "Soyabean leaf", "origin": "leaf-raspberry-isolated-on-a-white-stock-photography-image-10106222-1625198.jpg"}
+{"path": "outputs/realtest_test/soybean_healthy/resistance1c.jpg.jpg", "class_id": 24, "gh_dir": "Soyabean leaf", "origin": "resistance1c.jpg"}
+{"path": "outputs/realtest_test/squash_powdery_mildew/powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg.jpg", "class_id": 25, "gh_dir": "Squash Powdery mildew leaf", "origin": "powdery-mildew-erysiphe-plantani-on-young-sycamore-leaves-b774tm.jpg"}
+{"path": "outputs/realtest_test/squash_powdery_mildew/powdery-mildew-on-pumpkin-leaves-close-up-2.jpg.jpg", "class_id": 25, "gh_dir": "Squash Powdery mildew leaf", "origin": "powdery-mildew-on-pumpkin-leaves-close-up-2.jpg"}
+{"path": "outputs/realtest_test/squash_powdery_mildew/Powdery-Mildew-on-squash.jpg.jpg", "class_id": 25, "gh_dir": "Squash Powdery mildew leaf", "origin": "Powdery-Mildew-on-squash.jpg"}
+{"path": "outputs/realtest_test/squash_powdery_mildew/powdery-mildew-sphaerotheca-fuliginea-infection-on-pumpkin-leaves-ajdkkx.jpg.jpg", "class_id": 25, "gh_dir": "Squash Powdery mildew leaf", "origin": "powdery-mildew-sphaerotheca-fuliginea-infection-on-pumpkin-leaves-ajdkkx.jpg"}
+{"path": "outputs/realtest_test/squash_powdery_mildew/squash-leave-w-powd-mild.jpg.jpg", "class_id": 25, "gh_dir": "Squash Powdery mildew leaf", "origin": "squash-leave-w-powd-mild.jpg"}
+{"path": "outputs/realtest_test/strawberry_healthy/strawberry-leaf--stock-photo-1431216.jpg.jpg", "class_id": 27, "gh_dir": "Strawberry leaf", "origin": "strawberry-leaf--stock-photo-1431216.jpg"}
+{"path": "outputs/realtest_test/strawberry_healthy/strawberry-leaf-22360816.jpg.jpg", "class_id": 27, "gh_dir": "Strawberry leaf", "origin": "strawberry-leaf-22360816.jpg"}
+{"path": "outputs/realtest_test/strawberry_healthy/strawberry-leaves-collection-white-background-36684676.jpg.jpg", "class_id": 27, "gh_dir": "Strawberry leaf", "origin": "strawberry-leaves-collection-white-background-36684676.jpg"}
+{"path": "outputs/realtest_test/strawberry_healthy/strawberry-leaves-isolated-white-17473157.jpg.jpg", "class_id": 27, "gh_dir": "Strawberry leaf", "origin": "strawberry-leaves-isolated-white-17473157.jpg"}
+{"path": "outputs/realtest_test/strawberry_healthy/strawberry-leaves-isolated-white-34722259.jpg.jpg", "class_id": 27, "gh_dir": "Strawberry leaf", "origin": "strawberry-leaves-isolated-white-34722259.jpg"}
+{"path": "outputs/realtest_test/tomato_bacterial_spot/07.17.18-Common_Tomato_Diseases_Canker-258x300.jpg.jpg", "class_id": 28, "gh_dir": "Tomato leaf bacterial spot", "origin": "07.17.18-Common_Tomato_Diseases_Canker-258x300.jpg"}
+{"path": "outputs/realtest_test/tomato_bacterial_spot/Bacterial_spots563.jpg.jpg", "class_id": 28, "gh_dir": "Tomato leaf bacterial spot", "origin": "Bacterial_spots563.jpg"}
+{"path": "outputs/realtest_test/tomato_bacterial_spot/Tom_Bact3.jpg.jpg", "class_id": 28, "gh_dir": "Tomato leaf bacterial spot", "origin": "Tom_Bact3.jpg"}
+{"path": "outputs/realtest_test/tomato_bacterial_spot/Tom_Bact7.jpg.jpg", "class_id": 28, "gh_dir": "Tomato leaf bacterial spot", "origin": "Tom_Bact7.jpg"}
+{"path": "outputs/realtest_test/tomato_early_blight/039b47d574bc4bb8a14259a1cd96a741.jpg.jpg", "class_id": 29, "gh_dir": "Tomato Early blight leaf", "origin": "039b47d574bc4bb8a14259a1cd96a741.jpg"}
+{"path": "outputs/realtest_test/tomato_early_blight/100983448.jpg.jpg", "class_id": 29, "gh_dir": "Tomato Early blight leaf", "origin": "100983448.jpg"}
+{"path": "outputs/realtest_test/tomato_early_blight/1234080-Early-Blight.jpg.jpg", "class_id": 29, "gh_dir": "Tomato Early blight leaf", "origin": "1234080-Early-Blight.jpg"}
+{"path": "outputs/realtest_test/tomato_early_blight/bugs-and-blight-061.jpg.jpg", "class_id": 29, "gh_dir": "Tomato Early blight leaf", "origin": "bugs-and-blight-061.jpg"}
+{"path": "outputs/realtest_test/tomato_early_blight/Shoemaker_7068.JPG.jpg.jpg", "class_id": 29, "gh_dir": "Tomato Early blight leaf", "origin": "Shoemaker_7068.JPG.jpg"}
+{"path": "outputs/realtest_test/tomato_healthy/1684.jpg.jpg", "class_id": 37, "gh_dir": "Tomato leaf", "origin": "1684.jpg"}
+{"path": "outputs/realtest_test/tomato_healthy/2013-08-20-06.jpg.jpg", "class_id": 37, "gh_dir": "Tomato leaf", "origin": "2013-08-20-06.jpg"}
+{"path": "outputs/realtest_test/tomato_healthy/90e2c0.jpg.jpg", "class_id": 37, "gh_dir": "Tomato leaf", "origin": "90e2c0.jpg"}
+{"path": "outputs/realtest_test/tomato_healthy/DSCN1015.JPG.jpg.jpg", "class_id": 37, "gh_dir": "Tomato leaf", "origin": "DSCN1015.JPG.jpg"}
+{"path": "outputs/realtest_test/tomato_healthy/IMG_1246.jpg.jpg", "class_id": 37, "gh_dir": "Tomato leaf", "origin": "IMG_1246.jpg"}
+{"path": "outputs/realtest_test/tomato_late_blight/110822-206-Tomato-blight.jpg.jpg", "class_id": 30, "gh_dir": "Tomato leaf late blight", "origin": "110822-206-Tomato-blight.jpg"}
+{"path": "outputs/realtest_test/tomato_late_blight/18c.jpg.jpg", "class_id": 30, "gh_dir": "Tomato leaf late blight", "origin": "18c.jpg"}
+{"path": "outputs/realtest_test/tomato_late_blight/636368370164094909-late-blight-15-.jpg.jpg", "class_id": 30, "gh_dir": "Tomato leaf late blight", "origin": "636368370164094909-late-blight-15-.jpg"}
+{"path": "outputs/realtest_test/tomato_late_blight/70.jpg.jpg", "class_id": 30, "gh_dir": "Tomato leaf late blight", "origin": "70.jpg"}
+{"path": "outputs/realtest_test/tomato_leaf_mold/BIGSD.jpg.jpg", "class_id": 31, "gh_dir": "Tomato mold leaf", "origin": "BIGSD.jpg"}
+{"path": "outputs/realtest_test/tomato_leaf_mold/black_leaf_mold_in_zina_tina.jpg.jpg", "class_id": 31, "gh_dir": "Tomato mold leaf", "origin": "black_leaf_mold_in_zina_tina.jpg"}
+{"path": "outputs/realtest_test/tomato_leaf_mold/dscn6689.jpg.jpg", "class_id": 31, "gh_dir": "Tomato mold leaf", "origin": "dscn6689.jpg"}
+{"path": "outputs/realtest_test/tomato_mosaic_virus/9511.img.jpg.jpg", "class_id": 36, "gh_dir": "Tomato leaf mosaic virus", "origin": "9511.img.jpg"}
+{"path": "outputs/realtest_test/tomato_mosaic_virus/everystockphoto-21099455-l.jpg.jpg", "class_id": 36, "gh_dir": "Tomato leaf mosaic virus", "origin": "everystockphoto-21099455-l.jpg"}
+{"path": "outputs/realtest_test/tomato_mosaic_virus/ill-tomato-of-tomato-mosaic-virus-DBE17N.jpg.jpg", "class_id": 36, "gh_dir": "Tomato leaf mosaic virus", "origin": "ill-tomato-of-tomato-mosaic-virus-DBE17N.jpg"}
+{"path": "outputs/realtest_test/tomato_mosaic_virus/Tomato-Mosaic-1wdr2jx-300x225.jpg.jpg", "class_id": 36, "gh_dir": "Tomato leaf mosaic virus", "origin": "Tomato-Mosaic-1wdr2jx-300x225.jpg"}
+{"path": "outputs/realtest_test/tomato_septoria_leaf_spot/0.jpg.jpg", "class_id": 32, "gh_dir": "Tomato Septoria leaf spot", "origin": "0.jpg"}
+{"path": "outputs/realtest_test/tomato_septoria_leaf_spot/2septoria-tomato.jpg.jpg", "class_id": 32, "gh_dir": "Tomato Septoria leaf spot", "origin": "2septoria-tomato.jpg"}
+{"path": "outputs/realtest_test/tomato_septoria_leaf_spot/2STEM.jpg.jpg", "class_id": 32, "gh_dir": "Tomato Septoria leaf spot", "origin": "2STEM.jpg"}
+{"path": "outputs/realtest_test/tomato_septoria_leaf_spot/55830b60a7cf2.image.jpg.jpg", "class_id": 32, "gh_dir": "Tomato Septoria leaf spot", "origin": "55830b60a7cf2.image.jpg"}
+{"path": "outputs/realtest_test/tomato_septoria_leaf_spot/6134794031202304.jpeg.jpg.jpg", "class_id": 32, "gh_dir": "Tomato Septoria leaf spot", "origin": "6134794031202304.jpeg.jpg"}
+{"path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/11-40580_5.jpg.jpg", "class_id": 35, "gh_dir": "Tomato leaf yellow virus", "origin": "11-40580_5.jpg"}
+{"path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/17fc47.jpg.jpg", "class_id": 35, "gh_dir": "Tomato leaf yellow virus", "origin": "17fc47.jpg"}
+{"path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/8226402877_9abf151b5b_b.jpg.jpg", "class_id": 35, "gh_dir": "Tomato leaf yellow virus", "origin": "8226402877_9abf151b5b_b.jpg"}
+{"path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/fwa2013313115151.jpg.jpg", "class_id": 35, "gh_dir": "Tomato leaf yellow virus", "origin": "fwa2013313115151.jpg"}
+{"path": "outputs/realtest_test/tomato_yellow_leaf_curl_virus/glyphosate.jpg.jpg", "class_id": 35, "gh_dir": "Tomato leaf yellow virus", "origin": "glyphosate.jpg"}

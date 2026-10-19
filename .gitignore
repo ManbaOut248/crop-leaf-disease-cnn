@@ -17,6 +17,9 @@ data/_ood_baseline/
 # 验证脚本运行时生成的灰阶临时图
 outputs/_tmp_verify_gray/
 
+# PlantDoc test 划分（外部验证用，120 张约 35MB；由 scripts/fetch_plantdoc_test.py 重建）
+outputs/realtest_test/*/
+
 # 真实场景测试图（PlantDoc 下载，100+ 张约 56MB；可由 scripts/fetch_plantdoc.py 一键重建）
 # 注意只忽略子目录，outputs/realtest/README.md 仍入库（记录来源与 CC BY 4.0 署名要求）
 outputs/realtest/*/
