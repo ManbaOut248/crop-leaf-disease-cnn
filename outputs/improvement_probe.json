@@ -1,0 +1,1264 @@
+{
+  "n": 120,
+  "base": 0.175,
+  "tta": 0.175,
+  "crop_constrained_oracle": 0.525,
+  "crop_constrained_pred": 0.175,
+  "crop_id_accuracy": 0.3333333333333333,
+  "per_crop_id": {
+    "苹果": {
+      "ok": 1,
+      "n": 13
+    },
+    "蓝莓": {
+      "ok": 2,
+      "n": 5
+    },
+    "樱桃": {
+      "ok": 0,
+      "n": 5
+    },
+    "玉米": {
+      "ok": 12,
+      "n": 13
+    },
+    "葡萄": {
+      "ok": 1,
+      "n": 8
+    },
+    "桃": {
+      "ok": 2,
+      "n": 5
+    },
+    "甜椒": {
+      "ok": 2,
+      "n": 8
+    },
+    "马铃薯": {
+      "ok": 2,
+      "n": 9
+    },
+    "树莓": {
+      "ok": 0,
+      "n": 5
+    },
+    "大豆": {
+      "ok": 0,
+      "n": 4
+    },
+    "南瓜": {
+      "ok": 3,
+      "n": 5
+    },
+    "草莓": {
+      "ok": 1,
+      "n": 5
+    },
+    "番茄": {
+      "ok": 14,
+      "n": 35
+    }
+  },
+  "rows": [
+    {
+      "tid": 2,
+      "t_crop": "苹果",
+      "base": 30,
+      "mask_oracle": 0,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 2,
+      "t_crop": "苹果",
+      "base": 7,
+      "mask_oracle": 1,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 2,
+      "t_crop": "苹果",
+      "base": 7,
+      "mask_oracle": 1,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 2,
+      "t_crop": "苹果",
+      "base": 7,
+      "mask_oracle": 2,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 2,
+      "t_crop": "苹果",
+      "base": 7,
+      "mask_oracle": 2,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 3,
+      "t_crop": "苹果",
+      "base": 30,
+      "mask_oracle": 0,
+      "tta": 19,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 3,
+      "t_crop": "苹果",
+      "base": 19,
+      "mask_oracle": 3,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": false,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 3,
+      "t_crop": "苹果",
+      "base": 3,
+      "mask_oracle": 3,
+      "tta": 3,
+      "tta_mask_pred": 3,
+      "crop_ok": true,
+      "pred_crop": "苹果"
+    },
+    {
+      "tid": 3,
+      "t_crop": "苹果",
+      "base": 6,
+      "mask_oracle": 3,
+      "tta": 6,
+      "tta_mask_pred": 6,
+      "crop_ok": false,
+      "pred_crop": "樱桃"
+    },
+    {
+      "tid": 3,
+      "t_crop": "苹果",
+      "base": 10,
+      "mask_oracle": 0,
+      "tta": 10,
+      "tta_mask_pred": 10,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 0,
+      "t_crop": "苹果",
+      "base": 26,
+      "mask_oracle": 0,
+      "tta": 26,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 0,
+      "t_crop": "苹果",
+      "base": 26,
+      "mask_oracle": 2,
+      "tta": 26,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 0,
+      "t_crop": "苹果",
+      "base": 26,
+      "mask_oracle": 2,
+      "tta": 26,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 4,
+      "t_crop": "蓝莓",
+      "base": 20,
+      "mask_oracle": 4,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": false,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 4,
+      "t_crop": "蓝莓",
+      "base": 4,
+      "mask_oracle": 4,
+      "tta": 4,
+      "tta_mask_pred": 4,
+      "crop_ok": true,
+      "pred_crop": "蓝莓"
+    },
+    {
+      "tid": 4,
+      "t_crop": "蓝莓",
+      "base": 19,
+      "mask_oracle": 4,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": false,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 4,
+      "t_crop": "蓝莓",
+      "base": 4,
+      "mask_oracle": 4,
+      "tta": 4,
+      "tta_mask_pred": 4,
+      "crop_ok": true,
+      "pred_crop": "蓝莓"
+    },
+    {
+      "tid": 4,
+      "t_crop": "蓝莓",
+      "base": 9,
+      "mask_oracle": 4,
+      "tta": 9,
+      "tta_mask_pred": 9,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 6,
+      "t_crop": "樱桃",
+      "base": 4,
+      "mask_oracle": 6,
+      "tta": 4,
+      "tta_mask_pred": 4,
+      "crop_ok": false,
+      "pred_crop": "蓝莓"
+    },
+    {
+      "tid": 6,
+      "t_crop": "樱桃",
+      "base": 19,
+      "mask_oracle": 6,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": false,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 6,
+      "t_crop": "樱桃",
+      "base": 3,
+      "mask_oracle": 6,
+      "tta": 3,
+      "tta_mask_pred": 3,
+      "crop_ok": false,
+      "pred_crop": "苹果"
+    },
+    {
+      "tid": 6,
+      "t_crop": "樱桃",
+      "base": 3,
+      "mask_oracle": 6,
+      "tta": 3,
+      "tta_mask_pred": 3,
+      "crop_ok": false,
+      "pred_crop": "苹果"
+    },
+    {
+      "tid": 6,
+      "t_crop": "樱桃",
+      "base": 19,
+      "mask_oracle": 6,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": false,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 7,
+      "t_crop": "玉米",
+      "base": 29,
+      "mask_oracle": 10,
+      "tta": 29,
+      "tta_mask_pred": 29,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 7,
+      "t_crop": "玉米",
+      "base": 7,
+      "mask_oracle": 7,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 7,
+      "t_crop": "玉米",
+      "base": 7,
+      "mask_oracle": 7,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 9,
+      "t_crop": "玉米",
+      "base": 9,
+      "mask_oracle": 9,
+      "tta": 9,
+      "tta_mask_pred": 9,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 9,
+      "t_crop": "玉米",
+      "base": 7,
+      "mask_oracle": 7,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 9,
+      "t_crop": "玉米",
+      "base": 7,
+      "mask_oracle": 7,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 9,
+      "t_crop": "玉米",
+      "base": 9,
+      "mask_oracle": 9,
+      "tta": 9,
+      "tta_mask_pred": 9,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 9,
+      "t_crop": "玉米",
+      "base": 7,
+      "mask_oracle": 7,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 8,
+      "t_crop": "玉米",
+      "base": 7,
+      "mask_oracle": 7,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 8,
+      "t_crop": "玉米",
+      "base": 9,
+      "mask_oracle": 9,
+      "tta": 9,
+      "tta_mask_pred": 9,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 8,
+      "t_crop": "玉米",
+      "base": 8,
+      "mask_oracle": 8,
+      "tta": 8,
+      "tta_mask_pred": 8,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 8,
+      "t_crop": "玉米",
+      "base": 8,
+      "mask_oracle": 8,
+      "tta": 8,
+      "tta_mask_pred": 8,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 8,
+      "t_crop": "玉米",
+      "base": 7,
+      "mask_oracle": 7,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": true,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 11,
+      "t_crop": "葡萄",
+      "base": 7,
+      "mask_oracle": 12,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 11,
+      "t_crop": "葡萄",
+      "base": 8,
+      "mask_oracle": 12,
+      "tta": 8,
+      "tta_mask_pred": 8,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 11,
+      "t_crop": "葡萄",
+      "base": 7,
+      "mask_oracle": 12,
+      "tta": 7,
+      "tta_mask_pred": 12,
+      "crop_ok": true,
+      "pred_crop": "葡萄"
+    },
+    {
+      "tid": 14,
+      "t_crop": "葡萄",
+      "base": 30,
+      "mask_oracle": 14,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 14,
+      "t_crop": "葡萄",
+      "base": 30,
+      "mask_oracle": 14,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 14,
+      "t_crop": "葡萄",
+      "base": 30,
+      "mask_oracle": 14,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 14,
+      "t_crop": "葡萄",
+      "base": 26,
+      "mask_oracle": 12,
+      "tta": 19,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 14,
+      "t_crop": "葡萄",
+      "base": 30,
+      "mask_oracle": 14,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 17,
+      "t_crop": "桃",
+      "base": 26,
+      "mask_oracle": 16,
+      "tta": 26,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 17,
+      "t_crop": "桃",
+      "base": 26,
+      "mask_oracle": 17,
+      "tta": 30,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 17,
+      "t_crop": "桃",
+      "base": 17,
+      "mask_oracle": 17,
+      "tta": 17,
+      "tta_mask_pred": 17,
+      "crop_ok": true,
+      "pred_crop": "桃"
+    },
+    {
+      "tid": 17,
+      "t_crop": "桃",
+      "base": 16,
+      "mask_oracle": 16,
+      "tta": 16,
+      "tta_mask_pred": 16,
+      "crop_ok": true,
+      "pred_crop": "桃"
+    },
+    {
+      "tid": 17,
+      "t_crop": "桃",
+      "base": 6,
+      "mask_oracle": 16,
+      "tta": 4,
+      "tta_mask_pred": 6,
+      "crop_ok": false,
+      "pred_crop": "樱桃"
+    },
+    {
+      "tid": 18,
+      "t_crop": "甜椒",
+      "base": 7,
+      "mask_oracle": 19,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 18,
+      "t_crop": "甜椒",
+      "base": 7,
+      "mask_oracle": 19,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 18,
+      "t_crop": "甜椒",
+      "base": 29,
+      "mask_oracle": 19,
+      "tta": 26,
+      "tta_mask_pred": 29,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 18,
+      "t_crop": "甜椒",
+      "base": 20,
+      "mask_oracle": 18,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": false,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 18,
+      "t_crop": "甜椒",
+      "base": 30,
+      "mask_oracle": 18,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 19,
+      "t_crop": "甜椒",
+      "base": 19,
+      "mask_oracle": 19,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": true,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 19,
+      "t_crop": "甜椒",
+      "base": 8,
+      "mask_oracle": 19,
+      "tta": 15,
+      "tta_mask_pred": 8,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 19,
+      "t_crop": "甜椒",
+      "base": 19,
+      "mask_oracle": 19,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": true,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 20,
+      "t_crop": "马铃薯",
+      "base": 20,
+      "mask_oracle": 20,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": true,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 20,
+      "t_crop": "马铃薯",
+      "base": 30,
+      "mask_oracle": 20,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 20,
+      "t_crop": "马铃薯",
+      "base": 29,
+      "mask_oracle": 20,
+      "tta": 29,
+      "tta_mask_pred": 29,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 20,
+      "t_crop": "马铃薯",
+      "base": 29,
+      "mask_oracle": 20,
+      "tta": 29,
+      "tta_mask_pred": 29,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 20,
+      "t_crop": "马铃薯",
+      "base": 20,
+      "mask_oracle": 20,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": true,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 21,
+      "t_crop": "马铃薯",
+      "base": 30,
+      "mask_oracle": 21,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 21,
+      "t_crop": "马铃薯",
+      "base": 30,
+      "mask_oracle": 20,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 21,
+      "t_crop": "马铃薯",
+      "base": 30,
+      "mask_oracle": 20,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 21,
+      "t_crop": "马铃薯",
+      "base": 30,
+      "mask_oracle": 20,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 23,
+      "t_crop": "树莓",
+      "base": 27,
+      "mask_oracle": 23,
+      "tta": 27,
+      "tta_mask_pred": 27,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 23,
+      "t_crop": "树莓",
+      "base": 30,
+      "mask_oracle": 23,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 23,
+      "t_crop": "树莓",
+      "base": 19,
+      "mask_oracle": 23,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": false,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 23,
+      "t_crop": "树莓",
+      "base": 33,
+      "mask_oracle": 23,
+      "tta": 33,
+      "tta_mask_pred": 33,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 23,
+      "t_crop": "树莓",
+      "base": 35,
+      "mask_oracle": 23,
+      "tta": 35,
+      "tta_mask_pred": 35,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 24,
+      "t_crop": "大豆",
+      "base": 20,
+      "mask_oracle": 24,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": false,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 24,
+      "t_crop": "大豆",
+      "base": 4,
+      "mask_oracle": 24,
+      "tta": 4,
+      "tta_mask_pred": 4,
+      "crop_ok": false,
+      "pred_crop": "蓝莓"
+    },
+    {
+      "tid": 24,
+      "t_crop": "大豆",
+      "base": 19,
+      "mask_oracle": 24,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": false,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 24,
+      "t_crop": "大豆",
+      "base": 10,
+      "mask_oracle": 24,
+      "tta": 10,
+      "tta_mask_pred": 10,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 25,
+      "t_crop": "南瓜",
+      "base": 25,
+      "mask_oracle": 25,
+      "tta": 25,
+      "tta_mask_pred": 25,
+      "crop_ok": true,
+      "pred_crop": "南瓜"
+    },
+    {
+      "tid": 25,
+      "t_crop": "南瓜",
+      "base": 25,
+      "mask_oracle": 25,
+      "tta": 25,
+      "tta_mask_pred": 25,
+      "crop_ok": true,
+      "pred_crop": "南瓜"
+    },
+    {
+      "tid": 25,
+      "t_crop": "南瓜",
+      "base": 5,
+      "mask_oracle": 25,
+      "tta": 5,
+      "tta_mask_pred": 5,
+      "crop_ok": false,
+      "pred_crop": "樱桃"
+    },
+    {
+      "tid": 25,
+      "t_crop": "南瓜",
+      "base": 7,
+      "mask_oracle": 25,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 25,
+      "t_crop": "南瓜",
+      "base": 25,
+      "mask_oracle": 25,
+      "tta": 25,
+      "tta_mask_pred": 25,
+      "crop_ok": true,
+      "pred_crop": "南瓜"
+    },
+    {
+      "tid": 27,
+      "t_crop": "草莓",
+      "base": 27,
+      "mask_oracle": 27,
+      "tta": 27,
+      "tta_mask_pred": 27,
+      "crop_ok": true,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 27,
+      "t_crop": "草莓",
+      "base": 14,
+      "mask_oracle": 27,
+      "tta": 14,
+      "tta_mask_pred": 14,
+      "crop_ok": false,
+      "pred_crop": "葡萄"
+    },
+    {
+      "tid": 27,
+      "t_crop": "草莓",
+      "base": 30,
+      "mask_oracle": 26,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": false,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 27,
+      "t_crop": "草莓",
+      "base": 14,
+      "mask_oracle": 26,
+      "tta": 14,
+      "tta_mask_pred": 14,
+      "crop_ok": false,
+      "pred_crop": "葡萄"
+    },
+    {
+      "tid": 27,
+      "t_crop": "草莓",
+      "base": 11,
+      "mask_oracle": 26,
+      "tta": 11,
+      "tta_mask_pred": 11,
+      "crop_ok": false,
+      "pred_crop": "葡萄"
+    },
+    {
+      "tid": 28,
+      "t_crop": "番茄",
+      "base": 26,
+      "mask_oracle": 29,
+      "tta": 26,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 28,
+      "t_crop": "番茄",
+      "base": 20,
+      "mask_oracle": 30,
+      "tta": 18,
+      "tta_mask_pred": 20,
+      "crop_ok": false,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 28,
+      "t_crop": "番茄",
+      "base": 30,
+      "mask_oracle": 30,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 28,
+      "t_crop": "番茄",
+      "base": 10,
+      "mask_oracle": 30,
+      "tta": 10,
+      "tta_mask_pred": 10,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 29,
+      "t_crop": "番茄",
+      "base": 26,
+      "mask_oracle": 29,
+      "tta": 26,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 29,
+      "t_crop": "番茄",
+      "base": 30,
+      "mask_oracle": 30,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 29,
+      "t_crop": "番茄",
+      "base": 30,
+      "mask_oracle": 30,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 29,
+      "t_crop": "番茄",
+      "base": 20,
+      "mask_oracle": 30,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": false,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 29,
+      "t_crop": "番茄",
+      "base": 10,
+      "mask_oracle": 30,
+      "tta": 10,
+      "tta_mask_pred": 10,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 37,
+      "t_crop": "番茄",
+      "base": 30,
+      "mask_oracle": 30,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 37,
+      "t_crop": "番茄",
+      "base": 19,
+      "mask_oracle": 37,
+      "tta": 19,
+      "tta_mask_pred": 19,
+      "crop_ok": false,
+      "pred_crop": "甜椒"
+    },
+    {
+      "tid": 37,
+      "t_crop": "番茄",
+      "base": 29,
+      "mask_oracle": 29,
+      "tta": 29,
+      "tta_mask_pred": 29,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 37,
+      "t_crop": "番茄",
+      "base": 20,
+      "mask_oracle": 37,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": false,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 37,
+      "t_crop": "番茄",
+      "base": 10,
+      "mask_oracle": 30,
+      "tta": 10,
+      "tta_mask_pred": 10,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 30,
+      "t_crop": "番茄",
+      "base": 30,
+      "mask_oracle": 30,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 30,
+      "t_crop": "番茄",
+      "base": 7,
+      "mask_oracle": 30,
+      "tta": 29,
+      "tta_mask_pred": 8,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 30,
+      "t_crop": "番茄",
+      "base": 30,
+      "mask_oracle": 30,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 30,
+      "t_crop": "番茄",
+      "base": 29,
+      "mask_oracle": 29,
+      "tta": 20,
+      "tta_mask_pred": 29,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 31,
+      "t_crop": "番茄",
+      "base": 32,
+      "mask_oracle": 32,
+      "tta": 32,
+      "tta_mask_pred": 32,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 31,
+      "t_crop": "番茄",
+      "base": 29,
+      "mask_oracle": 29,
+      "tta": 29,
+      "tta_mask_pred": 29,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 31,
+      "t_crop": "番茄",
+      "base": 30,
+      "mask_oracle": 30,
+      "tta": 30,
+      "tta_mask_pred": 30,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 36,
+      "t_crop": "番茄",
+      "base": 10,
+      "mask_oracle": 29,
+      "tta": 10,
+      "tta_mask_pred": 10,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 36,
+      "t_crop": "番茄",
+      "base": 7,
+      "mask_oracle": 35,
+      "tta": 7,
+      "tta_mask_pred": 7,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 36,
+      "t_crop": "番茄",
+      "base": 26,
+      "mask_oracle": 29,
+      "tta": 26,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 36,
+      "t_crop": "番茄",
+      "base": 10,
+      "mask_oracle": 30,
+      "tta": 10,
+      "tta_mask_pred": 10,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 32,
+      "t_crop": "番茄",
+      "base": 30,
+      "mask_oracle": 30,
+      "tta": 26,
+      "tta_mask_pred": 30,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 32,
+      "t_crop": "番茄",
+      "base": 8,
+      "mask_oracle": 29,
+      "tta": 8,
+      "tta_mask_pred": 8,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 32,
+      "t_crop": "番茄",
+      "base": 20,
+      "mask_oracle": 29,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": false,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 32,
+      "t_crop": "番茄",
+      "base": 26,
+      "mask_oracle": 29,
+      "tta": 29,
+      "tta_mask_pred": 26,
+      "crop_ok": false,
+      "pred_crop": "草莓"
+    },
+    {
+      "tid": 32,
+      "t_crop": "番茄",
+      "base": 8,
+      "mask_oracle": 29,
+      "tta": 8,
+      "tta_mask_pred": 8,
+      "crop_ok": false,
+      "pred_crop": "玉米"
+    },
+    {
+      "tid": 35,
+      "t_crop": "番茄",
+      "base": 35,
+      "mask_oracle": 35,
+      "tta": 35,
+      "tta_mask_pred": 35,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 35,
+      "t_crop": "番茄",
+      "base": 20,
+      "mask_oracle": 30,
+      "tta": 20,
+      "tta_mask_pred": 20,
+      "crop_ok": false,
+      "pred_crop": "马铃薯"
+    },
+    {
+      "tid": 35,
+      "t_crop": "番茄",
+      "base": 29,
+      "mask_oracle": 29,
+      "tta": 29,
+      "tta_mask_pred": 29,
+      "crop_ok": true,
+      "pred_crop": "番茄"
+    },
+    {
+      "tid": 35,
+      "t_crop": "番茄",
+      "base": 25,
+      "mask_oracle": 35,
+      "tta": 25,
+      "tta_mask_pred": 25,
+      "crop_ok": false,
+      "pred_crop": "南瓜"
+    },
+    {
+      "tid": 35,
+      "t_crop": "番茄",
+      "base": 18,
+      "mask_oracle": 29,
+      "tta": 18,
+      "tta_mask_pred": 18,
+      "crop_ok": false,
+      "pred_crop": "甜椒"
+    }
+  ]
+}
