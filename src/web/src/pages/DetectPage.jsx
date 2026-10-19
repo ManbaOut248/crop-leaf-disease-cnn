@@ -1,8 +1,13 @@
 // 病害识别页：上传图片 → 调 /predict → Top-3 概率 + 病害说明 + 防治建议
 // 响应契约对齐 docs/04_API接口文档.md：
 //   { pred_class_id, crop_cn, disease_cn, is_healthy, confidence,
-//     top3:[{class_id, disease_cn, prob}], need_review, knowledge:{symptom,cause,prevention,treatment} }
-import React, { useState } from 'react'
+//     top3:[{class_id, disease_cn, prob}], need_review, knowledge:{symptom,cause,prevention,treatment},
+//     likely_not_leaf, leaf_prob, crop_applied, crop_candidates }
+//
+// 作物先验（2026-10-19）：用户可选作物，后端把 softmax 限制在该作物的候选类内。
+// 实测 120 张 PlantDoc test 真实照片：多类别作物 Top-1 15.8% → 43.6%（+27.7pp）。
+// 根因是模型「只看斑点纹理、不看作物」——苹果锈病会被判成玉米灰斑病且置信度 0.96+。
+import React, { useState, useEffect } from 'react'
 import {
   Upload,
   Button,
@@ -14,6 +19,8 @@ import {
   Alert,
   App,
   Divider,
+  Select,
+  Space,
 } from 'antd'
 import { UploadOutlined, ExperimentOutlined } from '@ant-design/icons'
 import http, { USE_MOCK } from '../api/http'
@@ -28,6 +35,32 @@ export default function DetectPage() {
   const [preview, setPreview] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
+  // 作物先验：'' 表示不限制（走全 38 类，准确率较低但不需要用户输入）
+  const [crop, setCrop] = useState('')
+  const [cropOptions, setCropOptions] = useState([])
+  const [singleCandidateCrops, setSingleCandidateCrops] = useState([])
+
+  // 作物清单从后端取，不在前端硬编码 —— 类别体系以后端为唯一来源，
+  // 否则类别调整后前端选项会静默失真（知识库页就是反例）。
+  useEffect(() => {
+    if (USE_MOCK) return
+    http
+      .get('/crops')
+      .then((res) => {
+        const d = res.data || {}
+        const items = d.items || []
+        setCropOptions(
+          items.map((x) => ({
+            value: x.crop,
+            label: `${x.crop}（${x.n_classes} 个候选）`,
+          })),
+        )
+        setSingleCandidateCrops(d.single_candidate || [])
+      })
+      .catch(() => {
+        // 取不到就退化成「不提供选择」，不影响识别主流程
+      })
+  }, [])
 
   const beforeUpload = (f) => {
     const okType = ['image/jpeg', 'image/png', 'image/bmp', 'image/webp'].includes(f.type)
@@ -63,7 +96,11 @@ export default function DetectPage() {
     const fd = new FormData()
     fd.append('file', file)
     http
-      .post('/predict', fd, { headers: { 'Content-Type': 'multipart/form-data' } })
+      .post('/predict', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        // 只在选了作物时带参数，避免空串被后端当成「未知作物」而报 400
+        params: crop ? { crop } : undefined,
+      })
       .then((res) => setResult(res.data))
       .catch((e) => message.error((e.response && e.response.data && e.response.data.msg) || '识别失败，请重试'))
       .finally(() => setLoading(false))
@@ -96,6 +133,27 @@ export default function DetectPage() {
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         {/* 左：上传 + 预览 */}
         <Card title="上传叶片图片" style={{ width: 360 }}>
+          {/* 作物先验：指定后在候选类内归一化，实测多类别作物准确率翻近三倍。
+              默认「不确定」——不强制用户输入，代价是准确率低一档。 */}
+          <div style={{ marginBottom: 14 }}>
+            <Typography.Text type="secondary" style={{ display: 'block', marginBottom: 6 }}>
+              作物类型（选填，指定后更准确）
+            </Typography.Text>
+            <Select
+              allowClear
+              value={crop || undefined}
+              onChange={(v) => setCrop(v || '')}
+              placeholder="不确定（全 38 类中判断）"
+              options={cropOptions}
+              style={{ width: '100%' }}
+              disabled={cropOptions.length === 0}
+            />
+            {crop && singleCandidateCrops.includes(crop) && (
+              <Typography.Text type="warning" style={{ fontSize: 12 }}>
+                该作物在模型中只有一个候选类别，结果等同直接给出结论，参考价值有限。
+              </Typography.Text>
+            )}
+          </div>
           <div className="drop-zone" style={{ textAlign: 'center' }}>
             <Upload.Dragger beforeUpload={beforeUpload} showUploadList={false} accept="image/*">
               {preview ? (
@@ -237,6 +295,12 @@ export default function DetectPage() {
                   >
                     {top1.is_healthy ? '健康' : '病害'}
                   </Tag>
+                  {/* 作物先验是否生效：不标出来用户无从知道概率是在几个候选里算的 */}
+                  {result.crop_applied && (
+                    <Tag style={{ fontSize: 12, marginLeft: 6 }}>
+                      已限定作物 {result.crop_candidates} 个候选
+                    </Tag>
+                  )}
                   <Typography.Title level={4} style={{ margin: '10px 0 0' }}>
                     {top1.name}
                   </Typography.Title>

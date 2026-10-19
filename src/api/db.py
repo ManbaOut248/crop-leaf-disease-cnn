@@ -376,6 +376,31 @@ def get_disease_list(crop=None):
     return rows
 
 
+def get_crop_summary():
+    """作物清单及各作物的候选类别数，供前端「选择作物」下拉使用。
+
+    返回按类别数降序排列，形如：
+        [{"crop": "番茄", "n_classes": 10, "n_diseases": 9}, ...]
+
+    为什么要前端从后端取而不是硬编码：类别体系（38 类）的唯一来源是数据库 /
+    知识库；硬编码在前端意味着改类别时要改两处，且前端不知道哪个作物只有
+    「健康」一个候选（此时作物约束等于强制作答，应提示用户）。
+    """
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT crop_cn AS crop,
+               COUNT(*) AS n_classes,
+               SUM(CASE WHEN is_healthy = 0 THEN 1 ELSE 0 END) AS n_diseases
+        FROM disease_knowledge
+        GROUP BY crop_cn
+        ORDER BY n_classes DESC, crop_cn
+    """)
+    rows = [dict(r) for r in cur.fetchall()]
+    conn.close()
+    return rows
+
+
 def get_disease_by_id(did):
     conn = get_conn()
     cur = conn.cursor()

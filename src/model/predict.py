@@ -31,6 +31,7 @@ from src.config import (
     BEST_MODEL_PATH, LAST_MODEL_PATH, NUM_CLASSES, PRESCALE_SIZE,
     OOD_MSP_THRESHOLD, OOD_CHROMA_THRESHOLD,
     OOD_HEAD_PATH, OOD_HEAD_ENABLE, OOD_HEAD_THRESHOLD,
+    CROP_PRIOR_ENABLE,
 )
 from src.data.transforms import get_val_transform
 from src.model.resnet import build_resnet18
@@ -169,6 +170,24 @@ class Predictor:
         self.knowledge = self._load_knowledge()
         self.temperature = self._load_calibration()  # 温度缩放校准参数
         self.num_classes = NUM_CLASSES
+        # 作物 → 候选类别索引。作物名取知识库的 crop 字段（14 种作物）。
+        # 用于「用户指定作物」时把 softmax 限制在候选内（CROP_PRIOR）。
+        self.crop_class_ids = {}
+        for idx, en in enumerate(CLASS_DIRS):
+            crop = (self.knowledge.get(en) or {}).get("crop", "").strip()
+            if crop:
+                self.crop_class_ids.setdefault(crop, []).append(idx)
+
+    def resolve_crop(self, crop):
+        """把用户传入的作物名解析为候选类别索引列表；无效/未启用时返回 None。
+
+        返回 None 表示「不做约束」，而不是报错 —— 调用方（API）已负责校验合法性，
+        这里再兜一层，避免脏数据把整次识别搞挂。
+        """
+        if not CROP_PRIOR_ENABLE or not crop:
+            return None
+        ids = self.crop_class_ids.get(str(crop).strip())
+        return ids if ids else None
 
     @classmethod
     def get_instance(cls, device=None):
@@ -253,12 +272,18 @@ class Predictor:
         return float((a.max(axis=2) - a.min(axis=2)).mean())
 
     @torch.no_grad()
-    def _infer(self, pil_image, top_k=3):
+    def _infer(self, pil_image, top_k=3, crop=None):
         """内部推理实现：返回 (Top-K 结果列表, MSP, 平均色度, 池化特征)。
 
-        MSP 与平均色度是**回退判据**（检测头不可用时使用）；
-        池化特征是**主判据**的输入 —— 交给 _LeafHead 判断「是不是叶片」。
-        未启用检测头时池化特征为 None。
+        crop 非空且合法时，把 softmax 限制在该作物的候选类内（作物先验）。
+
+        ⚠️ 两个概率各自的用途必须分清：
+            probs_full    全 38 类归一化 —— **MSP 判据用它**（判断「是不是叶片」）。
+                          若改用掩码后的概率，候选变少会让分布更尖锐、
+                          置信度整体虚高，非叶片图片反而更容易蒙混过关。
+            probs(display) 掩码后归一化 —— 仅用于展示 Top-K 与置信度。
+
+        池化特征是「叶片检测头」的输入；未启用检测头时为 None。
         """
         # 1) 校正 EXIF 方向：手机照片常带旋转元数据，PIL 默认不应用，否则会把正立叶片喂歪导致误判
         img = ImageOps.exif_transpose(pil_image).convert("RGB")
@@ -281,8 +306,23 @@ class Predictor:
             if hook is not None:
                 hook.remove()
         logits = logits / self.temperature      # 温度缩放：T>1 抑制过自信，使置信度更可靠
-        probs = torch.softmax(logits, dim=1)[0]
-        k = max(1, min(int(top_k), self.num_classes))
+
+        # 全类概率：MSP 只能从这里取（见上方说明）
+        probs_full = torch.softmax(logits, dim=1)[0]
+        msp = float(probs_full.max().item())
+
+        # 作物先验：把非候选类的 logit 置 -inf，softmax 只在候选内归一化
+        crop_ids = self.resolve_crop(crop)
+        if crop_ids:
+            masked = torch.full_like(logits, float("-inf"))
+            masked[:, crop_ids] = logits[:, crop_ids]
+            probs = torch.softmax(masked, dim=1)[0]
+            max_k = len(crop_ids)              # 候选只有 N 个时不可能返回更多
+        else:
+            probs = probs_full
+            max_k = self.num_classes
+
+        k = max(1, min(int(top_k), max_k))
         topk = torch.topk(probs, k)
         results = []
         for rank, (idx, p) in enumerate(zip(topk.indices.tolist(), topk.values.tolist()), start=1):
@@ -300,18 +340,19 @@ class Predictor:
                 "prevention": know.get("prevention", ""),
                 "treatment": know.get("treatment", ""),
             })
-        # topk.values[0] 即全局最大概率（k>=1），作为 MSP 返回
-        return results, float(topk.values[0].item()), chroma, pooled.get("f")
+        return results, msp, chroma, pooled.get("f")
 
-    def predict_image(self, pil_image, top_k=3):
-        """输入 PIL.Image，返回 Top-K 结果列表（对外接口保持不变）。
+    def predict_image(self, pil_image, top_k=3, crop=None):
+        """输入 PIL.Image，返回 Top-K 结果列表。
 
         top_k 为逐次调用参数（非单例缓存），k 自动夹紧到 [1, 类别数]，避免越界。
+        crop 可选：指定作物中文名时，只在候选类内归一化（实测多类别作物
+        Top-1 15.8% → 43.6%）。不传则退化为原来的全 38 类行为。
         """
-        results, _, _, _ = self._infer(pil_image, top_k)
+        results, _, _, _ = self._infer(pil_image, top_k, crop=crop)
         return results
 
-    def predict_image_with_ood(self, pil_image, top_k=3):
+    def predict_image_with_ood(self, pil_image, top_k=3, crop=None):
         """返回 (results, ood_info)，额外给出「这是不是叶片照片」的判断。
 
         为什么需要它：
@@ -350,8 +391,10 @@ class Predictor:
             likely_not_leaf  —— 判定结果（由主判据决定）
             msp              —— 原始 softmax 置信度（诊断 / 日志用）
         """
-        results, msp, chroma, feat = self._infer(pil_image, top_k)
+        results, msp, chroma, feat = self._infer(pil_image, top_k, crop=crop)
         grayscale = chroma < OOD_CHROMA_THRESHOLD
+        # 作物约束是否真正生效（crop 为空 / 非法 / 全局关闭时为 False）
+        crop_applied = bool(self.resolve_crop(crop))
 
         if self.leaf_head is not None and self.leaf_head.ready and feat is not None:
             leaf_prob = self.leaf_head.score(feat)
@@ -369,16 +412,21 @@ class Predictor:
             "grayscale": grayscale,
             "likely_not_leaf": bool(likely_not_leaf),
             "msp": round(float(msp), 4),
+            "crop_applied": crop_applied,
+            "crop_candidates": len(self.resolve_crop(crop) or []),
         }
 
 
-def predict_image(pil_image, top_k=3):
-    """便捷函数：懒加载全局 Predictor 并预测。top_k 逐次生效（不受单例缓存影响）。"""
+def predict_image(pil_image, top_k=3, crop=None):
+    """便捷函数：懒加载全局 Predictor 并预测。top_k 逐次生效（不受单例缓存影响）。
+
+    crop 可选（作物中文名）；传入后在候选类内归一化。
+    """
     predictor = Predictor.get_instance()
-    return predictor.predict_image(pil_image, top_k=top_k)
+    return predictor.predict_image(pil_image, top_k=top_k, crop=crop)
 
 
-def predict_image_with_ood(pil_image, top_k=3):
+def predict_image_with_ood(pil_image, top_k=3, crop=None):
     """便捷函数：返回 (results, ood_info)，供 API 层做「非叶片输入」提示。"""
     predictor = Predictor.get_instance()
-    return predictor.predict_image_with_ood(pil_image, top_k=top_k)
+    return predictor.predict_image_with_ood(pil_image, top_k=top_k, crop=crop)

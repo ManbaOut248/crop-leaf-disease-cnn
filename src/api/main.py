@@ -26,7 +26,7 @@ from src.config import (
     THRESHOLD_LOW_CONF, MODEL_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS,
     NUM_CLASSES, CLASS_DIRS, class_name_zh,
     TRUST_PROXY, RATE_LIMIT_LOGIN_PER_MIN,
-    REQUIRE_HTTPS, HSTS_MAX_AGE,
+    REQUIRE_HTTPS, HSTS_MAX_AGE, CROP_PRIOR_ENABLE,
 )
 from src.api import auth, db, schemas, thumbs
 
@@ -142,6 +142,26 @@ def _rate_ok(ip: str, limit: int = 60, window: int = 60) -> bool:
         return False
     lst.append(now)
     return True
+
+
+# ===================== 作物先验 =====================
+_CROP_NAMES_CACHE = None
+
+
+def _crop_names():
+    """作物中文名清单（模块级缓存）。
+
+    不能在 import 时计算：那时 lifespan 里的 db.init_db() 尚未执行，
+    disease_knowledge 表可能还不存在。故首次在请求内调用时再取。
+    查询结果为空时**不缓存**，避免「首次调用时表未就绪」把空列表永久固化。
+    """
+    global _CROP_NAMES_CACHE
+    if _CROP_NAMES_CACHE is None:
+        names = [r["crop"] for r in db.get_crop_summary()]
+        if names:
+            _CROP_NAMES_CACHE = names
+        return names
+    return _CROP_NAMES_CACHE
 
 
 # ===================== 统一响应 / 依赖 =====================
@@ -260,12 +280,21 @@ def logout():
 def predict(
     file: UploadFile = File(...),
     top_k: int = Query(3, ge=1, le=NUM_CLASSES, description="返回 Top-K 候选数量，默认 3"),
+    crop: str = Query("", description="作物中文名（可选）。指定后只在候选类内归一化，可显著提升准确率"),
     user=Depends(get_optional_user),
     request: Request = None,
 ):
     ip = _client_ip(request) if request else "local"
     if not _rate_ok(ip):
         return _err(429, "请求过于频繁，请稍后再试", 429)
+
+    # 作物名合法性：非法值不静默忽略，而是明确报错 —— 静默忽略会让用户以为
+    # 约束生效了、实际仍走全 38 类，属于难以察觉的错误。
+    crop = (crop or "").strip()
+    if crop:
+        crop_names = _crop_names()
+        if crop not in crop_names:
+            return _err(400, f"未知作物「{crop}」，可选：{', '.join(crop_names)}")
 
     ext = Path(file.filename or "").suffix.lower()
     if ext not in ALLOWED_IMAGE_EXT:
@@ -287,7 +316,7 @@ def predict(
     save_name = f"{uuid.uuid4().hex}{ext}"
     (UPLOAD_DIR / save_name).write_bytes(raw)
     try:
-        results, ood = predict_image_with_ood(img, top_k=top_k)
+        results, ood = predict_image_with_ood(img, top_k=top_k, crop=crop)
     except FileNotFoundError:
         (UPLOAD_DIR / save_name).unlink(missing_ok=True)
         return _err(503, "模型尚未就绪，请稍候（训练进行中或权重缺失）", 503)
@@ -317,6 +346,10 @@ def predict(
         "mean_chroma": ood["mean_chroma"],
         "grayscale": ood["grayscale"],
         "msp": ood["msp"],
+        # 作物先验：crop_applied=True 表示概率已在指定作物的候选类内归一化
+        # （此时 crop_candidates 为候选类数）。前端据此说明「已按 X 作物约束」。
+        "crop_applied": ood["crop_applied"],
+        "crop_candidates": ood["crop_candidates"],
         "knowledge": {
             "symptom": top1.get("symptom", ""),
             "cause": top1.get("cause", ""),
@@ -336,6 +369,24 @@ def predict(
 
 
 # ---------- 2.3 病害知识 ----------
+@app.get("/api/v1/crops")
+def crops():
+    """作物清单（含各作物的候选类别数），供前端「选择作物」下拉使用。
+
+    为什么需要它：指定作物后 /predict 只在候选类内归一化，实测多类别作物
+    Top-1 从 15.8% 提升到 43.6%。候选数与类别体系必须以后端为唯一来源，
+    否则前端硬编码会在类别调整后静默失真。
+    """
+    rows = db.get_crop_summary()
+    return _ok({
+        "items": rows,
+        # 说明：n_classes == 1 的作物（蓝莓 / 树莓 / 大豆 / 南瓜）只有一个候选类，
+        # 指定作物等于直接给出结论，前端应据此提示，避免用户误以为「约束后很准」。
+        "single_candidate": [r["crop"] for r in rows if r["n_classes"] == 1],
+        "enabled": CROP_PRIOR_ENABLE,
+    })
+
+
 @app.get("/api/v1/diseases")
 def diseases(crop: str = Query(None, description="按作物中文名筛选，如 番茄")):
     rows = db.get_disease_list(crop)
