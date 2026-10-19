@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 640" width="920" height="640" role="img" aria-labelledby="t d">
+  <title id="t">农作物叶片病害识别系统 架构图</title>
+  <desc id="d">四层架构：浏览器客户端经 HTTPS 到 Nginx，Nginx 转发到 FastAPI 服务层，服务层调用推理引擎与数据层。</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B7A72"/>
+    </marker>
+    <style>
+      .t  { font-family: "Microsoft YaHei", "PingFang SC", sans-serif; }
+      .h  { font-size: 15px; font-weight: 600; fill: #1C2620; }
+      .b  { font-size: 13px; fill: #2E3A33; }
+      .s  { font-size: 11.5px; fill: #6B7A72; }
+      .box{ fill: #FFFFFF; stroke: #C9D6CD; stroke-width: 1.2; }
+      .tag{ font-size: 11px; fill: #1C663A; }
+    </style>
+  </defs>
+
+  <rect width="920" height="640" fill="#F7FAF8"/>
+
+  <!-- 标题 -->
+  <text x="32" y="40" class="t h" font-size="18">农作物叶片病害识别系统 · 技术架构</text>
+  <text x="32" y="60" class="t s">前后端分离 B/S 架构　·　38 类（14 作物 / 26 病害 + 12 健康）混淆矩阵见 docs/05</text>
+
+  <!-- ===== 层 1：客户端 ===== -->
+  <rect x="32" y="84" width="856" height="90" rx="10" class="box"/>
+  <text x="48" y="108" class="t h">① 客户端</text>
+  <rect x="48" y="118" width="300" height="30" rx="6" fill="#E8F6EE" stroke="#C9EAD8"/>
+  <text x="60" y="138" class="t b">React 18 + Vite 5 + Ant Design 5</text>
+  <rect x="362" y="118" width="180" height="30" rx="6" fill="#E8F6EE" stroke="#C9EAD8"/>
+  <text x="374" y="138" class="t b">响应式（PC / 移动）</text>
+  <rect x="556" y="118" width="316" height="30" rx="6" fill="#E8F6EE" stroke="#C9EAD8"/>
+  <text x="568" y="138" class="t b">浏览器：Chrome / Edge / Firefox / Safari</text>
+  <text x="48" y="165" class="t s">功能：上传预览 · 结果可视化（Top-3）· 历史 · 知识库 · 个人中心</text>
+
+  <!-- 箭头 1 -->
+  <line x1="460" y1="160" x2="460" y2="196" stroke="#6B7A72" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <text x="472" y="184" class="t s">HTTPS / JSON（TLS 1.2+）</text>
+
+  <!-- ===== 层 2：Nginx ===== -->
+  <rect x="32" y="198" width="856" height="60" rx="10" class="box"/>
+  <text x="48" y="222" class="t h">② 接入层</text>
+  <text x="150" y="222" class="t b">Nginx（生产）／ Vite dev server + proxy（开发）</text>
+  <text x="48" y="244" class="t s">TLS 终止 · HSTS · 静态资源托管（dist/）· /api 反向代理 · SPA 路由回落</text>
+
+  <line x1="460" y1="258" x2="460" y2="292" stroke="#6B7A72" stroke-width="1.4" marker-end="url(#arrow)"/>
+  <text x="472" y="282" class="t s">127.0.0.1:8000</text>
+
+  <!-- ===== 层 3：后端服务 ===== -->
+  <rect x="32" y="294" width="856" height="150" rx="10" class="box"/>
+  <text x="48" y="318" class="t h">③ 服务层（FastAPI + Uvicorn）</text>
+
+  <rect x="48" y="330" width="180" height="46" rx="6" fill="#F1FAF5" stroke="#C9EAD8"/>
+  <text x="60" y="350" class="t b">认证 / 限流</text>
+  <text x="60" y="367" class="t s">bcrypt · HMAC JWT · 60 次/分/IP</text>
+
+  <rect x="240" y="330" width="200" height="46" rx="6" fill="#F1FAF5" stroke="#C9EAD8"/>
+  <text x="252" y="350" class="t b">业务路由 /api/v1</text>
+  <text x="252" y="367" class="t s">predict · records · diseases · auth</text>
+
+  <rect x="452" y="330" width="200" height="46" rx="6" fill="#F1FAF5" stroke="#C9EAD8"/>
+  <text x="464" y="350" class="t b">上传与校验</text>
+  <text x="464" y="367" class="t s">扩展名白名单 · 魔数 · ≤10MB</text>
+
+  <rect x="664" y="330" width="208" height="46" rx="6" fill="#F1FAF5" stroke="#C9EAD8"/>
+  <text x="676" y="350" class="t b">安全中间件</text>
+  <text x="676" y="367" class="t s">CSP · HSTS · 防嗅探 / 防嵌套</text>
+
+  <rect x="48" y="386" width="824" height="42" rx="6" fill="#FFFFFF" stroke="#E2E8E4" stroke-dasharray="4 3"/>
+  <text x="60" y="412" class="t s">运维观测：健康检查 /health　·　非叶片判据分布 /records/ood-stats（flagged / low_leaf / msp_fallback）</text>
+
+  <line x1="460" y1="444" x2="460" y2="476" stroke="#6B7A72" stroke-width="1.4" marker-end="url(#arrow)"/>
+
+  <!-- ===== 层 4：推理引擎 ===== -->
+  <rect x="32" y="478" width="520" height="134" rx="10" class="box"/>
+  <text x="48" y="502" class="t h">④ 推理引擎（Predictor 单例）</text>
+
+  <rect x="48" y="514" width="232" height="82" rx="6" fill="#E8F6EE" stroke="#C9EAD8"/>
+  <text x="60" y="534" class="t b">ResNet18 · 38 类</text>
+  <text x="60" y="552" class="t s">ImageNet 预训练 + 迁移学习</text>
+  <text x="60" y="569" class="t s">温度缩放校准置信度</text>
+  <text x="60" y="586" class="t s">fp32 / INT8 / 剪枝 三后端可切</text>
+
+  <rect x="292" y="514" width="244" height="82" rx="6" fill="#FEF6E7" stroke="#F6D9A8"/>
+  <text x="304" y="534" class="t b">叶片检测头（OOD）</text>
+  <text x="304" y="552" class="t s">冻结模型 512 维特征 → 逻辑回归</text>
+  <text x="304" y="569" class="t s">真实叶 vs 非叶 AUROC 0.76~0.97</text>
+  <text x="304" y="586" class="t s">不修改原模型，精度不受影响</text>
+
+  <!-- ===== 层 5：数据层 ===== -->
+  <rect x="576" y="478" width="312" height="134" rx="10" class="box"/>
+  <text x="592" y="502" class="t h">⑤ 数据层</text>
+  <rect x="592" y="514" width="280" height="26" rx="5" fill="#FFFFFF" stroke="#E2E8E4"/>
+  <text x="604" y="532" class="t b">SQLite（WAL）· users / records / knowledge</text>
+  <rect x="592" y="546" width="280" height="24" rx="5" fill="#FFFFFF" stroke="#E2E8E4"/>
+  <text x="604" y="563" class="t s">data/uploads/　上传原图（缩略图 base64 内联）</text>
+  <rect x="592" y="576" width="280" height="24" rx="5" fill="#FFFFFF" stroke="#E2E8E4"/>
+  <text x="604" y="593" class="t s">models/　权重 + ood_head.npz（不入库）</text>
+
+  <!-- 连接线：服务层 → 推理 / 数据 -->
+  <path d="M 660 400 V 460 H 292 V 512" fill="none" stroke="#6B7A72" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <path d="M 740 400 V 512" fill="none" stroke="#6B7A72" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+  <text x="32" y="632" class="t s">注：虚线为数据读写路径。三后端切换会关闭检测头（特征分布不同），此时判据回退 MSP 并在启动日志告警。</text>
+</svg>

@@ -84,12 +84,19 @@
 ---
 
 ## 5. 技术架构概述
+
+![技术架构](assets/architecture.svg)
+
+> 矢量图见 `docs/assets/architecture.svg`（交付版，替代早期 ASCII 草图）。
+
 前后端分离 B/S 架构：
-- **前端**：React + TailwindCSS/Ant Design，响应式。
+- **前端**：React 18 + Vite 5 + Ant Design 5，响应式（PC / 移动同套界面）。
+- **接入**：Nginx 终止 TLS、托管前端构建产物、`/api` 反向代理；开发期用 Vite proxy。
 - **后端**：FastAPI 提供 RESTful API（用户认证、预处理、推理、历史、知识查询）。
-- **模型**：PyTorch ResNet18（ImageNet 预训练 + 迁移学习微调），推理服务常驻。
-- **数据**：SQLite 持久化（用户、历史、病害知识、配置）。
-- **部署**：单服务进程（uvicorn）+ 静态前端；可选模型量化/剪枝优化（任务书 3.3）。
+- **模型**：PyTorch ResNet18（ImageNet 预训练 + 迁移学习微调），推理服务常驻；另有独立叶片检测头用于非叶片拒识。
+- **数据**：SQLite 持久化（用户、历史、病害知识、配置），WAL 模式。
+- **部署**：单服务进程（uvicorn）+ Nginx + TLS；三后端（fp32 / INT8 / 剪枝）可切换。
+- **运维**：`/health` 存活检查 + `/records/ood-stats` 判据分布监控，详见 `docs/13_部署运维手册.md`。
 
 ---
 

@@ -58,39 +58,20 @@
 
 ## 4. 技术架构
 
-前后端分离 B/S 架构：
+![技术架构](docs/assets/architecture.svg)
 
-```
-┌─────────────┐     HTTP / JSON     ┌──────────────────┐
-│  前端 Web    │ ─────────────────► │   后端 API        │
-│ React+Vite  │ ◄───────────────── │   FastAPI         │
-│ Ant Design  │                    │   ├─ 认证 / 用户   │
-│ (响应式)     │                    │   ├─ 推理 /predict │
-│             │                    │   ├─ 历史 /records │
-│             │                    │   └─ 知识 /diseases │
-└─────────────┘                    └────────┬─────────┘
-                                            │
-                                   ┌────────▼─────────┐
-                                   │  推理引擎         │
-                                   │  ResNet18 (38类)  │
-                                   │  INFER_BACKEND    │
-                                   │  fp32/quant/prune │
-                                   └────────┬─────────┘
-                                            │
-                                   ┌────────▼─────────┐
-                                   │  数据层          │
-                                   │  SQLite (WAL)    │
-                                   │  用户/历史/知识   │
-                                   └──────────────────┘
-```
+> 图为矢量图（`docs/assets/architecture.svg`），可单独打开或直接用于 PPT。
+> 四层：客户端 → 接入层（Nginx / TLS）→ 服务层（FastAPI）→ 推理引擎 + 数据层。
 
 | 层 | 技术 |
 |----|------|
 | 前端 | React 18 + Vite 5 + Ant Design 5（响应式，PC / 移动端同套界面） |
+| 接入 | Nginx 终止 TLS + 托管 `dist/` + `/api` 反代；开发用 Vite proxy |
 | 后端 | FastAPI + Uvicorn + Pydantic，RESTful API（`/api/v1`） |
 | 模型 | PyTorch + torchvision ResNet18（ImageNet 预训练 + 迁移学习微调） |
-| 推理 | `src/model/predict.py`，`INFER_BACKEND` 切换三后端，温度缩放校准置信度 |
+| 推理 | `src/model/predict.py`，`INFER_BACKEND` 切换三后端，温度缩放校准置信度；独立叶片检测头做非叶片拒识 |
 | 数据 | SQLite（`WAL` 模式，外键约束，并发保护），用户 / 历史 / 病害知识 / 配置 |
+
 
 ---
 
@@ -245,6 +226,9 @@ py -3.12 scripts/predict_smoke.py
 | `docs/10_叶片病害数据集获取指南.md` | 公开数据集清单 + 本机网络实测 |
 | `docs/11_域适应与OOD检测实验.md` | 域适应失败记录、叶片检测头、负样本扩充与监控 |
 | `docs/12_任务书对照检查.md` | 任务书逐条对照（完成度 / 缺口 / 质量评价） |
+| `docs/13_部署运维手册.md` | 部署形态、TLS、备份恢复、监控、故障排查 |
+| `rag/` | RAG 语料库（225 块）+ 系统提示词 + 检索 demo |
+| `docs/assets/architecture.svg` | 技术架构矢量图 |
 
 ---
 

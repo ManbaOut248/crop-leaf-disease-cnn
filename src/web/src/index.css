@@ -120,3 +120,26 @@ body {
   border-color: var(--c-warning-border);
   color: var(--c-warning-text);
 }
+
+/* ===================== 移动端侧栏折叠按钮定位 =====================
+   AntD 零宽侧栏的触发按钮默认定位在 `top: 64px`（顶栏下方），
+   会压在内容区左上角 —— 实战截图里直接盖住了页面标题首字。
+   这里把它移进顶栏高度内（顶栏右侧是用户区、左侧为空），
+   既不遮挡内容，也符合"左上角菜单"的常见心智。
+
+   注意选择器要写两个类：AntD 5 的样式是运行时注入的，
+   单类选择器与它同优先级、但注入更晚，会被覆盖（实测 top 仍是 64px）。 */
+.ant-layout .ant-layout-sider-zero-width-trigger {
+  top: 14px;
+  left: 8px;
+  right: auto;
+  border-radius: 8px;
+  background: var(--c-bg-container);
+  color: var(--c-text-title);
+  box-shadow: var(--sh-sm);
+}
+
+.ant-layout .ant-layout-sider-zero-width-trigger:hover {
+  background: var(--c-primary-50);
+  color: var(--c-primary-700);
+}

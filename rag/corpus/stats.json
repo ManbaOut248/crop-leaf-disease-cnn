@@ -1,0 +1,26 @@
+{
+  "total": 225,
+  "by_kind": {
+    "disease": 64,
+    "doc": 149,
+    "faq": 12
+  },
+  "avg_chars": 185.6,
+  "max_chars": 800,
+  "sources": [
+    "disease_knowledge.json",
+    "docs/01_PRD.md",
+    "docs/02_UIUX设计.md",
+    "docs/03_数据库设计.md",
+    "docs/04_API接口文档.md",
+    "docs/05_测试报告.md",
+    "docs/06_模型压缩对比.md",
+    "docs/07_AI协作教程.md",
+    "docs/08_OOD拒识评估.md",
+    "docs/09_代码审计报告.md",
+    "docs/10_叶片病害数据集获取指南.md",
+    "docs/11_域适应与OOD检测实验.md",
+    "docs/12_任务书对照检查.md",
+    "faq"
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "browser": "Edge (Chromium)",
+  "version": "155.0.4283.62",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900,
+      "loginOverflow": {
+        "scrollW": 1440,
+        "innerW": 1440
+      },
+      "detectOverflow": {
+        "scrollW": 1440,
+        "innerW": 1440
+      },
+      "loginNoHScroll": true,
+      "detectNoHScroll": true,
+      "afterLoginUrl": "http://127.0.0.1:5173/",
+      "loginSuccess": true,
+      "errors": []
+    },
+    {
+      "name": "laptop",
+      "width": 1024,
+      "height": 768,
+      "loginOverflow": {
+        "scrollW": 1024,
+        "innerW": 1024
+      },
+      "detectOverflow": {
+        "scrollW": 1024,
+        "innerW": 1024
+      },
+      "loginNoHScroll": true,
+      "detectNoHScroll": true,
+      "afterLoginUrl": "http://127.0.0.1:5173/",
+      "loginSuccess": true,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "isMobile": true,
+      "loginOverflow": {
+        "scrollW": 390,
+        "innerW": 390
+      },
+      "detectOverflow": {
+        "scrollW": 390,
+        "innerW": 390
+      },
+      "loginNoHScroll": true,
+      "detectNoHScroll": true,
+      "afterLoginUrl": "http://127.0.0.1:5173/",
+      "loginSuccess": true,
+      "errors": []
+    }
+  ],
+  "features": {
+    "CSS 变量": true,
+    "Flex gap": true,
+    "Grid 布局": true,
+    "aspect-ratio": true,
+    "backdrop-filter": true,
+    ":has() 选择器": true,
+    "可选链 ?.": true,
+    "Intl.NumberFormat": true,
+    "ResizeObserver": true,
+    "fetch": true
+  }
+}
