@@ -10,6 +10,7 @@ import sqlite3
 from pathlib import Path
 
 from src.config import PROJECT_ROOT, DISEASE_KNOWLEDGE_PATH, CLASS_DIRS, class_name_zh
+from src.api.crypto import cipher
 
 DB_PATH = PROJECT_ROOT / "data" / "app.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -90,6 +91,7 @@ def init_db():
     );
     """)
     _migrate_records(cur)
+    _migrate_encrypt_pii(cur)
     conn.commit()
 
     # 首次导入知识库（仅当为空时）
@@ -121,6 +123,28 @@ def _migrate_records(cur):
                 "ON recognition_records(created_at DESC, leaf_prob)")
     if added:
         print(f"[db] recognition_records 已补列: {', '.join(added)}")
+
+
+def _migrate_encrypt_pii(cur):
+    """把历史明文的 `users.email` 就地加密（幂等）。
+
+    为什么需要迁移而不是只改写入路径：加密封装上线前已有用户的 email 是明文，
+    如果只改 create_user，历史数据仍然裸存，等于「新用户加密、老用户没加密」。
+    这里按前缀 `enc:v1:` 判断，已加密的跳过，可重复执行。
+    """
+    if not cipher.enabled:
+        return 0
+    cur.execute("SELECT id, email FROM users WHERE email IS NOT NULL AND email <> ''")
+    rows = [dict(r) for r in cur.fetchall()]
+    n = 0
+    for r in rows:
+        if cipher.is_ciphertext(r["email"]):
+            continue
+        cur.execute("UPDATE users SET email=? WHERE id=?", (cipher.encrypt(r["email"]), r["id"]))
+        n += 1
+    if n:
+        print(f"[db] users.email 已加密迁移 {n} 行（DB_FIELD_KEY 已启用）")
+    return n
 
 
 def _split_crop_disease(en, zh, info):
@@ -172,7 +196,8 @@ def create_user(username, password_hash, salt, email=None, nickname=None):
     try:
         cur.execute(
             "INSERT INTO users (username, password_hash, salt, email, nickname) VALUES (?,?,?,?,?)",
-            (username, password_hash, salt, email, nickname or username),
+            # email 属 PII，按任务书 6.2 做静态加密后落库（未配置密钥时原样写入）
+            (username, password_hash, salt, cipher.encrypt(email), nickname or username),
         )
         uid = cur.lastrowid
         conn.commit()
@@ -181,13 +206,21 @@ def create_user(username, password_hash, salt, email=None, nickname=None):
         conn.close()
 
 
+def _dec_user(row):
+    """把用户行里的 PII 列解密后再交给上层（缺失密钥时为 None，不返回密文）。"""
+    d = dict(row)
+    if "email" in d:
+        d["email"] = cipher.decrypt(d["email"])
+    return d
+
+
 def get_user_by_username(username):
     conn = get_conn()
     cur = conn.cursor()
     cur.execute("SELECT * FROM users WHERE username=?", (username,))
     row = cur.fetchone()
     conn.close()
-    return dict(row) if row else None
+    return _dec_user(row) if row else None
 
 
 def get_user_by_id(uid):
@@ -196,7 +229,7 @@ def get_user_by_id(uid):
     cur.execute("SELECT * FROM users WHERE id=?", (uid,))
     row = cur.fetchone()
     conn.close()
-    return dict(row) if row else None
+    return _dec_user(row) if row else None
 
 
 def update_user(uid, nickname=None, password_hash=None, salt=None):

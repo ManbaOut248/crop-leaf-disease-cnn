@@ -18,7 +18,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, Depends, File, Header, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from starlette.background import BackgroundTask
 
 from src.config import (
@@ -26,6 +26,7 @@ from src.config import (
     THRESHOLD_LOW_CONF, MODEL_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS,
     NUM_CLASSES, CLASS_DIRS, class_name_zh,
     TRUST_PROXY, RATE_LIMIT_LOGIN_PER_MIN,
+    REQUIRE_HTTPS, HSTS_MAX_AGE,
 )
 from src.api import auth, db, schemas, thumbs
 
@@ -63,11 +64,29 @@ app.add_middleware(
 
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
-    """统一注入基础安全响应头（审计 P2）。
+    """统一注入基础安全响应头（审计 P2），并在启用时强制 HTTPS（任务书 6.2）。
 
     本服务只返回 JSON / 文件流、不承载任何页面，故 CSP 收紧到最严
     （default-src 'none'）—— 即便将来某处误回显了用户内容，浏览器也不会执行脚本。
+
+    HTTPS：
+      · `REQUIRE_HTTPS=1` 时，HTTP 请求返回 308 跳转到 https（保留方法与请求体）；
+      · 判定依据是 `request.url.scheme`，而 Nginx 终止 TLS 的场景下应用看到的是
+        http —— 此时必须依赖 `X-Forwarded-Proto`。该头只有在 **TRUST_PROXY=1**
+        时才可信（否则客户端可自行伪造），两个开关要成对使用。
+      · 已经是 HTTPS 时下发 HSTS，让浏览器后续强制走 TLS。
     """
+    if REQUIRE_HTTPS:
+        proto = request.url.scheme
+        if TRUST_PROXY:
+            # 仅信任代理追加的第一个值
+            fwd = request.headers.get("X-Forwarded-Proto", "")
+            if fwd:
+                proto = fwd.split(",")[0].strip().lower()
+        if proto != "https":
+            url = request.url.replace(scheme="https")
+            return RedirectResponse(str(url), status_code=308)
+
     resp = await call_next(request)
     resp.headers.setdefault("X-Content-Type-Options", "nosniff")
     resp.headers.setdefault("X-Frame-Options", "DENY")
@@ -76,6 +95,14 @@ async def add_security_headers(request: Request, call_next):
         "Content-Security-Policy",
         "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
     )
+    if REQUIRE_HTTPS:
+        proto = request.url.scheme
+        if TRUST_PROXY and request.headers.get("X-Forwarded-Proto", "").split(",")[0].strip() == "https":
+            proto = "https"
+        if proto == "https":
+            resp.headers.setdefault(
+                "Strict-Transport-Security", f"max-age={HSTS_MAX_AGE}; includeSubDomains"
+            )
     return resp
 # 安全说明：刻意不挂载任何静态目录。
 # 旧实现曾 app.mount("/static", StaticFiles(directory=data))，会把 data/app.db（全部账户与

@@ -221,6 +221,26 @@ else:
     )
 JWT_EXPIRE_DAYS = int(os.getenv("JWT_EXPIRE_DAYS", "7"))
 RATE_LIMIT_PER_MIN = 60                           # 单 IP 识别接口限流（API 文档 5）
+
+# ===================== HTTPS / 传输加密（任务书 6.2） =====================
+# 两种部署方式（详见 docs/13_部署运维手册.md）：
+#   A. 反向代理终止 TLS（推荐）：Nginx 持证书，后端仍监听 127.0.0.1:8000，
+#      并设置 TRUST_PROXY=1 让限流按 X-Forwarded-For 取真实来源。
+#   B. 应用直连 TLS：设置 TLS_CERT / TLS_KEY，启动时带
+#      --ssl-keyfile/--ssl-certfile；适合无代理的小规模部署。
+TLS_CERT = os.getenv("TLS_CERT", "").strip()
+TLS_KEY = os.getenv("TLS_KEY", "").strip()
+# 设为 1 后：非 HTTPS 请求一律 308 跳转到 https（代理已终止 TLS 的场景靠
+# X-Forwarded-Proto 判断，故需同时开启 TRUST_PROXY，否则会被反复跳转）。
+REQUIRE_HTTPS = os.getenv("REQUIRE_HTTPS", "0").strip() == "1"
+HSTS_MAX_AGE = int(os.getenv("HSTS_MAX_AGE", "31536000"))
+
+# ===================== 数据库字段加密（任务书 6.2「数据库存储加密」） =====================
+# 对 users.email 等 PII 字段做 Fernet(AES) 加密后落库。
+# 与 JWT_SECRET 的关键差异：**密钥必须稳定**。缺失时只能禁用加密并告警，
+# 不能像 JWT 那样随机生成 —— 否则进程重启后将无法解密历史数据。
+# 生成：py -3.12 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+DB_FIELD_KEY = os.getenv("DB_FIELD_KEY", "").strip()
 RATE_LIMIT_LOGIN_PER_MIN = 10                     # 单 IP 登录/注册限流（防口令爆破）
 
 # 是否信任反向代理透传的 X-Forwarded-For / X-Real-IP。
