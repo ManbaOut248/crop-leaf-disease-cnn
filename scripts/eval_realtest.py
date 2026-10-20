@@ -41,6 +41,9 @@ def main():
                     help="权重路径；默认用 Predictor 当前加载的（部署 best）")
     ap.add_argument("--split", default="data/real_mix_test",
                     help="评估集根目录（子目录名即 38 类全名）")
+    ap.add_argument("--index", default=None,
+                    help="去重评估索引（如 outputs/index/dataset_index_realtest.json）；"
+                         "给定时优先用索引，避免 PlantDoc 源重复图重复计票")
     args = ap.parse_args()
 
     pred = Predictor.get_instance()
@@ -53,29 +56,41 @@ def main():
     know = json.loads(Path(DISEASE_KNOWLEDGE_PATH).read_text(encoding="utf-8"))
     crop_of = lambda c: (know.get(CLASS_DIRS[c]) or {}).get("crop", "")
 
-    root = Path(args.split)
     per = defaultdict(lambda: [0, 0])   # cid -> [correct, total]
     total_c = total_t = 0
-    for d in sorted(root.iterdir()):
-        if not d.is_dir():
-            continue
-        try:
-            cid = CLASS_DIRS.index(d.name)
-        except ValueError:
-            continue
-        for p in sorted(d.rglob("*")):
-            if p.suffix.lower() not in IMG_SUF:
+
+    # 评估项：(图片路径, 真实 class_id)
+    # 优先读去重索引（test 项为 [path, label]），避免 PlantDoc 源重复图重复计票
+    items = []
+    if args.index:
+        idx = json.loads(Path(args.index).read_text(encoding="utf-8"))
+        items = [(Path(p), int(cid)) for p, cid in idx["test"]]
+        print(f"评估数据源: 去重索引 {args.index}（{len(items)} 张唯一图）")
+    else:
+        root = Path(args.split)
+        for d in sorted(root.iterdir()):
+            if not d.is_dir():
                 continue
             try:
-                im = Image.open(p).convert("RGB")
-                res, _ = pred.predict_image_with_ood(im, top_k=1, crop=crop_of(cid))
-                ok = res[0]["class_id"] == cid
-            except Exception:
-                ok = False
-            per[cid][1] += 1
-            per[cid][0] += ok
-            total_c += ok
-            total_t += 1
+                cid = CLASS_DIRS.index(d.name)
+            except ValueError:
+                continue
+            for p in sorted(d.rglob("*")):
+                if p.suffix.lower() in IMG_SUF:
+                    items.append((p, cid))
+        print(f"评估数据源: 目录 {args.split}（{len(items)} 个文件，含重复）")
+
+    for p, cid in items:
+        try:
+            im = Image.open(p).convert("RGB")
+            res, _ = pred.predict_image_with_ood(im, top_k=1, crop=crop_of(cid))
+            ok = res[0]["class_id"] == cid
+        except Exception:
+            ok = False
+        per[cid][1] += 1
+        per[cid][0] += ok
+        total_c += ok
+        total_t += 1
 
     print("=" * 70)
     print(f"真实域评估（带作物先验，PlantDoc）：{total_c}/{total_t} = "
