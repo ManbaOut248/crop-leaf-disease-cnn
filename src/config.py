@@ -132,6 +132,28 @@ MODEL_VERSION = "resnet18-plantvillage-38-v1"   # 经 API 暴露，便于灰度/
 CALIBRATION_PATH = PROJECT_ROOT / "outputs" / "calibration.json"
 THRESHOLD_LOW_CONF = 0.5                         # 置信度低于此值 → 提示人工复核（API 文档 2.2）
 
+# ===================== 真实域置信度校准（2026-10-20） =====================
+# 上面那个 CALIBRATION_PATH 的 T=1.0 是在 PlantVillage 上拟合的（ECE 0.0028，实验室域很准）。
+# 但同一个 T 搬到真实田间照片就完全失效：实测 PlantDoc test 上平均置信 0.727 而准确率
+# 仅 17.5%，**43 张高置信（>0.9）样本里有 32 张是错的**。用户看到「玉米灰斑病 93%」
+# 没有任何理由怀疑 —— 这是校准失效（confidence 与 accuracy 脱节），不是识别错误。
+#
+# 故另做一套「真实域」温度：在 PlantDoc train（648 张）拟合、test（120 张）评估，
+# ECE 0.5517 → 0.0863，高置信错判 32 → 0。产物 models/calibration_domain.json。
+# 拟合脚本：scripts/calibrate_domain.py；实验记录：docs/14_置信度校准实验.md
+CALIBRATION_DOMAIN_PATH = MODEL_DIR / "calibration_domain.json"
+CALIBRATION_DOMAIN_ENABLE = os.getenv("CALIBRATION_DOMAIN_ENABLE", "1").strip() == "1"
+
+# ⚠️ 刻意不做「按域自动选温度」，尽管域判别器能达到 AUC 0.977：
+#    实测它会把 16/120 张真实图误判为实验室域，而这 16 张里 **12 张是判错的**
+#    （多张置信 0.96~1.00）—— 恰好把最危险的「自信地错」放过去了。
+#    统一用真实域温度更保守：实验室风格图会欠自信（99% 准确却显示 0.3 左右），
+#    但绝不会把错的说成对的。与 OOD「提示而不硬阻断」同一套代价不对称判断。
+#
+# 可靠性分档阈值（实测定，crop 模式下 high 判对率 89.7% / medium 42.0% / low 22.6%）
+RELIABILITY_HIGH = 0.55
+RELIABILITY_MEDIUM = 0.25
+
 # ===================== OOD（非叶片输入）拒识 =====================
 # 背景：模型是 38 类闭集 softmax，没有"以上都不是"选项，对任何输入都会吐出
 # 一个类别。实测把动漫插画判成「番茄叶霉病 96.87%」—— 对农户是误导性输出。

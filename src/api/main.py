@@ -350,6 +350,14 @@ def predict(
         # （此时 crop_candidates 为候选类数）。前端据此说明「已按 X 作物约束」。
         "crop_applied": ood["crop_applied"],
         "crop_candidates": ood["crop_candidates"],
+        # 真实域置信度校准：confidence 仍是 PV 域尺度的原始值（契约不变），
+        # 下面三个字段是新增维度，告诉前端「这个数字在真实田间照片上到底该信多少」。
+        #   confidence_calibrated —— 用 PlantDoc 拟合温度缩放后的置信度（更贴近真实准确率）
+        #   reliability          —— 分档 high/medium/low（阈值见 docs/14）
+        #   calibration_enabled  —— 校准是否生效（未生成校准文件时为 false，前端退化为原逻辑）
+        "confidence_calibrated": ood["confidence_calibrated"],
+        "reliability": ood["reliability"],
+        "calibration_enabled": ood["calibration_enabled"],
         "knowledge": {
             "symptom": top1.get("symptom", ""),
             "cause": top1.get("cause", ""),

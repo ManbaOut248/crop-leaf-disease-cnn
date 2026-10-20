@@ -117,6 +117,19 @@ export default function DetectPage() {
       (result.knowledge && (result.knowledge.prevention || result.knowledge.treatment)) || '',
   }
   const top3 = (result && result.top3) || []
+  // 真实域置信度校准：后端用 PlantDoc 拟合的温度缩放后，得到「这个数字在真实田间照片上
+  // 到底该信多少」的估计。仅当校准生效（生成了 calibration_domain.json 且开关打开）才有意义。
+  const calibrationEnabled = !!(result && result.calibration_enabled)
+  const confCal = result && result.confidence_calibrated
+  const reliability = (result && result.reliability) || 'unknown'
+  // 可靠性分档 → 文案 / 配色（high 绿、medium 金、low 红、校准未生效时灰）
+  const RELIABILITY_META = {
+    high: { color: 'green', text: '结果较可靠' },
+    medium: { color: 'gold', text: '结果仅供参考' },
+    low: { color: 'red', text: '结果可能不可靠' },
+    unknown: { color: 'default', text: '未校准' },
+  }
+  const relMeta = RELIABILITY_META[reliability] || RELIABILITY_META.unknown
   // 「大概率不是叶片」时只提示这一件事，不再叠加"置信度低"的橙色提示，避免两条信息打架
   const needReview =
     result &&
@@ -301,6 +314,13 @@ export default function DetectPage() {
                       已限定作物 {result.crop_candidates} 个候选
                     </Tag>
                   )}
+                  {/* 真实域置信度校准：把「实验室风格的 99%」翻译成「田间实测可能只有 18%」，
+                      用彩色 Tag 直接告诉用户该不该信这个结果。校准未生效时不显示。 */}
+                  {calibrationEnabled && (
+                    <Tag color={relMeta.color} style={{ fontSize: 12, marginLeft: 6 }}>
+                      校准：{relMeta.text}
+                    </Tag>
+                  )}
                   <Typography.Title level={4} style={{ margin: '10px 0 0' }}>
                     {top1.name}
                   </Typography.Title>
@@ -319,6 +339,25 @@ export default function DetectPage() {
                   <div style={{ fontSize: 12, color: 'var(--c-text-sub)', marginTop: 2 }}>
                     Top-1 置信度
                   </div>
+                  {/* 校准后的置信度：这是后端按真实田间数据重新缩放的数值，更接近真实准确率。
+                      与上方原始置信度并排展示，让用户直观看到「模型自报的把握」和
+                      「校准后实际可信度」之间的差距（真实田间场景差距极大）。 */}
+                  {calibrationEnabled && typeof confCal === 'number' && (
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color:
+                          reliability === 'low'
+                            ? 'var(--c-error-600)'
+                            : reliability === 'medium'
+                            ? 'var(--c-warning-600)'
+                            : 'var(--c-success-600)',
+                        marginTop: 4,
+                      }}
+                    >
+                      真实场景校准：{formatPercent(confCal)}
+                    </div>
+                  )}
                 </div>
               </div>
 

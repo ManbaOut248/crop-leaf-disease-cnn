@@ -1,0 +1,13 @@
+{
+  "cv_auc_mean": 0.9121,
+  "cv_auc_std": 0.0645,
+  "test_auc": 0.9767,
+  "test_acc": 0.941,
+  "n_pv_train": 950,
+  "n_field_train": 648,
+  "n_pv_test": 304,
+  "n_field_test": 120,
+  "pv_to_field_errors": 9,
+  "field_to_pv_errors": 16,
+  "usable": true
+}

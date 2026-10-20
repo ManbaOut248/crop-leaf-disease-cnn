@@ -77,6 +77,9 @@
     "msp": 0.9772,
     "crop_applied": true,
     "crop_candidates": 10,
+    "confidence_calibrated": 0.12,
+    "reliability": "low",
+    "calibration_enabled": true,
     "knowledge": { "symptom": "...", "cause": "...", "prevention": "...", "treatment": "..." }
   }
 }
@@ -110,6 +113,20 @@
 >   前端据此显示「已限定作物 N 个候选」标签 —— 不标出来用户无从知道概率是在几个候选里算的
 > - `crop_candidates` —— 生效时的候选类数；未生效为 0。**为 1 时说明该作物在模型中只有一个类别，
 >   约束等于直接给出结论**（如蓝莓 / 树莓 / 大豆 / 南瓜 / 柑橘），参考价值有限
+> - `confidence_calibrated` —— **真实域校准后的置信度**（0–1）。用 PlantDoc 田间照片拟合的温度缩放
+>   （`T_global≈6.05` / 指定作物时 `T_crop≈9.55`）重新缩放 logits 后的 Top-1 概率。
+>   它比 `confidence` 更贴近「真实田间场景下的实际准确率」—— 例如同一张图
+>   `confidence=0.93` 但 `confidence_calibrated=0.10`，说明模型在实验室域自报的把握在真实场景里水分很大。
+>   仅用于展示，不改变 Top-1 排序，也不参与 OOD 判据
+> - `reliability` —— 由 `confidence_calibrated` 映射的**可靠性分档**：`high`（≥0.55，实测判对率 89.7%）/
+>   `medium`（0.25–0.55，42.0%）/`low`（<0.25，22.6%）。前端据此显示「校准：结果较可靠 / 仅供参考 / 可能不可靠」标签
+> - `calibration_enabled` —— 校准是否生效。未生成 `models/calibration_domain.json` 或
+>   `CALIBRATION_DOMAIN_ENABLE=0` 时为 `false`，此时前端退化为原逻辑（不显示校准区）
+>
+> ⚠️ **两个置信度的用途必须分清**（详见 `docs/14_置信度校准.md`）：
+> `confidence` / `top3[].prob` 是 **PlantVillage 域**尺度（T=1.0），用于既有契约与 `msp` OOD 判据；
+> `confidence_calibrated` 是 **真实田间域**尺度（T≈6~10），只用于对外展示「该信多少」。
+> 同一温度无法同时适配两域，故分两条路径。校准**只改数值、不改 Top-1 排序**。
 >
 > 判据来源、阈值取舍与实测数据见 `docs/08_OOD拒识评估.md` 与
 > `docs/11_域适应与OOD检测实验.md`（现行端到端实测：彩色真实叶片 0/11 误杀，

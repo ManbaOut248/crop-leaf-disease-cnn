@@ -148,3 +148,45 @@ def test_predict_crop_not_affect_ood(client):
     assert base["likely_not_leaf"] == masked["likely_not_leaf"]
     # 而展示置信度**应该**变化 —— 否则说明掩码压根没生效，这条测试就等于没测
     assert base["confidence"] != masked["confidence"]
+
+
+def test_predict_calibration_fields(client):
+    """置信度校准字段契约：API 必须回传校准后的置信度与可靠性分档。
+
+    守护点：
+    1. 三个校准字段（confidence_calibrated / reliability / calibration_enabled）存在；
+    2. confidence_calibrated ∈ [0,1]，reliability ∈ {high,medium,low,unknown}；
+    3. 校准**只改展示数值、不动 OOD 判据** —— msp（全 38 类 T=1.0 尺度）与
+       confidence 在 crop=None 时应相等，且都不受校准路径影响；
+    4. reliability 与 confidence_calibrated 的分档阈值一致（high≥0.55、medium≥0.25）。
+    """
+    raw = _png().getvalue()
+    d = client.post(
+        "/api/v1/predict", files={"file": ("leaf.png", io.BytesIO(raw), "image/png")}
+    ).json()["data"]
+
+    # 1) 字段存在
+    assert "confidence_calibrated" in d
+    assert "reliability" in d
+    assert "calibration_enabled" in d
+
+    cc = d["confidence_calibrated"]
+    rel = d["reliability"]
+
+    # 2) 取值合法
+    assert 0.0 <= cc <= 1.0
+    assert rel in ("high", "medium", "low", "unknown")
+
+    # 3) OOD 判据不被校准改动：crop=None 时 msp 与原始 confidence 同尺度、应相等
+    assert d["msp"] == d["confidence"]
+
+    # 4) 分档与阈值自洽（校准生效时校验；未生效时 reliability 必为 unknown）
+    if d["calibration_enabled"]:
+        if cc >= 0.55:
+            assert rel == "high"
+        elif cc >= 0.25:
+            assert rel == "medium"
+        else:
+            assert rel == "low"
+    else:
+        assert rel == "unknown"
