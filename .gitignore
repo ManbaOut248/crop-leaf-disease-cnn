@@ -73,3 +73,7 @@ __pycache__/
 
 # ============ TLS 证书与私钥（含私钥，绝不入库） ============
 certs/
+data/plantdoc_raw/
+data/real_mix/
+data/real_mix_test/
+_pred.json

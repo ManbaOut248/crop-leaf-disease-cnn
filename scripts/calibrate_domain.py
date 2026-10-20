@@ -7,8 +7,8 @@
     这是**校准失效**（confidence 与 accuracy 脱节），与「识别错误」是两件独立的事。
 
 做法
-    · 拟合集：PlantDoc **train**（648 张，有标签）
-    · 评估集：PlantDoc **test**（120 张，从未参与拟合）—— 两者 MD5 零重叠
+    · 拟合集：data/real_mix（2341 张真实域 train，28 类）
+    · 评估集：data/real_mix_test（225 张，未进训练）—— 与训练真实图 MD5 零重叠
     · 温度缩放：p = softmax(logits / T)，网格搜 T 使拟合集 NLL 最小
     · 两种模式各拟合一套 T：
         ① global  全 38 类（用户不指定作物）
@@ -49,8 +49,8 @@ from src.model.predict import Predictor
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-TRAIN_DIR = ROOT / "outputs" / "realtest"
-TEST_MANIFEST = ROOT / "outputs" / "realtest_test" / "manifest.jsonl"
+TRAIN_DIR = ROOT / "data" / "real_mix"        # 混合微调用的真实域训练图（2341 张，28 类，防泄漏去重）
+TEST_DIR = ROOT / "data" / "real_mix_test"      # 真实域评估图（225 张，未进训练）
 OUT_JSON = ROOT / "outputs" / "calibration_domain.json"          # 实验明细（含分箱）
 RUNTIME_JSON = ROOT / "models" / "calibration_domain.json"       # 运行时依赖（小，入库）
 
@@ -66,13 +66,14 @@ N_CLS = len(CLASS_DIRS)
 
 # ========================= 数据 =========================
 def load_train():
-    """PlantDoc train：目录 -> class_id 的映射复用 fetch_plantdoc.JOBS（单一来源）。"""
-    import fetch_plantdoc as fp
-
+    """data/real_mix：子目录名即 38 类全名（CLASS_DIRS 元素），直接映射 class_id。"""
     out = []
-    for _gh_dir, sub, cid, _files in fp.JOBS:
-        d = TRAIN_DIR / sub
+    for d in sorted(TRAIN_DIR.iterdir()):
         if not d.is_dir():
+            continue
+        try:
+            cid = CLASS_DIRS.index(d.name)
+        except ValueError:
             continue
         for p in sorted(d.rglob("*")):
             if p.suffix.lower() in {".jpg", ".jpeg", ".png"} and p.stat().st_size > 5000:
@@ -81,11 +82,19 @@ def load_train():
 
 
 def load_test():
-    return [
-        json.loads(x)
-        for x in TEST_MANIFEST.read_text(encoding="utf-8").splitlines()
-        if x.strip()
-    ]
+    """data/real_mix_test：同结构，仅评估用（未进训练，无泄漏）。"""
+    out = []
+    for d in sorted(TEST_DIR.iterdir()):
+        if not d.is_dir():
+            continue
+        try:
+            cid = CLASS_DIRS.index(d.name)
+        except ValueError:
+            continue
+        for p in sorted(d.rglob("*")):
+            if p.suffix.lower() in {".jpg", ".jpeg", ".png"} and p.stat().st_size > 5000:
+                out.append({"path": str(p), "class_id": cid})
+    return out
 
 
 # ========================= 概率 / 拟合 =========================
@@ -250,8 +259,8 @@ def main():
         "T_crop": results["crop"]["T"],
         "reliability_high": THR_HIGH,
         "reliability_medium": THR_MEDIUM,
-        "fitted_on": "PlantDoc train (648 张)",
-        "evaluated_on": "PlantDoc test (120 张, 未参与拟合)",
+        "fitted_on": "data/real_mix (2341 张, 真实域 train)",
+        "evaluated_on": "data/real_mix_test (225 张, 未进训练)",
         "ece_global_before": results["global"]["before"]["ece"],
         "ece_global_after": results["global"]["after"]["ece"],
         "ece_crop_before": results["crop"]["before"]["ece"],
