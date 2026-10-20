@@ -35,6 +35,20 @@ from src.model.predict import Predictor
 IMG_SUF = {".jpg", ".jpeg", ".png"}
 
 
+def _tta_predict(pred, im, cid, crop_of):
+    """TTA：原图 + 水平翻转，平均 logits，再套作物先验掩码取 argmax。"""
+    x1 = pred.transform(im).unsqueeze(0).to(pred.device)
+    x2 = pred.transform(im.transpose(Image.FLIP_LEFT_RIGHT)).unsqueeze(0).to(pred.device)
+    with torch.no_grad():
+        lg = (pred.model(x1) + pred.model(x2)) / 2.0
+    ids = pred.resolve_crop(crop_of(cid))
+    if ids:
+        m = torch.full_like(lg, float("-inf"))
+        m[:, ids] = lg[:, ids]
+        lg = m
+    return int(lg.argmax(1).item()) == cid
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--weights", default=None,
@@ -44,6 +58,8 @@ def main():
     ap.add_argument("--index", default=None,
                     help="去重评估索引（如 outputs/index/dataset_index_realtest.json）；"
                          "给定时优先用索引，避免 PlantDoc 源重复图重复计票")
+    ap.add_argument("--tta", action="store_true",
+                    help="测试时增强：原图 + 水平翻转，平均 logits（不改权重）")
     args = ap.parse_args()
 
     pred = Predictor.get_instance()
@@ -83,8 +99,11 @@ def main():
     for p, cid in items:
         try:
             im = Image.open(p).convert("RGB")
-            res, _ = pred.predict_image_with_ood(im, top_k=1, crop=crop_of(cid))
-            ok = res[0]["class_id"] == cid
+            if args.tta:
+                ok = _tta_predict(pred, im, cid, crop_of)
+            else:
+                res, _ = pred.predict_image_with_ood(im, top_k=1, crop=crop_of(cid))
+                ok = res[0]["class_id"] == cid
         except Exception:
             ok = False
         per[cid][1] += 1

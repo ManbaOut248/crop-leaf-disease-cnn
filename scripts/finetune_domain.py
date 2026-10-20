@@ -19,8 +19,10 @@
 
 import json
 import os
+import random
 import sys
 import time
+from collections import defaultdict
 from pathlib import Path
 
 import torch
@@ -111,14 +113,32 @@ def main():
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
     mix = load_index(MIXED_INDEX)
-    train_loader = DataLoader(PlantVillageDataset(mix["train"], get_train_transform()),
+
+    # 从训练真实图里按类分层切 15% 作「真实域 val」，用于早停/选模型。
+    # real_test（225 张独立评估集）绝不能参与选模型，否则评估泄漏。
+    real_idx = [i for i, (p, _l) in enumerate(mix["train"]) if "real_mix" in str(p)]
+    by_cls = defaultdict(list)
+    for i in real_idx:
+        by_cls[mix["train"][i][1]].append(i)
+    rng = random.Random(42)
+    val_idx = set()
+    for _lbl, idxs in by_cls.items():
+        rng.shuffle(idxs)
+        val_idx.update(idxs[:max(1, int(len(idxs) * 0.15))])
+    train_items = [it for i, it in enumerate(mix["train"]) if i not in val_idx]
+    real_val_items = [mix["train"][i] for i in sorted(val_idx)]
+
+    train_loader = DataLoader(PlantVillageDataset(train_items, get_train_transform()),
                               batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS, pin_memory=True)
     val_loader = DataLoader(PlantVillageDataset(mix["val"], get_val_transform()),
                             batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True)
+    real_val_loader = DataLoader(PlantVillageDataset(real_val_items, get_val_transform()),
+                                 batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True)
     rt = load_index(REALTEST_INDEX)
     rt_loader = DataLoader(PlantVillageDataset(rt["test"], get_val_transform()),
                            batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True)
-    print(f"混合训练: {len(mix['train'])} | PV val: {len(mix['val'])} | 真实域测试: {len(rt['test'])}")
+    print(f"混合训练: {len(train_items)} | PV val: {len(mix['val'])} | "
+          f"真实域 val: {len(real_val_items)} | 真实域 test(仅监控): {len(rt['test'])}")
 
     # 从 best 起点
     model = build_resnet18(pretrained=False).to(device)
@@ -131,27 +151,29 @@ def main():
     scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS, eta_min=1e-6)
     scaler = GradScaler(enabled=USE_AMP and device.type == "cuda")
 
-    best_f1, no_improve, real_best_acc = 0.0, 0, 0.0
+    best_score, best_f1, no_improve, real_best_acc = 0.0, 0.0, 0, 0.0
     for epoch in range(EPOCHS):
         t0 = time.time()
         tr_loss, tr_acc = train_one_epoch(model, train_loader, criterion, optimizer, scaler, device)
-        val_acc, val_f1 = evaluate(model, val_loader, device)
-        rt_acc, rt_f1 = evaluate(model, rt_loader, device)
+        val_acc, val_f1 = evaluate(model, val_loader, device)        # PV val：守实验室域精度
+        rv_acc, rv_f1 = evaluate(model, real_val_loader, device)     # 真实域 val：选模型用
+        rt_acc, rt_f1 = evaluate(model, rt_loader, device)           # 真实域 test：仅监控
         scheduler.step()
         real_best_acc = max(real_best_acc, rt_acc)
+        # 综合分数：PV 精度 + 真实域泛化（0.5 权重），避免只看 PV 早停把真实域提升截断
+        score = val_f1 + 0.5 * rv_acc
         print(f"Ep {epoch+1:2d}/{EPOCHS} | loss {tr_loss:.4f} | tr_acc {tr_acc:.4f} | "
-              f"PV_val {val_acc:.4f}/{val_f1:.4f} | REAL_test {rt_acc:.4f}/{rt_f1:.4f} | {time.time()-t0:.1f}s")
-        # 早停以 PV val F1 为准（保实验室域精度不退化）
-        if val_f1 > best_f1 + 1e-4:
-            best_f1 = val_f1
-            no_improve = 0
+              f"PV_val {val_acc:.4f}/{val_f1:.4f} | REAL_val {rv_acc:.4f} | "
+              f"REAL_test {rt_acc:.4f} | score {score:.4f} | {time.time()-t0:.1f}s")
+        if score > best_score + 1e-4:
+            best_score, best_f1, no_improve = score, val_f1, 0
             torch.save({"model": model.state_dict(), "val_f1": val_f1,
-                        "real_test_acc": rt_acc, "epoch": epoch}, FINETUNE_PATH)
-            print(f"  -> 保存微调权重 (PV_val_f1={val_f1:.4f}, REAL_test_acc={rt_acc:.4f})")
+                        "real_val_acc": rv_acc, "real_test_acc": rt_acc, "epoch": epoch}, FINETUNE_PATH)
+            print(f"  -> 保存微调权重 (PV_f1={val_f1:.4f}, REAL_val={rv_acc:.4f}, REAL_test={rt_acc:.4f})")
         else:
             no_improve += 1
             if no_improve >= PATIENCE:
-                print(f"PV val F1 连续 {PATIENCE} 轮无提升，早停。")
+                print(f"综合分数连续 {PATIENCE} 轮无提升，早停。")
                 break
     print(f"微调结束。最佳 PV val F1={best_f1:.4f}；真实域测试最佳 acc={real_best_acc:.4f}")
     print(f"产物: {FINETUNE_PATH}")
