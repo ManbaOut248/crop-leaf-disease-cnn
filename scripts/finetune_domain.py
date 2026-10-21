@@ -45,7 +45,7 @@ from src.data.transforms import get_train_transform, get_val_transform
 
 MIXED_INDEX = ROOT / "outputs" / "index" / "dataset_index_mixed.json"
 REALTEST_INDEX = ROOT / "outputs" / "index" / "dataset_index_realtest.json"
-FINETUNE_PATH = MODEL_DIR / "finetuned_resnet18_38.pth"
+FINETUNE_PATH = MODEL_DIR / os.getenv("FINETUNE_OUT", "finetuned_resnet18_38.pth")
 
 LR = float(os.getenv("FINETUNE_LR", "5e-5"))
 EPOCHS = int(os.getenv("FINETUNE_EPOCHS", "20"))
@@ -142,16 +142,27 @@ def main():
 
     # 从 best 起点
     model = build_resnet18(pretrained=False).to(device)
-    ckpt = torch.load(BEST_MODEL_PATH, map_location=device)
-    model.load_state_dict(ckpt["model"])
-    print(f"已加载起点权重: {BEST_MODEL_PATH} (val_f1={ckpt.get('val_f1', '?')})")
+    # 起点：默认从 BEST_MODEL_PATH；设 FINETUNE_RESUME=1 则从已有 finetuned 权重继续（断点续训）
+    resume = os.getenv("FINETUNE_RESUME", "0") == "1"
+    if resume and FINETUNE_PATH.exists():
+        ckpt = torch.load(FINETUNE_PATH, map_location=device, weights_only=False)
+        model.load_state_dict(ckpt["model"])
+        print(f"续训：从 {FINETUNE_PATH} 加载 (epoch={ckpt.get('epoch')}, "
+              f"PV_f1={ckpt.get('val_f1', 0):.4f}, REAL_val={ckpt.get('real_val_acc', 0):.4f})")
+    else:
+        ckpt = torch.load(BEST_MODEL_PATH, map_location=device, weights_only=False)
+        model.load_state_dict(ckpt["model"])
+        print(f"已加载起点权重: {BEST_MODEL_PATH} (val_f1={ckpt.get('val_f1', '?')})")
 
     criterion = nn.CrossEntropyLoss(weight=compute_class_weights(mix).to(device))
     optimizer = Adam(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
     scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS, eta_min=1e-6)
     scaler = GradScaler(enabled=USE_AMP and device.type == "cuda")
 
-    best_score, best_f1, no_improve, real_best_acc = 0.0, 0.0, 0, 0.0
+    # 续训时从已有 checkpoint 的分数起步，避免第一轮无条件覆盖掉更好的旧权重
+    init_f1 = float(ckpt.get("val_f1") or 0.0) if resume else 0.0
+    init_rv = float(ckpt.get("real_val_acc") or 0.0) if resume else 0.0
+    best_score, best_f1, no_improve, real_best_acc = init_f1 + 0.5 * init_rv, init_f1, 0, 0.0
     for epoch in range(EPOCHS):
         t0 = time.time()
         tr_loss, tr_acc = train_one_epoch(model, train_loader, criterion, optimizer, scaler, device)
