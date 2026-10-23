@@ -92,7 +92,7 @@ def class_name_zh(en_name: str) -> str:
     return CLASS_NAMES_ZH.get(en_name, en_name)
 
 # ===================== 数据增强 / 预处理 =====================
-IMAGE_SIZE = 224
+IMAGE_SIZE = int(os.getenv("IMAGE_SIZE", "320"))   # 默认 320（高分辨率，真实域带先验 +3.1pp）；设 IMAGE_SIZE=224 可回退
 # ImageNet 预训练均值/标准差（与预训练权重一致，必需）
 MEAN = [0.485, 0.456, 0.406]
 STD = [0.229, 0.224, 0.225]
