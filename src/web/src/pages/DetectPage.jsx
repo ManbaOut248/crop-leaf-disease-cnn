@@ -112,6 +112,8 @@ export default function DetectPage() {
     confidence: result.confidence || 0,
     is_healthy: !!(result.is_healthy === true || result.is_healthy === 1),
     crop: result.crop_cn,
+    // 「一病多名」别名（如 苹果雪松锈病 = 苹果桧锈病），有值时在结果区提示，避免用户误判为识别错误
+    alias: (result.knowledge && result.knowledge.alias) || '',
     symptom: result.knowledge && result.knowledge.symptom,
     prevention:
       (result.knowledge && (result.knowledge.prevention || result.knowledge.treatment)) || '',
@@ -381,6 +383,10 @@ export default function DetectPage() {
               <Divider />
               <Descriptions column={1} size="small" bordered>
                 <Descriptions.Item label="作物">{top1.crop}</Descriptions.Item>
+                {/* 一病多名：如「苹果雪松锈病」又称「苹果桧锈病」，不标出来用户会误以为识别错了 */}
+                {top1.alias && (
+                  <Descriptions.Item label="又称">{top1.alias}</Descriptions.Item>
+                )}
                 <Descriptions.Item label="症状特征">{top1.symptom}</Descriptions.Item>
                 <Descriptions.Item label="防治建议">{top1.prevention}</Descriptions.Item>
               </Descriptions>

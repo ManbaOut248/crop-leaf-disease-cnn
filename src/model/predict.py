@@ -408,6 +408,8 @@ class Predictor:
                 "name_zh": class_name_zh(en),
                 "confidence": round(float(p), 4),
                 "crop": know.get("crop", ""),
+                # 「一病多名」别名（如 苹果雪松锈病 = 苹果桧锈病），前端据此提示，避免用户误以为识别错
+                "alias": know.get("alias", ""),
                 "symptom": know.get("symptom", ""),
                 "cause": know.get("cause", ""),
                 "prevention": know.get("prevention", ""),

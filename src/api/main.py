@@ -359,6 +359,8 @@ def predict(
         "reliability": ood["reliability"],
         "calibration_enabled": ood["calibration_enabled"],
         "knowledge": {
+            # 「一病多名」别名（如 苹果雪松锈病 = 苹果桧锈病），供前端提示，避免用户误判为识别错误
+            "alias": top1.get("alias", ""),
             "symptom": top1.get("symptom", ""),
             "cause": top1.get("cause", ""),
             "prevention": top1.get("prevention", ""),
