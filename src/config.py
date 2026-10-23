@@ -22,7 +22,10 @@ MODEL_DIR = PROJECT_ROOT / "models"                  # 模型权重
 REPORT_DIR = PROJECT_ROOT / "outputs"                # 评估报告、混淆矩阵图
 
 # 模型权重文件名（集中管理，避免硬编码散落多处，见 #7）
-BEST_MODEL_PATH = MODEL_DIR / "best_resnet18_38.pth"
+# 分辨率模式：默认 224（完全符合任务书 2.2-2「224x224」）；
+# 设 IMAGE_SIZE=320 启用高精度模式，使用独立的权重 / OOD 头 / 校准文件（_320 后缀），两套互不干扰。
+_MODE_SUFFIX = "_320" if int(os.getenv("IMAGE_SIZE", "224")) == 320 else ""
+BEST_MODEL_PATH = MODEL_DIR / f"best_resnet18_38{_MODE_SUFFIX}.pth"
 LAST_MODEL_PATH = MODEL_DIR / "last_resnet18_38.pth"
 
 # 推理用的病害知识库（中文防治建议）
@@ -92,7 +95,7 @@ def class_name_zh(en_name: str) -> str:
     return CLASS_NAMES_ZH.get(en_name, en_name)
 
 # ===================== 数据增强 / 预处理 =====================
-IMAGE_SIZE = int(os.getenv("IMAGE_SIZE", "320"))   # 默认 320（高分辨率，真实域带先验 +3.1pp）；设 IMAGE_SIZE=224 可回退
+IMAGE_SIZE = int(os.getenv("IMAGE_SIZE", "224"))   # 默认 224（符合任务书 2.2-2）；设 IMAGE_SIZE=320 启用高精度模式（真实域 +3.1pp）
 # ImageNet 预训练均值/标准差（与预训练权重一致，必需）
 MEAN = [0.485, 0.456, 0.406]
 STD = [0.229, 0.224, 0.225]
@@ -141,7 +144,7 @@ THRESHOLD_LOW_CONF = 0.5                         # 置信度低于此值 → 提
 # 故另做一套「真实域」温度：在 PlantDoc train（648 张）拟合、test（120 张）评估，
 # ECE 0.5517 → 0.0863，高置信错判 32 → 0。产物 models/calibration_domain.json。
 # 拟合脚本：scripts/calibrate_domain.py；实验记录：docs/14_置信度校准实验.md
-CALIBRATION_DOMAIN_PATH = MODEL_DIR / "calibration_domain.json"
+CALIBRATION_DOMAIN_PATH = MODEL_DIR / f"calibration_domain{_MODE_SUFFIX}.json"   # 320 模式用独立校准文件
 CALIBRATION_DOMAIN_ENABLE = os.getenv("CALIBRATION_DOMAIN_ENABLE", "1").strip() == "1"
 
 # ⚠️ 刻意不做「按域自动选温度」，尽管域判别器能达到 AUC 0.977：
@@ -190,7 +193,7 @@ OOD_CHROMA_THRESHOLD = float(os.getenv("OOD_CHROMA_THRESHOLD", "8.0"))
 #   真实叶 vs 非叶 AUROC：0.99（同分布留出）/ 0.77~0.99（负样本留一来源的严格验证）
 #   对照：38 类模型 MSP 仅 0.553
 # 训练：scripts/train_ood_head.py  →  产物 models/ood_head.npz（纯数值，无 pickle）
-OOD_HEAD_PATH = MODEL_DIR / "ood_head.npz"
+OOD_HEAD_PATH = MODEL_DIR / f"ood_head{_MODE_SUFFIX}.npz"   # 320 模式用独立 OOD 头
 OOD_HEAD_ENABLE = os.getenv("OOD_HEAD_ENABLE", "1").strip() == "1"
 
 # 决策阈值覆盖：默认 None → 使用 npz 内记录的 0.5（逻辑回归概率的自然边界）。
