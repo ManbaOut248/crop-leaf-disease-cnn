@@ -1,0 +1,89 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>02　开发目的</Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        把「能识别」做成「能查、能复核、能追溯」
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    {/* 总体目标：浅底横幅 + 左侧主色竖条 */}
+    <Box style={{ flexDirection: 'row', marginTop: 20, background: '#F0F9F4', borderRadius: 6 }}>
+        <Box style={{ width: 4, background: '#2E9E5B', borderRadius: 6 }} />
+        <Text style={{ fontSize: 20, color: '#1F2A24', lineHeight: 1.5, paddingLeft: 18, paddingRight: 20, paddingTop: 16, paddingBottom: 16, flex: 1 }}>
+            开发一款浏览器端 Web 应用：上传叶片图像，输出 14 种作物 38 类病害（含健康状态）的判读结果、置信度与防治建议。
+        </Text>
+    </Box>
+
+    {/* 两条考核线：巨型数字 + 下方说明 */}
+    <Box style={{ flexDirection: 'row', gap: 60, marginTop: 14 }}>
+        <Box>
+            <Text style={{ fontSize: 52, fontWeight: 'bold', color: '#1F7A46', lineHeight: 1 }}>≥ 85%</Text>
+            <Text style={{ fontSize: 16, color: '#5B6B60', marginTop: 6 }}>总体准确率 · 任务书考核线</Text>
+        </Box>
+        <Box>
+            <Text style={{ fontSize: 52, fontWeight: 'bold', color: '#1F7A46', lineHeight: 1 }}>≥ 0.80</Text>
+            <Text style={{ fontSize: 16, color: '#5B6B60', marginTop: 6 }}>各类别 F1 · 任务书考核线</Text>
+        </Box>
+        <Box style={{ flex: 1, justifyContent: 'flex-end' }}>
+            <Text style={{ fontSize: 16, color: '#5B6B60', lineHeight: 1.5 }}>
+                两条线写进需求，作为模型验收而非宣传口径；实测结果在第 5 页给出。
+            </Text>
+        </Box>
+    </Box>
+
+    {/* 六个模块：3 列 × 2 行，行间细线 */}
+    <Box style={{ flexDirection: 'row', gap: 28, marginTop: 18, paddingTop: 16, borderTop: '1px solid #E3EAE5' }}>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F7A46' }}>① 图像上传</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                拖拽或点击选择，校验格式与大小，上传前可预览
+            </Text>
+        </Box>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F7A46' }}>② 图像预处理</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                统一缩放至 224×224，归一化并完成格式转换
+            </Text>
+        </Box>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F7A46' }}>③ 病害识别</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                ResNet18 迁移学习，输出 38 类概率分布
+            </Text>
+        </Box>
+    </Box>
+
+    <Box style={{ flexDirection: 'row', gap: 28, marginTop: 14, paddingTop: 14, borderTop: '1px solid #E3EAE5' }}>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F7A46' }}>④ 结果展示</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                Top-3 候选、置信度分布与防治措施建议
+            </Text>
+        </Box>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F7A46' }}>⑤ 历史记录</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                识别结果入库，支持回看、对比与导出
+            </Text>
+        </Box>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F7A46' }}>⑥ 用户管理</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                注册登录与个人信息维护，数据按用户隔离
+            </Text>
+        </Box>
+    </Box>
+
+    <Box style={{ flex: 1 }} />
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12 }}>
+        <Text style={{ fontSize: 17, color: '#1F7A46', fontWeight: 'bold' }}>
+            六个模块对应一次完整闭环：上传 → 预处理 → 推理 → 展示 → 留痕 → 归户，缺一环都不可用。
+        </Text>
+    </Box>
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>农作物叶片病害识别系统 · 项目汇报</Text>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>03 / 08</Text>
+    </Box>
+</Slide>

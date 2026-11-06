@@ -1,0 +1,58 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>05　项目心得</Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        四条来自实现过程的经验
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ marginTop: 20 }}>
+
+        <Box style={{ flexDirection: 'row', paddingBottom: 20, borderBottom: '1px solid #E3EAE5' }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 52 }}>01</Text>
+            <Box style={{ flex: 1 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>数据决定上限，指标只说明实验室</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                    公开数据集与田间照片的分布差异明显，实验室精度不能直接当作可用性。换相机、换光线、换背景，结果就会漂移，真实场景仍需补充标注与领域适应。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', paddingTop: 20, paddingBottom: 20, borderBottom: '1px solid #E3EAE5' }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 52 }}>02</Text>
+            <Box style={{ flex: 1 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>需求变更会贯穿整条链路</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                    任务书要求 26 类，实现阶段扩展到 38 类。类目一变，作物白名单、知识库、界面文案与测试用例都要同步修改，漏掉一处就会出现前后端不一致。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', paddingTop: 20, paddingBottom: 20, borderBottom: '1px solid #E3EAE5' }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 52 }}>03</Text>
+            <Box style={{ flex: 1 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>不被演示的部分才决定能不能用</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                    单张失败隔离、错误码、接口限流、数据按用户隔离，这些现场看不到的设计，决定了系统能否被真实使用；它们不写在需求里，但会在第一次真实使用中暴露。
+                </Text>
+            </Box>
+        </Box>
+
+        <Box style={{ flexDirection: 'row', paddingTop: 20 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 52 }}>04</Text>
+            <Box style={{ flex: 1 }}>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>人的把关无法被替代</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                    AI 能快速产出代码与文档，但架构取舍、数据口径与验收标准必须由人定义。每一次「看起来跑通了」都要用真实数据回归，否则问题只会被推迟到演示现场。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+
+    <Box style={{ flex: 1 }} />
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>农作物叶片病害识别系统 · 项目汇报</Text>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>07 / 08</Text>
+    </Box>
+</Slide>

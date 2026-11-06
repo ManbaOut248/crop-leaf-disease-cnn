@@ -1,0 +1,83 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>01　项目背景</Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        病害诊断卡在「看到病斑之后、拿到结论之前」
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 36, marginTop: 26 }}>
+
+        {/* 左：问题链三条，同层级条目，行间细线 */}
+        <Box style={{ width: 676 }}>
+            <Box style={{ paddingTop: 18, paddingBottom: 18, borderBottom: '1px solid #E3EAE5' }}>
+                <Box style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 48 }}>01</Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>判断依赖经验</Text>
+                </Box>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8, marginLeft: 48 }}>
+                    病斑的形态、颜色与分布需由农技人员肉眼比对，同一片叶子由不同人判断，结论可能并不一致。
+                </Text>
+            </Box>
+
+            <Box style={{ paddingTop: 18, paddingBottom: 18, borderBottom: '1px solid #E3EAE5' }}>
+                <Box style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 48 }}>02</Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>基层供给不足</Text>
+                </Box>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8, marginLeft: 48 }}>
+                    具备识别能力的植保人员数量有限，农户往往在病害已大面积扩散后，才获得诊断与用药指导。
+                </Text>
+            </Box>
+
+            <Box style={{ paddingTop: 18, paddingBottom: 18 }}>
+                <Box style={{ flexDirection: 'row' }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 48 }}>03</Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>损失双向发生</Text>
+                </Box>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8, marginLeft: 48 }}>
+                    错过最佳防治窗口造成产量损失，事后加大用药量又带来农药过量施用与残留超标的风险。
+                </Text>
+            </Box>
+        </Box>
+
+        {/* 右：技术条件，浅底信息卡 */}
+        <Box style={{ flex: 1, background: '#F0F9F4', borderRadius: 8, padding: 24 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F7A46' }}>技术条件已具备</Text>
+
+            <Box style={{ marginTop: 20 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>算法</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 4 }}>
+                    卷积神经网络在公开叶片数据集上已接近专家判读水平，迁移学习可降低训练成本。
+                </Text>
+            </Box>
+
+            <Box style={{ marginTop: 18 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>数据</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 4 }}>
+                    PlantVillage 约 5.4 万张标注叶片图像，覆盖 14 种作物，可支撑分类模型训练与验证。
+                </Text>
+            </Box>
+
+            <Box style={{ marginTop: 18 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>载体</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 4 }}>
+                    浏览器 Web 应用免安装、跨平台，手机拍照上传即可获得判读结果。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 16 }}>
+        <Text style={{ fontSize: 17, color: '#1F7A46', fontWeight: 'bold' }}>
+            瓶颈不在算法精度，而在结论能否在田间被非专业人员直接使用：看得懂、拿得到、能复核。
+        </Text>
+    </Box>
+
+    <Box style={{ flex: 1 }} />
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>农作物叶片病害识别系统 · 项目汇报</Text>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>02 / 08</Text>
+    </Box>
+</Slide>

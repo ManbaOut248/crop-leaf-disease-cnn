@@ -150,7 +150,12 @@ class Predictor:
         if INFER_BACKEND == "quantized":
             self.device = torch.device("cpu")
         else:
-            self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            # 必须同时检查 device_count：某些环境（如 CUDA_VISIBLE_DEVICES 置空、
+            # 驱动存在但无可见显卡）下 is_available() 为 True 而 device_count() 为 0，
+            # 此时若选 cuda，torch.load 反序列化会抛
+            # "Attempting to deserialize object on CUDA device 0 but device_count() is 0"。
+            cuda_ready = torch.cuda.is_available() and torch.cuda.device_count() > 0
+            self.device = device or torch.device("cuda" if cuda_ready else "cpu")
         self.transform = get_val_transform()
         self.model = self._load_model()
         # 叶片检测头只在 fp32 后端启用：量化 / 剪枝模型的池化特征分布与训练时

@@ -1,0 +1,63 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>
+        网站功能 · 05 账号与安全 · 优点
+    </Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        账号体系与接口防护：可用性与安全性同步交付
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 40, marginTop: 14 }}>
+
+        {/* 左：四条同层级条目，行间细线 */}
+        <Box style={{ flex: 1, justifyContent: 'center' }}>
+            <Box style={{ flexDirection: 'row', paddingTop: 16, paddingBottom: 16, borderBottom: '1px solid #E3EAE5' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24', width: 168 }}>bcrypt 加盐哈希</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, flex: 1 }}>
+                    数据库不存储明文密码，哈希不可逆推；修改密码需先校验原密码
+                </Text>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', paddingTop: 16, paddingBottom: 16, borderBottom: '1px solid #E3EAE5' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24', width: 168 }}>HMAC 签名令牌</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, flex: 1 }}>
+                    采用自实现 HMAC-SHA256 令牌；未配置密钥时进程内随机生成，不保留默认密钥
+                </Text>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', paddingTop: 16, paddingBottom: 16, borderBottom: '1px solid #E3EAE5' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24', width: 168 }}>接口限流</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, flex: 1 }}>
+                    登录、注册接口限流 60 次/分钟，抑制撞库与账号枚举；参数校验先于限流执行，非法请求不占用配额
+                </Text>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', paddingTop: 16, paddingBottom: 16 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24', width: 168 }}>数据按用户隔离</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, flex: 1 }}>
+                    历史记录仅返回当前用户数据；删除单条记录时同步清理磁盘原图，不遗留孤儿文件
+                </Text>
+            </Box>
+        </Box>
+
+        {/* 右：两张局部截图 */}
+        <Box style={{ width: 392, justifyContent: 'center' }}>
+            <Box style={{ border: '1px solid #D8E4DC', borderRadius: 8, padding: 5, background: '#F7FBF8' }}>
+                <Image src="assets/login_crop.png" style={{ width: 380, height: 215, objectFit: 'cover', borderRadius: 5 }} />
+            </Box>
+            <Box style={{ border: '1px solid #D8E4DC', borderRadius: 8, padding: 5, background: '#F7FBF8', marginTop: 12 }}>
+                <Image src="assets/profile_crop.png" style={{ width: 380, height: 187, objectFit: 'cover', borderRadius: 5 }} />
+            </Box>
+            <Text style={{ fontSize: 14, color: '#5B6B60', marginTop: 10 }}>
+                登录页与个人中心真实截图（局部）
+            </Text>
+        </Box>
+    </Box>
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 14 }}>
+        <Text style={{ fontSize: 18, color: '#1F7A46', fontWeight: 'bold' }}>
+            安全能力按可验收标准实现：密码存储、令牌签发、接口限流三处均有明确机制与边界，未留待后续补足的临时方案。
+        </Text>
+    </Box>
+</Slide>

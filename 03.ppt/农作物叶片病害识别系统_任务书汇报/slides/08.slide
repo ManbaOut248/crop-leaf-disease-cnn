@@ -1,0 +1,33 @@
+<Slide style={{ width: 1280, height: 720, background: '#17452C', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#7FB79A', letterSpacing: 1 }}>
+        前沿技术实训 · 2026
+    </Text>
+
+    <Box style={{ width: 2, height: 56, background: '#2E9E5B', marginTop: 34 }} />
+
+    <Text style={{ fontSize: 58, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.2, marginTop: 26 }}>
+        汇报完毕，请各位老师指正
+    </Text>
+
+    <Text style={{ fontSize: 20, color: '#A9C6B4', lineHeight: 1.5, marginTop: 20 }}>
+        识别、批量、核对、知识库四项功能均可现场演示
+    </Text>
+
+    <Box style={{ flex: 1 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 60 }}>
+        <Box>
+            <Text style={{ fontSize: 14, color: '#7FB79A' }}>前端演示入口</Text>
+            <Text style={{ fontSize: 18, color: '#DFF0E5', marginTop: 6 }}>http://localhost:5173</Text>
+        </Box>
+        <Box>
+            <Text style={{ fontSize: 14, color: '#7FB79A' }}>后端接口文档</Text>
+            <Text style={{ fontSize: 18, color: '#DFF0E5', marginTop: 6 }}>http://127.0.0.1:8000/docs</Text>
+        </Box>
+        <Box>
+            <Text style={{ fontSize: 14, color: '#7FB79A' }}>演示账号</Text>
+            <Text style={{ fontSize: 18, color: '#DFF0E5', marginTop: 6 }}>ppt_demo / PptDemo2026</Text>
+        </Box>
+    </Box>
+</Slide>

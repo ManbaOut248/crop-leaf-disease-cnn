@@ -1,0 +1,98 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>03　需求处理</Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        需求如何落到架构：一次请求经过六跳
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    {/* 架构链路：六个节点 + 箭头，横向一条 */}
+    <Box style={{ flexDirection: 'row', alignItems: 'stretch', marginTop: 24 }}>
+
+        <Box style={{ width: 152, border: '1px solid #D8E4DC', borderRadius: 6, padding: 14, background: '#F0F9F4' }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>用户 / 浏览器</Text>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                PC 与手机同一界面
+            </Text>
+        </Box>
+        <Text style={{ fontSize: 18, color: '#B9C9BF', paddingLeft: 10, paddingRight: 10 }}>→</Text>
+
+        <Box style={{ width: 152, border: '1px solid #D8E4DC', borderRadius: 6, padding: 14 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>前端</Text>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                React + AntD 上传、预览、可视化
+            </Text>
+        </Box>
+        <Text style={{ fontSize: 18, color: '#B9C9BF', paddingLeft: 10, paddingRight: 10 }}>→</Text>
+
+        <Box style={{ width: 152, border: '1px solid #D8E4DC', borderRadius: 6, padding: 14 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>后端服务</Text>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                FastAPI 接口、鉴权、限流
+            </Text>
+        </Box>
+        <Text style={{ fontSize: 18, color: '#B9C9BF', paddingLeft: 10, paddingRight: 10 }}>→</Text>
+
+        <Box style={{ width: 152, border: '1px solid #D8E4DC', borderRadius: 6, padding: 14 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>图像预处理</Text>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                OpenCV/PIL 224×224 归一化
+            </Text>
+        </Box>
+        <Text style={{ fontSize: 18, color: '#B9C9BF', paddingLeft: 10, paddingRight: 10 }}>→</Text>
+
+        <Box style={{ width: 152, border: '1px solid #D8E4DC', borderRadius: 6, padding: 14 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>模型推理</Text>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                ResNet18 输出 38 类概率
+            </Text>
+        </Box>
+        <Text style={{ fontSize: 18, color: '#B9C9BF', paddingLeft: 10, paddingRight: 10 }}>→</Text>
+
+        <Box style={{ width: 152, border: '1px solid #D8E4DC', borderRadius: 6, padding: 14, background: '#F0F9F4' }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#1F2A24' }}>数据存储</Text>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                SQLite 用户、历史、知识
+            </Text>
+        </Box>
+    </Box>
+
+    <Text style={{ fontSize: 14, color: '#5B6B60', marginTop: 12 }}>
+        图 1｜系统架构（前后端分离 B/S）：请求自左向右，识别结果沿原链路返回 Top-3 候选与防治建议
+    </Text>
+
+    {/* 三条需求落点 */}
+    <Box style={{ flexDirection: 'row', gap: 32, marginTop: 22, paddingTop: 20, borderTop: '1px solid #E3EAE5' }}>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>上传即用</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                呈现交给浏览器：拖拽上传、图像预览、结果可视化都在前端完成，用户无需安装任何客户端。
+            </Text>
+        </Box>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>判读要准</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                推理收进服务端：预处理参数与模型权重都在后端固定，避免不同设备上的结果出现偏差。
+            </Text>
+        </Box>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>结果留痕</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                数据落在数据库：识别历史按用户隔离存储，可回看、可对比、可导出，不依赖浏览器缓存。
+            </Text>
+        </Box>
+    </Box>
+
+    <Box style={{ flex: 1 }} />
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12 }}>
+        <Text style={{ fontSize: 17, color: '#1F7A46', fontWeight: 'bold' }}>
+            三层职责分离：前端只呈现、后端只推理与留痕、模型只分类，任一层改动不影响另外两层。
+        </Text>
+    </Box>
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>农作物叶片病害识别系统 · 项目汇报</Text>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>04 / 08</Text>
+    </Box>
+</Slide>

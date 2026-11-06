@@ -1,0 +1,42 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>04　项目效果 · 批量与留痕</Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        一次 9 张，结果自动留痕、可核对
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 36, marginTop: 20 }}>
+
+        <Box style={{ width: 520 }}>
+            <Box style={{ border: '1px solid #D8E4DC', borderRadius: 8, padding: 6, background: '#F7FBF8' }}>
+                <Image src="assets/batch_result.png" style={{ width: 506, height: 316, objectFit: 'cover', borderRadius: 5 }} />
+            </Box>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                批量结果页：单次最多 9 张，汇总条分别统计健康、病害、疑似非叶片与低置信数量。
+            </Text>
+        </Box>
+
+        <Box style={{ width: 520 }}>
+            <Box style={{ border: '1px solid #D8E4DC', borderRadius: 8, padding: 6, background: '#F7FBF8' }}>
+                <Image src="assets/history.png" style={{ width: 506, height: 316, objectFit: 'cover', borderRadius: 5 }} />
+            </Box>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                识别历史页：四档筛选徽标取全量口径，判定错误时可补记实际病害，样本带着真值回流。
+            </Text>
+        </Box>
+    </Box>
+
+    <Box style={{ flex: 1 }} />
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12 }}>
+        <Text style={{ fontSize: 17, color: '#1F7A46', fontWeight: 'bold' }}>
+            批量不是把单张流程循环 9 次：同作物确认、单张失败隔离、结果就地修正，三件事都要单独设计。
+        </Text>
+    </Box>
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>农作物叶片病害识别系统 · 项目汇报</Text>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>06 / 08</Text>
+    </Box>
+</Slide>

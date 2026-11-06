@@ -74,6 +74,32 @@ body {
   color: var(--c-text-body);
 }
 
+/* ===================== 内容区滚动条 =====================
+   侧栏固定后，滚动条从窗口边缘移到了内容区右缘，
+   Windows 默认的浅灰粗滚动条压在 #F7FAF8 底色上很扎眼。
+   收窄 + 降对比，并只在内容区生效（不污染表格、弹窗内部的滚动容器）。 */
+.app-content-scroll {
+  scrollbar-width: thin; /* Firefox / Chromium 121+ 标准属性 */
+  scrollbar-color: rgba(46, 158, 91, 0.35) transparent;
+}
+.app-content-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+.app-content-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.app-content-scroll::-webkit-scrollbar-thumb {
+  background: rgba(46, 158, 91, 0.28);
+  border-radius: 8px;
+  /* 透明边框 + background-clip：视觉宽度收到约 4px，但点击热区仍有 10px */
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+.app-content-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(46, 158, 91, 0.5);
+  background-clip: content-box;
+}
+
 /* ===================== 上传区 =====================
    视觉由内部 .ant-upload-drag 承载，外层仅作定位容器，
    避免出现「双层虚线框」。 */

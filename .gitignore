@@ -6,7 +6,9 @@ models/*.pkl
 models/*.npz
 models/backup_preC/
 
-# ============ 数据集切分副本（约 5.4 万张图，超大，不入库） ============
+# ============ 数据集原始数据 + 切分副本（PlantVillage 等，共约 4.5 GB，绝不入库） ============
+# 整目录忽略：防止 `git add .` 误把 6.3 万张图片带进仓库
+data/
 data/split/
 
 # ============ OOD 拒识测试集 / 公开数据集下载缓存（大文件，不入库） ============
@@ -46,6 +48,9 @@ node_modules/
 # dist/ 及构建校验用的 dist-verify/ 等临时产物
 src/web/dist*/
 src/web/build/
+# vite 构建校验临时目录（.check-build* / .vite-check*）
+src/web/.check-build*/
+src/web/.vite-check*/
 .vite/
 
 # ============ Python 缓存 ============
@@ -59,6 +64,15 @@ __pycache__/
 # ============ PPT 生成中间缓存（.pptx 与 slides/ 入库，缓存不入库） ============
 **/.slidep/
 **/.cache/
+# PPT 生成用的图片素材（.pptx 成品入库，素材可重新生成）
+**/assets_v*/
+
+# ============ 实验过程截图与临时调试图（精选展示图已入库，过程产物不入库） ============
+outputs/shot_*/
+outputs/chart_shots/
+outputs/crop_diag/
+outputs/_*.png
+outputs/dbg_*.png
 
 # ============ 工作区元数据 ============
 .workbuddy/
@@ -77,3 +91,4 @@ data/plantdoc_raw/
 data/real_mix/
 data/real_mix_test/
 _pred.json
+test_images/

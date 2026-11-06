@@ -1,0 +1,43 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>
+        网站功能 · 04 病害知识库 · 优点
+    </Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        38 类病害对照查询：从识别结论到处置建议
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    {/* 上图：整幅实机截图 */}
+    <Box style={{ border: '1px solid #D8E4DC', borderRadius: 10, padding: 6, background: '#F7FBF8', marginTop: 18 }}>
+        <Image src="assets/knowledge_strip.png" style={{ width: 1146, height: 328, borderRadius: 6 }} />
+    </Box>
+
+    {/* 下文：三条横排要点 */}
+    <Box style={{ flexDirection: 'row', gap: 40, marginTop: 20 }}>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>按作物分类检索</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                左栏按 14 种作物分组并标注类别数量，与模型支持的 38 类逐一对应
+            </Text>
+        </Box>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>典型病叶图对照</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                共 114 张典型实拍图，支持放大查看，可与识别结果并排比对
+            </Text>
+        </Box>
+        <Box style={{ flex: 1 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>症状与防治并置</Text>
+            <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 6 }}>
+                每类同时给出症状描述与防治建议，内容由后端接口下发，更新无需改动前端
+            </Text>
+        </Box>
+    </Box>
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 16 }}>
+        <Text style={{ fontSize: 18, color: '#1F7A46', fontWeight: 'bold' }}>
+            知识库不是附属功能：模型给出病名后，用户需立即获得形态特征与处置方式，诊断才形成闭环。
+        </Text>
+    </Box>
+</Slide>

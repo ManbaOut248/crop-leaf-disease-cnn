@@ -33,7 +33,10 @@
 ### 2.2 病害识别（核心）
 | 方法 | 路径 | 说明 |
 |---|---|---|
-| POST | `/predict` | 上传叶片图，返回识别结果 |
+| POST | `/predict` | 上传**单张**叶片图，返回识别结果 |
+| POST | `/predict/batch` | **批量识别**（2026-10-30）：一次 1~9 张，逐张独立识别，返回每张结果 + 失败清单 + 汇总 |
+
+#### 2.2.1 单张识别 `POST /predict`
 
 **请求**：`multipart/form-data`，字段 `file` = 图像。可选**查询参数**（注意是 query，不是 form 字段）：
 
@@ -86,6 +89,9 @@
 ```
 > `need_review=true`：当 `confidence < config.threshold_low_conf`（默认 0.5）或预测为训练集外特征时，前端提示「建议人工复核」。
 
+> `record_id`（2026-10-30 新增）：仅**登录用户**返回，值为本次落库的记录 id（匿名调用无此字段）。
+> 加这个字段是为了让前端「识别完直接跳到这条历史」有据可依 —— 此前只能按时间倒序猜最新一条。
+
 > `likely_not_leaf=true`：**非叶片输入提示**。模型是 38 类闭集 softmax，没有「以上都不是」选项，
 > 对插画 / 风景 / 噪声等非叶片图片同样会给出高置信度判断（实测把动漫插画判成「番茄叶霉病 96.87%」）。
 >
@@ -132,19 +138,79 @@
 > `docs/11_域适应与OOD检测实验.md`（现行端到端实测：彩色真实叶片 0/11 误杀，
 > 灰阶真实叶片 3/3 放行，漫画 / 截图 / 非叶片照片全部拦截）。
 
+#### 2.2.2 批量识别 `POST /predict/batch`（2026-10-30）
+
+**请求**：`multipart/form-data`，字段 `files`（**可重复，1~9 张**）。
+
+| 参数 | 位置 | 类型 | 必填 | 说明 |
+|---|---|---|---|---|
+| `files` | form | file[] | 是 | 待识别图片，1~9 张 |
+| `crop` | query | str | **是** | 作物中文名。批量**强制必填**，整批共用同一个作物先验 |
+| `top_k` | query | int | 否 | 每张返回的候选数，默认 3 |
+
+> **为什么 `crop` 在单张是可选项、在批量是必填项**：作物先验把 softmax 限制在该作物的候选类内。
+> 若一批里混进别的作物（选了番茄却传马铃薯），它会被强行归到番茄的候选类，且置信度通常不低 ——
+> 用户会以为「选了作物所以更准」，比不选作物更容易误导。前端因此常驻「整批必须是同一种作物」
+> 警告 + 每次开跑前弹确认框；后端再用必填兜底。
+
+**响应**
+```json
+{
+  "code": 0,
+  "data": {
+    "items": [
+      { "index": 0, "file_name": "T03_番茄_早疫病.jpg", "record_id": 301,
+        "pred_class_id": 31, "disease_cn": "番茄晚疫病", "confidence": 0.593,
+        "top3": [ { "class_id": 31, "disease_cn": "番茄晚疫病", "prob": 0.593 } ],
+        "likely_not_leaf": false, "need_review": false, "reliability": "medium",
+        "knowledge": { "symptom": "...", "prevention": "..." } }
+    ],
+    "errors": [ { "index": 2, "file_name": "坏图.jpg", "msg": "文件不是合法的图片或已损坏" } ],
+    "summary": { "total": 3, "ok": 2, "failed": 1, "healthy": 0, "disease": 2,
+                 "likely_not_leaf": 0, "need_review": 1 },
+    "crop": "番茄",
+    "top_k": 3
+  }
+}
+```
+
+> **`items[].index` 是上传顺序，不是成功序号**。中间第 3 张失败时，后面成功的仍是 `index: 3, 4, …`；
+> 若用成功序号，前端把结果贴回缩略图时会整排错位（第 4 个结果贴到第 3 张图上）。
+>
+> **单张失败不影响整批**：文件类型非法 / 图片损坏 / 超过 10MB 的图片只进 `errors[]`，
+> 其余照常识别并返回 200。9 张里有一张是截图很常见，整体 400 会逼用户自己找出是哪张才能继续。
+>
+> **`items[]` 里每一张的字段与单张 `/predict` 完全一致**（两者共用同一个组装函数），
+> 唯一的区别是额外带 `index` / `file_name` / `record_id`。
+
+**错误码**
+
+| HTTP | 场景 | 说明 |
+|---|---|---|
+| 400 | `files` 为空 / 超过 9 张 / 未传 `crop` / `crop` 不在白名单 | 整体拒绝，**不消耗限流配额**（见下） |
+| 429 | 超过 6 批/分钟 | 文案含「批量识别过于频繁」 |
+| 503 | 模型权重缺失 | 与单张一致 |
+
+> **限流按请求次数而非图片张数**，上限 6 次/分钟（≈54 张）。单张接口是 60 次/分钟（60 张），
+> 若批量沿用 60 就会变成 540 张/分钟，等于给限流开了九倍后门。
+>
+> **参数校验放在限流之前**：用户连续传错 6 次「10 张超限」不该被锁 1 分钟 ——
+> 这类错误只做字符串比较，没有任何推理成本，真正贵的（解码 + ResNet 推理）才计入配额。
+
 ### 2.3 病害知识 / 作物清单
 | 方法 | 路径 | 说明 |
 |---|---|---|
 | GET | `/crops` | **作物清单**（14 种，含各作物候选类数），供前端「选择作物」下拉使用 |
-| GET | `/diseases` | 列表（38 类，支持 `crop` 筛选） |
+| GET | `/diseases` | 列表（38 类，支持 `crop` 筛选）。每条额外回传 `class_id`（= 知识库主键，即模型类别 id 0~37），供「实际病害」下拉使用 |
 | GET | `/diseases/{id}` | 单类详情（症状/防治） |
 
 ### 2.4 识别历史（需登录）
 | 方法 | 路径 | 说明 |
 |---|---|---|
-| GET | `/records` | 当前用户历史列表（分页 `?page=&size=`） |
-| GET | `/records/{id}` | 历史详情（图 + Top-3 对比） |
-| DELETE | `/records/{id}` | 删除单条 |
+| GET | `/records` | 当前用户历史列表（分页 `?page=&size=`，可按 `?verdict=` 筛选） |
+| GET | `/records/{id}` | 历史详情（720px 预览图 + Top-3 候选 + 人工核对结论 + 实际病害） |
+| PATCH | `/records/{id}` | 修改**自定义命名 / 人工核对结论 / 实际病害**（其余字段不可改） |
+| DELETE | `/records/{id}` | 删除单条（同时清理磁盘原图） |
 | GET | `/records/export` | 导出 CSV/JSON（`?fmt=csv|json`） |
 | GET | `/records/ood-stats` | **非叶片判据的近 N 天分布**（`?days=7`），用于发现线上输入漂移 |
 
@@ -157,13 +223,69 @@
   "code": 0,
   "data": {
     "items": [
-      { "id": 12, "image_name": "leaf_012.jpg", "pred_class_id": 31, "disease_cn": "番茄晚疫病", "confidence": 0.93, "created_at": "2026-10-08 09:00:00" }
+      { "id": 12, "image_name": "东区3号棚-晚疫", "orig_name": "番茄晚疫病_东区3号棚.jpg",
+        "custom_name": "东区3号棚-晚疫", "file_name": "9f3c…a1.jpg",
+        "pred_class_id": 31, "disease_cn": "番茄晚疫病", "confidence": 0.93,
+        "verdict": "wrong", "verdict_cn": "识别错误", "verdict_at": "2026-10-29 17:00:00",
+        "ground_truth_class_id": 30, "ground_truth_cn": "番茄晚疫病",
+        "thumb": "data:image/jpeg;base64,…", "created_at": "2026-10-08 09:00:00" }
     ],
-    "total": 1, "page": 1, "size": 20
+    "total": 1, "page": 1, "size": 20, "verdict": "all",
+    "counts": { "all": 182, "correct": 0, "wrong": 1, "unset": 181, "with_ground_truth": 1 }
   },
   "msg": "ok"
 }
 ```
+
+**列表筛选参数**（2026-10-29 新增）
+
+| 参数 | 取值 | 说明 |
+|---|---|---|
+| `verdict` | `all`（默认）/ `correct` / `wrong` / `unset` | 只取对应人工判断结论的记录；非法值返回 **422**（不是静默降级） |
+
+> `counts` 是**全量历史**口径（不带时间窗口），专门给筛选器的数字徽标用。
+> 不要用 `/stats/overview.verdict` 的数字当徽标 —— 那是近 30 天窗口，
+> 实测 demo 用户近 30 天 171 条 / 全量 182 条，徽标会与筛选结果不一致。
+> `unset` 由 `all - correct - wrong` 推导，不单独查 NULL，避免脏值导致三档之和对不上。
+
+> **`image_name` 的三级回落（2026-10-29 起）**
+> `custom_name`（用户自定义）→ `orig_name`（上传原名）→ `历史图片 #<id>`（旧记录）。
+> 三级都在**后端**算：列表、详情、CSV 导出三处必须同名，放在前端算三遍必然漂移。
+>
+> 历史 bug：`/predict` 早期只存 uuid 落盘名，历史页原样显示成 `9f3c…a1.jpg`，
+> 用户看不出那是自己哪张图。
+
+**详情响应补充字段**（`GET /records/{id}`，在列表字段基础上）
+| 字段 | 说明 |
+|---|---|
+| `preview` | 长边 720px 的 base64 预览图（列表只有 96px 缩略图，放大必糊） |
+| `top3` | 解析后的候选：`[{class_id, disease_cn, is_healthy, prob}]`。2026-10 之前写入的记录无候选，返回 `[]` |
+| `verdict_cn` | `识别正确` / `识别错误` / `未核对`（仅供展示，写操作仍是枚举值）。**列表、详情、PATCH 响应统一由 `_enrich_record` 补齐**，不再是详情接口独有 |
+| `ground_truth_cn` | 实际病害中文名；未填写为 `null`。由 `ground_truth_class_id` 现算，类别改名后历史记录自动跟随 |
+| `top3_json` | 已从响应中移除 —— 那是内部存储格式，与 `top3` 重复 |
+
+> `verdict_cn` 的文案是「识别正确 / 识别错误」而不是「正确 / 错误」：被评价的对象是
+> **模型这一次的输出**，不是操作人。旧文案会被读成「我判断错了」，与本功能意图相反。
+
+**修改记录**（`PATCH /records/{id}`）
+```json
+{ "custom_name": "东区3号棚-晚疫", "verdict": "wrong", "ground_truth_class_id": 30 }
+```
+- 字段三态：**不出现 = 不改；显式 `null` = 清空（取消命名 / 取消核对 / 清除实际病害）；传值 = 更新**。
+- `custom_name` 最长 40 字符，超长 422；全空格视为 `null`。
+- `verdict` 只接受 `correct` / `wrong` / `null`，其余返回 400。
+- `ground_truth_class_id` 接受 `0~37`，越界由 Pydantic 拦下返回 **422**；`null` 为清除。
+- **`ground_truth_class_id` 跟随 `verdict` 自动清理**：当本次请求把 `verdict` 改成 `correct` 或 `null`、
+  且**没有显式**传 `ground_truth_class_id` 时，该列会被一并置空，避免出现「判定识别正确却写着实际病害是别的」
+  的矛盾行；显式传值时以调用方为准。
+- 取消核对时 `verdict_at` 一并清空，避免出现「未核对但有核对时间」的矛盾行。
+- 不可修改 `pred_class_id` / `confidence`：那是识别时的客观事实，事后改动等于伪造日志。
+- 他人记录统一返回 **404**（不返回 403，避免用状态码差异探测他人记录 id）。
+
+**CSV 导出列**（`GET /records/export?fmt=csv`）
+`编号 / 图片名 / 识别结果 / 置信度 / 人工判断 / 实际病害 / 识别时间`
+「人工判断」写 `识别正确` / `识别错误` / `未核对`；「实际病害」为空表示未填写。
+编码 `utf-8-sig`（Excel 双击不乱码），临时文件在响应结束后自动删除。
 
 **运行期监控响应**（`GET /records/ood-stats?days=7`）
 ```json
@@ -188,6 +310,65 @@
 | `msp_fallback` | 走 MSP 回退判据的条数。**>0 说明检测头没生效**（如切了 quantized / pruned 后端），此时真实场景误杀率会显著上升 |
 
 每次 `/predict` 都会把 `leaf_prob` / `leaf_prob_source` / `mean_chroma` / `likely_not_leaf` 一并落库（仅登录用户）。
+
+### 2.5 统计聚合（需登录）
+| 方法 | 路径 | 说明 |
+|---|---|---|
+| GET | `/stats/overview` | 识别历史聚合统计（`?days=30`），一次返回前端全部图表所需数据 |
+
+**为什么需要独立接口**：`/records` 分页上限 100 条，前端拿不到全量，
+自己 reduce 出来的比例分母是错的（而且是静默算错）；4 张图也要发 4 个请求，
+口径还可能不一致。故由后端一次性聚合。
+
+**响应**（`GET /stats/overview?days=30`）
+```json
+{
+  "code": 0,
+  "data": {
+    "days": 30,
+    "total": 180,
+    "avg_confidence": 0.8922,
+    "need_review": 17,
+    "healthy": 34,
+    "diseased": 146,
+    "crops": [{ "crop": "番茄", "count": 111, "ratio": 0.6167 }],
+    "diseases": [{ "crop": "番茄", "disease": "番茄晚疫病", "name": "番茄晚疫病", "is_healthy": 0, "count": 27 }],
+    "confidence_buckets": [
+      { "range": "<50%", "count": 6 },
+      { "range": "50-60%", "count": 3 },
+      { "range": "60-70%", "count": 6 },
+      { "range": "70-80%", "count": 7 },
+      { "range": "80-90%", "count": 51 },
+      { "range": "90-100%", "count": 107 }
+    ],
+    "daily": [{ "date": "2026-09-27", "count": 3 }],
+    "verdict": { "labeled": 12, "correct": 9, "wrong": 3, "with_ground_truth": 2,
+                 "unlabeled": 168, "accuracy": 0.75 },
+    "ood": { "days": 30, "total": 180, "monitored": 160, "flagged": 12, "flagged_ratio": 0.075, "msp_fallback": 0 }
+  },
+  "msg": "ok"
+}
+```
+
+| 字段 | 含义 |
+|---|---|
+| `total` | 窗口内记录数。**所有子项用同一窗口**，避免出现"总数 180 但分部之和 175" |
+| `need_review` | `confidence < 0.5`（复核线）或 `likely_not_leaf = 1` 的条数 |
+| `crops[].ratio` | 占 `total` 的比例，后端算好，避免各端各算一套 |
+| `diseases[]` | 病害 Top 10，按 `作物+病害` 分组（同名病害在不同作物上算不同项） |
+| `confidence_buckets` | 固定 6 档，**空桶也返回 `count: 0`**，前端不用自己补 |
+| `daily` | 固定 `days` 长度，**无记录日期补零**，否则图表会跳日期 |
+| `verdict` | 人工核对统计（2026-10-29）。`accuracy = correct / labeled`；**`labeled = 0` 时 `accuracy` 为 `null`**，不是 `0` —— 0% 会被读成「全错」。`with_ground_truth` 是「判错且顺手给了正确答案」的条数，即可直接回流训练的那部分样本（2026-10-29 新增） |
+| `ood` | 直接复用 `/records/ood-stats` 的聚合逻辑，口径不会漂 |
+
+> ⚠️ **人工核对准确率的分母是 `labeled`，不是 `total`**：只有被人看过的那部分记录有真值，
+> 拿总数当分母会得到一个既不是模型精度、也不是人工精度的数字。
+
+> ⚠️ **口径警示**：`confidence` 是**原始 softmax**，不是温度校准后的值。
+> 因此本接口**不返回** high/medium/low 可靠性分档 —— 那是校准值口径
+> （`calibration_domain.json` 的 `reliability_high=0.55` / `medium=0.25`）。
+> 两套阈值混用会让「列表里的可靠性标签」和「图表的分档」自相矛盾。
+> 前端图表副标题已标注「原始 softmax 值，未做温度校准」。
 
 ## 3. 前端调用示例（识别）
 ```http

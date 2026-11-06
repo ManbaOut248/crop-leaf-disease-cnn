@@ -1,0 +1,53 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>
+        网站功能 · 02 批量识别 · 优点
+    </Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        单次 9 张批量处理：同作物约束，逐张独立返回
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 40, marginTop: 22 }}>
+
+        {/* 左：三条要点 */}
+        <Box style={{ flex: 1, justifyContent: 'center' }}>
+            <Box style={{ borderLeft: '2px solid #1F7A46', paddingLeft: 18 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>单次完成多点采样</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                    9 张共用同一次作物选择，提交前强制确认同作物，避免误选作物致整批偏差
+                </Text>
+            </Box>
+
+            <Box style={{ borderLeft: '2px solid #1F7A46', paddingLeft: 18, marginTop: 26 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>单张异常不影响整批</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                    单张解码失败仅记入失败清单，其余样本正常返回，批次不因个别坏图整体失败
+                </Text>
+            </Box>
+
+            <Box style={{ borderLeft: '2px solid #1F7A46', paddingLeft: 18, marginTop: 26 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>结果支持就地修正</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                    任一张可展开查看 Top-3 与防治建议，框选单片重新识别后回写至原位置
+                </Text>
+            </Box>
+        </Box>
+
+        {/* 右：实机截图 */}
+        <Box style={{ width: 600 }}>
+            <Box style={{ border: '1px solid #D8E4DC', borderRadius: 10, padding: 6, background: '#F7FBF8' }}>
+                <Image src="assets/batch_result.png" style={{ width: 586, height: 366, objectFit: 'cover', borderRadius: 6 }} />
+            </Box>
+            <Text style={{ fontSize: 14, color: '#5B6B60', marginTop: 8 }}>
+                批量结果页：汇总条分别统计健康、病害、疑似非叶片与低置信数量
+            </Text>
+        </Box>
+    </Box>
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 16 }}>
+        <Text style={{ fontSize: 18, color: '#1F7A46', fontWeight: 'bold' }}>
+            批量识别并非单张流程的简单重复：同作物确认、单张失败隔离、结果就地修正，三者均需独立设计。
+        </Text>
+    </Box>
+</Slide>

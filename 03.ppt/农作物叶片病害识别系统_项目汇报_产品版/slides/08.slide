@@ -1,0 +1,101 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>
+        测试结果
+    </Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        实验室 99.04%，真实域 76.9%：两个口径共同构成性能结论
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 40, marginTop: 44 }}>
+
+        {/* 左：巨型数字 */}
+        <Box style={{ width: 360 }}>
+            <Text style={{ fontSize: 15, color: '#5B6B60' }}>
+                PlantVillage 测试集 · 4,914 张 · 防泄漏切分
+            </Text>
+
+            <Box style={{ flexDirection: 'row', alignItems: 'flex-end', marginTop: 10 }}>
+                <Text style={{ fontSize: 88, fontWeight: 'bold', color: '#1F7A46', lineHeight: 1.05 }}>99.04</Text>
+                <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#1F7A46', marginLeft: 4 }}>%</Text>
+            </Box>
+
+            <Text style={{ fontSize: 16, color: '#5B6B60', lineHeight: 1.6, marginTop: 12 }}>
+                38 类宏平均 F1 0.9895，最低单类 F1 0.9524（玉米灰斑病）
+            </Text>
+
+            <Box style={{ height: 1, background: '#E3EAE5', marginTop: 22, marginBottom: 18 }} />
+
+            <Text style={{ fontSize: 16, color: '#5B6B60', lineHeight: 1.7 }}>
+                真实域 PlantDoc 225 张：
+                <br />
+                指定正确作物 <span style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>76.9%</span>，
+                不指定作物仅 <span style={{ fontWeight: 'bold', color: '#C8860D' }}>17.5%</span>
+            </Text>
+
+            <Text style={{ fontSize: 15, color: '#5B6B60', lineHeight: 1.7, marginTop: 14 }}>
+                两者相差 4 倍以上，差距即「先指定作物」的收益。
+            </Text>
+        </Box>
+
+        {/* 右：指标表（带容器，非裸表） */}
+        <Box style={{ flex: 1, border: '1px solid #D8E4DC', borderRadius: 8, padding: 6, background: '#F7FBF8' }}>
+            <Table
+                style={{ width: 726, height: 356 }}
+                defaultTextStyle={{ fontSize: 16, textAlign: 'left', color: '#1F2A24' }}
+                defaultCellStyle={{
+                    paddingLeft: 14,
+                    paddingRight: 10,
+                    border: {
+                        bottom: { width: 1, color: '#E3EAE5' },
+                    },
+                }}
+                cells={[
+                    [
+                        { text: '指标', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1F7A46' } } },
+                        { text: '数据集 / 条件', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1F7A46' } } },
+                        { text: '实测', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1F7A46' } } },
+                        { text: '要求 / 对照', textStyle: { bold: true, color: '#FFFFFF' }, cellStyle: { background: { color: '#1F7A46' } } },
+                    ],
+                    [
+                        'Top-1 准确率',
+                        'PlantVillage 4,914 张',
+                        { text: '99.04%', textStyle: { bold: true, color: '#1F7A46' } },
+                        '要求 ≥ 85%',
+                    ],
+                    [
+                        '宏平均 F1',
+                        '同上，38 类',
+                        '0.9895',
+                        '—',
+                    ],
+                    [
+                        '最低单类 F1',
+                        '玉米灰斑病',
+                        '0.9524',
+                        '要求 ≥ 0.80',
+                    ],
+                    [
+                        '真实域 Top-1',
+                        'PlantDoc 225 张（指定作物）',
+                        { text: '76.9%', textStyle: { bold: true, color: '#1F7A46' } },
+                        '微调前 52.9%',
+                    ],
+                    [
+                        '非叶片拒识',
+                        '文档 / 图表 / 合成图抽样 9 张',
+                        { text: '9 / 9', textStyle: { bold: true, color: '#1F7A46' } },
+                        '防误用',
+                    ],
+                ]}
+            />
+        </Box>
+    </Box>
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 26 }}>
+        <Text style={{ fontSize: 18, color: '#1F7A46', fontWeight: 'bold' }}>
+            实验室指标说明模型本身达标；76.9% 反映真实田间水平，因此系统必须同时输出可信度。
+        </Text>
+    </Box>
+</Slide>

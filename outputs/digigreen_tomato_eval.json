@@ -1,0 +1,1231 @@
+{
+  "summary": {
+    "total": 47,
+    "scored": 35,
+    "correct": 6,
+    "outside": 12,
+    "outside_rejected": 1
+  },
+  "records": [
+    {
+      "image": "images/00003.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus; Whiteflies"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [
+        "Whiteflies"
+      ],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄黄化曲叶病毒病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": false,
+      "hit3": true,
+      "conf": 0.2853,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9989,
+      "rejected": false
+    },
+    {
+      "image": "images/00006.jpg",
+      "diagnoses": [
+        "Fruit Borer"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Fruit Borer"
+      ],
+      "scored": false,
+      "top1": "番茄 Septoria 叶斑病",
+      "top3": [
+        "番茄 Septoria 叶斑病",
+        "番茄早疫病",
+        "番茄叶霉病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.345,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9849,
+      "rejected": false
+    },
+    {
+      "image": "images/00011.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄黄化曲叶病毒病",
+      "top3": [
+        "番茄黄化曲叶病毒病",
+        "番茄花叶病毒病",
+        "番茄叶霉病"
+      ],
+      "hit": true,
+      "hit3": true,
+      "conf": 0.461,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.5702,
+      "rejected": false
+    },
+    {
+      "image": "images/00046.jpg",
+      "diagnoses": [
+        "Potassium Deficiency"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Potassium Deficiency"
+      ],
+      "scored": false,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄花叶病毒病",
+        "番茄晚疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.5323,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.8814,
+      "rejected": false
+    },
+    {
+      "image": "images/00047.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄 Septoria 叶斑病",
+      "top3": [
+        "番茄 Septoria 叶斑病",
+        "番茄细菌性斑点病",
+        "番茄早疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.4227,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.985,
+      "rejected": false
+    },
+    {
+      "image": "images/00061.jpg",
+      "diagnoses": [
+        "Late Blight"
+      ],
+      "expected": [
+        "Tomato___Late_blight"
+      ],
+      "expected_zh": [
+        "番茄晚疫病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄（健康）",
+      "top3": [
+        "番茄（健康）",
+        "番茄晚疫病",
+        "番茄叶霉病"
+      ],
+      "hit": false,
+      "hit3": true,
+      "conf": 0.3642,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9401,
+      "rejected": false
+    },
+    {
+      "image": "images/00063.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄（健康）",
+      "top3": [
+        "番茄（健康）",
+        "番茄晚疫病",
+        "番茄早疫病"
+      ],
+      "hit": true,
+      "hit3": true,
+      "conf": 0.5968,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.999,
+      "rejected": false
+    },
+    {
+      "image": "images/00067.jpg",
+      "diagnoses": [
+        "Fruit Borer"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Fruit Borer"
+      ],
+      "scored": false,
+      "top1": "番茄晚疫病",
+      "top3": [
+        "番茄晚疫病",
+        "番茄叶霉病",
+        "番茄早疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.8593,
+      "conf_cal": 0.0,
+      "leaf_prob": 1.0,
+      "rejected": false
+    },
+    {
+      "image": "images/00091.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄叶霉病",
+        "番茄黄化曲叶病毒病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.7665,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9986,
+      "rejected": false
+    },
+    {
+      "image": "images/00152.jpg",
+      "diagnoses": [
+        "Healthy",
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄晚疫病",
+      "top3": [
+        "番茄晚疫病",
+        "番茄叶霉病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.5362,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.084,
+      "rejected": true
+    },
+    {
+      "image": "images/00172.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄花叶病毒病",
+        "番茄晚疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2446,
+      "conf_cal": 0.0,
+      "leaf_prob": 1.0,
+      "rejected": false
+    },
+    {
+      "image": "images/00177.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄叶霉病",
+        "番茄（健康）"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.4184,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9658,
+      "rejected": false
+    },
+    {
+      "image": "images/00183.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus; Fruit Borer"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [
+        "Fruit Borer"
+      ],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄细菌性斑点病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.325,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9221,
+      "rejected": false
+    },
+    {
+      "image": "images/00198.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄黄化曲叶病毒病",
+      "top3": [
+        "番茄黄化曲叶病毒病",
+        "番茄细菌性斑点病",
+        "番茄晚疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.3225,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9854,
+      "rejected": false
+    },
+    {
+      "image": "images/00223.jpg",
+      "diagnoses": [
+        "Early Blight; Fruit Borer"
+      ],
+      "expected": [
+        "Tomato___Early_blight"
+      ],
+      "expected_zh": [
+        "番茄早疫病"
+      ],
+      "outside_taxonomy": [
+        "Fruit Borer"
+      ],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄（健康）",
+        "番茄晚疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.4428,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.1921,
+      "rejected": true
+    },
+    {
+      "image": "images/00230.jpg",
+      "diagnoses": [
+        "Bacterial Wilt"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Bacterial Wilt"
+      ],
+      "scored": false,
+      "top1": "番茄细菌性斑点病",
+      "top3": [
+        "番茄细菌性斑点病",
+        "番茄 Septoria 叶斑病",
+        "番茄黄化曲叶病毒病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.5003,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.4328,
+      "rejected": true
+    },
+    {
+      "image": "images/00308.jpg",
+      "diagnoses": [
+        "Early Blight"
+      ],
+      "expected": [
+        "Tomato___Early_blight"
+      ],
+      "expected_zh": [
+        "番茄早疫病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄早疫病",
+      "top3": [
+        "番茄早疫病",
+        "番茄细菌性斑点病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": true,
+      "hit3": true,
+      "conf": 0.3063,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9437,
+      "rejected": false
+    },
+    {
+      "image": "images/00331.jpg",
+      "diagnoses": [
+        "Leaf Miner"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Leaf Miner"
+      ],
+      "scored": false,
+      "top1": "番茄 Septoria 叶斑病",
+      "top3": [
+        "番茄 Septoria 叶斑病",
+        "番茄早疫病",
+        "番茄晚疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2377,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9985,
+      "rejected": false
+    },
+    {
+      "image": "images/00351.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄（健康）",
+      "top3": [
+        "番茄（健康）",
+        "番茄叶霉病",
+        "番茄花叶病毒病"
+      ],
+      "hit": true,
+      "hit3": true,
+      "conf": 0.4891,
+      "conf_cal": 0.0,
+      "leaf_prob": 1.0,
+      "rejected": false
+    },
+    {
+      "image": "images/00357.jpg",
+      "diagnoses": [
+        "Late Blight; Leaf Miner"
+      ],
+      "expected": [
+        "Tomato___Late_blight"
+      ],
+      "expected_zh": [
+        "番茄晚疫病"
+      ],
+      "outside_taxonomy": [
+        "Leaf Miner"
+      ],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄 Septoria 叶斑病",
+        "番茄花叶病毒病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.3659,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9289,
+      "rejected": false
+    },
+    {
+      "image": "images/00364.jpg",
+      "diagnoses": [
+        "Bacterial Wilt; Whiteflies"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Bacterial Wilt",
+        "Whiteflies"
+      ],
+      "scored": false,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄 Septoria 叶斑病",
+        "番茄早疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.274,
+      "conf_cal": 0.0,
+      "leaf_prob": 1.0,
+      "rejected": false
+    },
+    {
+      "image": "images/00406.jpg",
+      "diagnoses": [
+        "Nitrogen Deficiency"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Nitrogen Deficiency"
+      ],
+      "scored": false,
+      "top1": "番茄细菌性斑点病",
+      "top3": [
+        "番茄细菌性斑点病",
+        "番茄早疫病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.4269,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.785,
+      "rejected": false
+    },
+    {
+      "image": "images/00426.jpg",
+      "diagnoses": [
+        "Early Blight"
+      ],
+      "expected": [
+        "Tomato___Early_blight"
+      ],
+      "expected_zh": [
+        "番茄早疫病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄叶霉病",
+        "番茄（健康）"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.3672,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.977,
+      "rejected": false
+    },
+    {
+      "image": "images/00446.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄晚疫病",
+        "番茄细菌性斑点病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.3985,
+      "conf_cal": 0.0,
+      "leaf_prob": 1.0,
+      "rejected": false
+    },
+    {
+      "image": "images/00531.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄细菌性斑点病",
+      "top3": [
+        "番茄细菌性斑点病",
+        "番茄早疫病",
+        "番茄（健康）"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2643,
+      "conf_cal": 0.0,
+      "leaf_prob": 1.0,
+      "rejected": false
+    },
+    {
+      "image": "images/00536.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄早疫病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2371,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9707,
+      "rejected": false
+    },
+    {
+      "image": "images/00537.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄早疫病",
+      "top3": [
+        "番茄早疫病",
+        "番茄晚疫病",
+        "番茄细菌性斑点病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2546,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9213,
+      "rejected": false
+    },
+    {
+      "image": "images/00568.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄黄化曲叶病毒病",
+        "番茄叶霉病"
+      ],
+      "hit": false,
+      "hit3": true,
+      "conf": 0.4796,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.3149,
+      "rejected": true
+    },
+    {
+      "image": "images/00581.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄晚疫病",
+      "top3": [
+        "番茄晚疫病",
+        "番茄（健康）",
+        "番茄细菌性斑点病"
+      ],
+      "hit": false,
+      "hit3": true,
+      "conf": 0.1962,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.026,
+      "rejected": true
+    },
+    {
+      "image": "images/00633.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus; Whiteflies"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [
+        "Whiteflies"
+      ],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄叶霉病",
+        "番茄黄化曲叶病毒病"
+      ],
+      "hit": false,
+      "hit3": true,
+      "conf": 0.5959,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9973,
+      "rejected": false
+    },
+    {
+      "image": "images/00650.jpg",
+      "diagnoses": [
+        "Early Blight; Thrips"
+      ],
+      "expected": [
+        "Tomato___Early_blight"
+      ],
+      "expected_zh": [
+        "番茄早疫病"
+      ],
+      "outside_taxonomy": [
+        "Thrips"
+      ],
+      "scored": true,
+      "top1": "番茄早疫病",
+      "top3": [
+        "番茄早疫病",
+        "番茄 Septoria 叶斑病",
+        "番茄晚疫病"
+      ],
+      "hit": true,
+      "hit3": true,
+      "conf": 0.7729,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9988,
+      "rejected": false
+    },
+    {
+      "image": "images/00673.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus; Nitrogen Deficiency"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [
+        "Nitrogen Deficiency"
+      ],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄 Septoria 叶斑病",
+        "番茄花叶病毒病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.3248,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.6934,
+      "rejected": false
+    },
+    {
+      "image": "images/00674.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus; Thrips"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [
+        "Thrips"
+      ],
+      "scored": true,
+      "top1": "番茄（健康）",
+      "top3": [
+        "番茄（健康）",
+        "番茄晚疫病",
+        "番茄叶霉病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2285,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.994,
+      "rejected": false
+    },
+    {
+      "image": "images/00683.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄叶霉病",
+        "番茄晚疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.246,
+      "conf_cal": 0.0,
+      "leaf_prob": 1.0,
+      "rejected": false
+    },
+    {
+      "image": "images/00722.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄（健康）",
+        "番茄细菌性斑点病"
+      ],
+      "hit": false,
+      "hit3": true,
+      "conf": 0.2221,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9999,
+      "rejected": false
+    },
+    {
+      "image": "images/00741.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus; Fruit Borer"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [
+        "Fruit Borer"
+      ],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄花叶病毒病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.3641,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9546,
+      "rejected": false
+    },
+    {
+      "image": "images/00744.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus; Whiteflies"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [
+        "Whiteflies"
+      ],
+      "scored": true,
+      "top1": "番茄 Septoria 叶斑病",
+      "top3": [
+        "番茄 Septoria 叶斑病",
+        "番茄细菌性斑点病",
+        "番茄（健康）"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2759,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.8721,
+      "rejected": false
+    },
+    {
+      "image": "images/00757.jpg",
+      "diagnoses": [
+        "Leaf Miner"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Leaf Miner"
+      ],
+      "scored": false,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄花叶病毒病",
+        "番茄黄化曲叶病毒病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.3362,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.8312,
+      "rejected": false
+    },
+    {
+      "image": "images/00769.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄花叶病毒病",
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄黄化曲叶病毒病",
+        "番茄细菌性斑点病"
+      ],
+      "hit": false,
+      "hit3": true,
+      "conf": 0.2829,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9659,
+      "rejected": false
+    },
+    {
+      "image": "images/00795.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄黄化曲叶病毒病",
+      "top3": [
+        "番茄黄化曲叶病毒病",
+        "番茄细菌性斑点病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": true,
+      "hit3": true,
+      "conf": 0.3464,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9988,
+      "rejected": false
+    },
+    {
+      "image": "images/00814.jpg",
+      "diagnoses": [
+        "Late Blight"
+      ],
+      "expected": [
+        "Tomato___Late_blight"
+      ],
+      "expected_zh": [
+        "番茄晚疫病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄 Septoria 叶斑病",
+        "番茄花叶病毒病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2287,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.991,
+      "rejected": false
+    },
+    {
+      "image": "images/00823.jpg",
+      "diagnoses": [
+        "Leaf Miner"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Leaf Miner"
+      ],
+      "scored": false,
+      "top1": "番茄（健康）",
+      "top3": [
+        "番茄（健康）",
+        "番茄晚疫病",
+        "番茄叶霉病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.5565,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9953,
+      "rejected": false
+    },
+    {
+      "image": "images/00849.jpg",
+      "diagnoses": [
+        "Whiteflies"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Whiteflies"
+      ],
+      "scored": false,
+      "top1": "番茄（健康）",
+      "top3": [
+        "番茄（健康）",
+        "番茄晚疫病",
+        "番茄细菌性斑点病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.4073,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9692,
+      "rejected": false
+    },
+    {
+      "image": "images/00879.jpg",
+      "diagnoses": [
+        "Leaf Miner"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Leaf Miner"
+      ],
+      "scored": false,
+      "top1": "番茄晚疫病",
+      "top3": [
+        "番茄晚疫病",
+        "番茄叶霉病",
+        "番茄细菌性斑点病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.8237,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.8712,
+      "rejected": false
+    },
+    {
+      "image": "images/00921.jpg",
+      "diagnoses": [
+        "Leaf Miner"
+      ],
+      "expected": [],
+      "expected_zh": [],
+      "outside_taxonomy": [
+        "Leaf Miner"
+      ],
+      "scored": false,
+      "top1": "番茄（健康）",
+      "top3": [
+        "番茄（健康）",
+        "番茄叶霉病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.3171,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9998,
+      "rejected": false
+    },
+    {
+      "image": "images/00973.jpg",
+      "diagnoses": [
+        "Leaf Curl Virus"
+      ],
+      "expected": [
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus"
+      ],
+      "expected_zh": [
+        "番茄黄化曲叶病毒病"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄（健康）",
+      "top3": [
+        "番茄（健康）",
+        "番茄细菌性斑点病",
+        "番茄叶霉病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2147,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.9985,
+      "rejected": false
+    },
+    {
+      "image": "images/00975.jpg",
+      "diagnoses": [
+        "Healthy"
+      ],
+      "expected": [
+        "Tomato___healthy"
+      ],
+      "expected_zh": [
+        "番茄（健康）"
+      ],
+      "outside_taxonomy": [],
+      "scored": true,
+      "top1": "番茄叶霉病",
+      "top3": [
+        "番茄叶霉病",
+        "番茄花叶病毒病",
+        "番茄早疫病"
+      ],
+      "hit": false,
+      "hit3": false,
+      "conf": 0.2388,
+      "conf_cal": 0.0,
+      "leaf_prob": 0.2177,
+      "rejected": true
+    }
+  ]
+}

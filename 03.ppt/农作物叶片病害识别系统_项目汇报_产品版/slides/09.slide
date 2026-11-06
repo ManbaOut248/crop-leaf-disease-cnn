@@ -1,0 +1,67 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>
+        能力边界
+    </Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        已知边界：模型无法判别输入是否属于支持范围
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 32, marginTop: 26 }}>
+
+        {/* 左：一个大数字卡 */}
+        <Box style={{ width: 440, background: '#F0F9F4', borderRadius: 10, padding: 30 }}>
+            <Text style={{ fontSize: 15, color: '#1F7A46', fontWeight: 'bold' }}>
+                未知作物 · 753 张（DigiGreen，74 种作物）
+            </Text>
+            <Box style={{ flexDirection: 'row', alignItems: 'flex-end', marginTop: 8 }}>
+                <Text style={{ fontSize: 76, fontWeight: 'bold', color: '#1F2A24', lineHeight: 1.05 }}>88.2</Text>
+                <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#1F2A24', marginLeft: 4 }}>%</Text>
+            </Box>
+            <Text style={{ fontSize: 16, color: '#5B6B60', lineHeight: 1.65, marginTop: 12 }}>
+                未被拒识的 664 张中，88.2% 仍被赋予确定病名，15.4% 置信度偏高——
+                闭集模型对「作物是否受支持」不具备判别信息，只能输出最相近类别。
+            </Text>
+        </Box>
+
+        {/* 右：两个小数字 */}
+        <Box style={{ flex: 1, justifyContent: 'space-between' }}>
+            <Box style={{ borderLeft: '2px solid #C8860D', paddingLeft: 18 }}>
+                <Text style={{ fontSize: 15, color: '#5B6B60' }}>真实健康叶 · 指定正确作物后</Text>
+                <Box style={{ flexDirection: 'row', alignItems: 'flex-end', marginTop: 4 }}>
+                    <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#C8860D', lineHeight: 1.1 }}>89.6</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#C8860D', marginLeft: 3 }}>%</Text>
+                    <Text style={{ fontSize: 16, color: '#5B6B60', marginLeft: 12 }}>
+                        48 张健康叶中 43 张被判为病害，其中 18 张置信度偏高
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ borderLeft: '2px solid #C8860D', paddingLeft: 18, marginTop: 44 }}>
+                <Text style={{ fontSize: 15, color: '#5B6B60' }}>真实叶片被误拒 · 拒识头</Text>
+                <Box style={{ flexDirection: 'row', alignItems: 'flex-end', marginTop: 4 }}>
+                    <Text style={{ fontSize: 40, fontWeight: 'bold', color: '#C8860D', lineHeight: 1.1 }}>4.6</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#C8860D', marginLeft: 3 }}>%</Text>
+                    <Text style={{ fontSize: 16, color: '#5B6B60', marginLeft: 12 }}>
+                        正常叶片被误判为非叶片的比例，因此该提示仅告警、不做硬性拦截
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+    </Box>
+
+    {/* 已做的缓解措施 */}
+    <Box style={{ flexDirection: 'row', gap: 32, marginTop: 44, paddingTop: 24, borderTop: '1px solid #E3EAE5' }}>
+        <Text style={{ fontSize: 15, color: '#1F7A46', fontWeight: 'bold', width: 96 }}>已采取措施</Text>
+        <Text style={{ fontSize: 17, color: '#1F2A24', flex: 1 }}>作物白名单前置，未选作物不可识别</Text>
+        <Text style={{ fontSize: 17, color: '#1F2A24', flex: 1 }}>低置信标黄提示，不作确定性结论</Text>
+        <Text style={{ fontSize: 17, color: '#1F2A24', flex: 1 }}>提供人工核对入口，错样本可回流标注</Text>
+    </Box>
+
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 26 }}>
+        <Text style={{ fontSize: 18, color: '#1F7A46', fontWeight: 'bold' }}>
+            上述为闭集分类的固有边界，非调参可修复的缺陷；根本改善依赖真实域标注数据。
+        </Text>
+    </Box>
+</Slide>

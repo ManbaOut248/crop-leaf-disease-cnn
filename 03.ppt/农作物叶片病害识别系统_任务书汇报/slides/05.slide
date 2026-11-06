@@ -1,0 +1,61 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>04　项目效果 · 单张识别</Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        上传一片叶子，返回 Top-3 候选与防治建议
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 36, marginTop: 22 }}>
+
+        {/* 左：实机截图，白边卡片 */}
+        <Box style={{ width: 640 }}>
+            <Box style={{ border: '1px solid #D8E4DC', borderRadius: 8, padding: 6, background: '#F7FBF8' }}>
+                <Image src="assets/detect_result.png" style={{ width: 626, height: 391, objectFit: 'cover', borderRadius: 5 }} />
+            </Box>
+        </Box>
+
+        {/* 右：三条能力说明 */}
+        <Box style={{ flex: 1, justifyContent: 'space-between' }}>
+
+            <Box>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>作物先选</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                    14 种作物下拉由后端下发，选定后只在候选类内比较，跨作物误判先被挡住。
+                </Text>
+            </Box>
+
+            <Box>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>结论带可信度</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                    同时给出 Top-3 候选、置信度与可靠性分档，低置信结果标黄提示复核。
+                </Text>
+            </Box>
+
+            <Box>
+                <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>建议可落地</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.55, marginTop: 8 }}>
+                    每个候选附典型病叶图、症状描述与防治措施，看到病名即可对照处理。
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+
+    {/* 数据条：左口径 / 中主指标 / 右辅指标 */}
+    <Box style={{ flexDirection: 'row', alignItems: 'flex-end', background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 16 }}>
+        <Text style={{ fontSize: 15, color: '#5B6B60', flex: 1 }}>
+            PlantVillage 测试集 4,914 张，按 8:1:1 防泄漏切分
+        </Text>
+        <Text style={{ fontSize: 15, color: '#5B6B60' }}>Top-1 准确率</Text>
+        <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1F7A46', paddingLeft: 10 }}>99.04%</Text>
+        <Text style={{ fontSize: 15, color: '#5B6B60', paddingLeft: 28 }}>38 类宏平均 F1</Text>
+        <Text style={{ fontSize: 30, fontWeight: 'bold', color: '#1F7A46', paddingLeft: 10 }}>0.9895</Text>
+    </Box>
+
+    <Box style={{ flex: 1 }} />
+
+    <Box style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>农作物叶片病害识别系统 · 项目汇报</Text>
+        <Text style={{ fontSize: 14, color: '#8B97A8' }}>05 / 08</Text>
+    </Box>
+</Slide>

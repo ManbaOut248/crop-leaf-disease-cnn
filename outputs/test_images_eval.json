@@ -1,0 +1,1150 @@
+{
+  "summary": {
+    "01_叶片识别": {
+      "张数": 27,
+      "Top1正确": 22,
+      "Top3命中": 26,
+      "作物先验生效": 27
+    },
+    "02_番茄专项": {
+      "张数": 16,
+      "Top1正确": 7,
+      "Top3命中": 12,
+      "作物先验生效": 16
+    },
+    "00_快速测试": {
+      "张数": 9,
+      "Top1正确": 7,
+      "Top3命中": 8,
+      "作物先验生效": 9
+    },
+    "03_负样本拒识": {
+      "张数": 9,
+      "成功拦截": 9
+    },
+    "总计": {
+      "张数": 52,
+      "Top1正确": 36,
+      "Top1准确率": 0.6923
+    }
+  },
+  "rows": [
+    {
+      "group": "00_快速测试",
+      "file": "01_苹果黑星病.jpg",
+      "crop": "苹果",
+      "expected": "苹果黑星病",
+      "top1": "苹果黑星病",
+      "top1_conf_raw": 1.0,
+      "conf_cal": 1.0,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "苹果黑星病",
+        "苹果雪松锈病",
+        "苹果（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "00_快速测试",
+      "file": "02_苹果桧锈病.jpg",
+      "crop": "苹果",
+      "expected": "苹果桧锈病",
+      "top1": "苹果雪松锈病",
+      "top1_conf_raw": 0.3617,
+      "conf_cal": 0.3482,
+      "reliability": "medium",
+      "leaf_prob": 0.9985,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "苹果雪松锈病",
+        "苹果（健康）",
+        "苹果黑星病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "00_快速测试",
+      "file": "03_番茄早疫病.jpg",
+      "crop": "番茄",
+      "expected": "番茄早疫病",
+      "top1": "番茄叶霉病",
+      "top1_conf_raw": 0.4706,
+      "conf_cal": 0.3841,
+      "reliability": "medium",
+      "leaf_prob": 0.9998,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄叶霉病",
+        "番茄 Septoria 叶斑病",
+        "番茄细菌性斑点病"
+      ],
+      "correct": false,
+      "top3_hit": false
+    },
+    {
+      "group": "00_快速测试",
+      "file": "04_番茄细菌性斑点病.jpg",
+      "crop": "番茄",
+      "expected": "番茄细菌性斑点病",
+      "top1": "番茄早疫病",
+      "top1_conf_raw": 0.8876,
+      "conf_cal": 0.7674,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄早疫病",
+        "番茄细菌性斑点病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "00_快速测试",
+      "file": "05_玉米普通锈病.jpg",
+      "crop": "玉米",
+      "expected": "玉米普通锈病",
+      "top1": "玉米普通锈病",
+      "top1_conf_raw": 0.988,
+      "conf_cal": 0.9632,
+      "reliability": "high",
+      "leaf_prob": 0.9883,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "玉米普通锈病",
+        "玉米灰斑病",
+        "玉米北方叶枯病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "00_快速测试",
+      "file": "06_葡萄黑腐病.jpg",
+      "crop": "葡萄",
+      "expected": "葡萄黑腐病",
+      "top1": "葡萄黑腐病",
+      "top1_conf_raw": 0.9862,
+      "conf_cal": 0.9554,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "葡萄黑腐病",
+        "葡萄（健康）",
+        "葡萄埃斯卡病（黑麻疹）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "00_快速测试",
+      "file": "07_马铃薯晚疫病.jpg",
+      "crop": "马铃薯",
+      "expected": "马铃薯晚疫病",
+      "top1": "马铃薯晚疫病",
+      "top1_conf_raw": 0.5045,
+      "conf_cal": 0.5034,
+      "reliability": "medium",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "马铃薯晚疫病",
+        "马铃薯早疫病",
+        "马铃薯（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "00_快速测试",
+      "file": "08_桃健康.jpg",
+      "crop": "桃",
+      "expected": "桃健康",
+      "top1": "桃（健康）",
+      "top1_conf_raw": 0.9655,
+      "conf_cal": 0.9284,
+      "reliability": "high",
+      "leaf_prob": 0.9936,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "桃（健康）",
+        "桃细菌性斑点病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "00_快速测试",
+      "file": "09_草莓健康.jpg",
+      "crop": "草莓",
+      "expected": "草莓健康",
+      "top1": "草莓（健康）",
+      "top1_conf_raw": 1.0,
+      "conf_cal": 1.0,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "草莓（健康）",
+        "草莓叶焦病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "01_苹果_苹果黑星病.jpg",
+      "crop": "苹果",
+      "expected": "苹果黑星病",
+      "top1": "苹果黑星病",
+      "top1_conf_raw": 1.0,
+      "conf_cal": 1.0,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "苹果黑星病",
+        "苹果雪松锈病",
+        "苹果（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "02_苹果_苹果雪松锈病.jpg",
+      "crop": "苹果",
+      "expected": "苹果雪松锈病",
+      "top1": "苹果雪松锈病",
+      "top1_conf_raw": 0.3617,
+      "conf_cal": 0.3482,
+      "reliability": "medium",
+      "leaf_prob": 0.9985,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "苹果雪松锈病",
+        "苹果（健康）",
+        "苹果黑星病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "03_苹果_苹果（健康）.jpg",
+      "crop": "苹果",
+      "expected": "苹果（健康）",
+      "top1": "苹果（健康）",
+      "top1_conf_raw": 0.7887,
+      "conf_cal": 0.7018,
+      "reliability": "high",
+      "leaf_prob": 0.9956,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "苹果（健康）",
+        "苹果黑星病",
+        "苹果雪松锈病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "04_蓝莓_蓝莓（健康）.jpg",
+      "crop": "蓝莓",
+      "expected": "蓝莓（健康）",
+      "top1": "蓝莓（健康）",
+      "top1_conf_raw": 1.0,
+      "conf_cal": 1.0,
+      "reliability": "high",
+      "leaf_prob": 0.9986,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "蓝莓（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "05_樱桃_樱桃（健康）.jpg",
+      "crop": "樱桃",
+      "expected": "樱桃（健康）",
+      "top1": "樱桃（健康）",
+      "top1_conf_raw": 0.9989,
+      "conf_cal": 0.9946,
+      "reliability": "high",
+      "leaf_prob": 0.021,
+      "likely_not_leaf": true,
+      "crop_applied": true,
+      "top3": [
+        "樱桃（健康）",
+        "樱桃白粉病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "06_玉米_玉米灰斑病.jpg",
+      "crop": "玉米",
+      "expected": "玉米灰斑病",
+      "top1": "玉米北方叶枯病",
+      "top1_conf_raw": 0.9599,
+      "conf_cal": 0.8999,
+      "reliability": "high",
+      "leaf_prob": 0.9325,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "玉米北方叶枯病",
+        "玉米灰斑病",
+        "玉米普通锈病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "07_玉米_玉米普通锈病.jpg",
+      "crop": "玉米",
+      "expected": "玉米普通锈病",
+      "top1": "玉米普通锈病",
+      "top1_conf_raw": 0.988,
+      "conf_cal": 0.9632,
+      "reliability": "high",
+      "leaf_prob": 0.9883,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "玉米普通锈病",
+        "玉米灰斑病",
+        "玉米北方叶枯病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "08_玉米_玉米北方叶枯病.jpg",
+      "crop": "玉米",
+      "expected": "玉米北方叶枯病",
+      "top1": "玉米北方叶枯病",
+      "top1_conf_raw": 0.9966,
+      "conf_cal": 0.9863,
+      "reliability": "high",
+      "leaf_prob": 0.9922,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "玉米北方叶枯病",
+        "玉米灰斑病",
+        "玉米普通锈病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "09_葡萄_葡萄黑腐病.jpg",
+      "crop": "葡萄",
+      "expected": "葡萄黑腐病",
+      "top1": "葡萄黑腐病",
+      "top1_conf_raw": 0.9862,
+      "conf_cal": 0.9554,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "葡萄黑腐病",
+        "葡萄（健康）",
+        "葡萄埃斯卡病（黑麻疹）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "10_葡萄_葡萄（健康）.jpg",
+      "crop": "葡萄",
+      "expected": "葡萄（健康）",
+      "top1": "葡萄（健康）",
+      "top1_conf_raw": 0.9384,
+      "conf_cal": 0.8657,
+      "reliability": "high",
+      "leaf_prob": 0.9861,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "葡萄（健康）",
+        "葡萄叶枯病（房枯病）",
+        "葡萄黑腐病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "11_桃_桃（健康）.jpg",
+      "crop": "桃",
+      "expected": "桃（健康）",
+      "top1": "桃（健康）",
+      "top1_conf_raw": 0.9655,
+      "conf_cal": 0.9284,
+      "reliability": "high",
+      "leaf_prob": 0.9936,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "桃（健康）",
+        "桃细菌性斑点病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "12_甜椒_甜椒细菌性斑点病.jpg",
+      "crop": "甜椒",
+      "expected": "甜椒细菌性斑点病",
+      "top1": "甜椒细菌性斑点病",
+      "top1_conf_raw": 0.9294,
+      "conf_cal": 0.8789,
+      "reliability": "high",
+      "leaf_prob": 0.999,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "甜椒细菌性斑点病",
+        "甜椒（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "13_甜椒_甜椒（健康）.jpg",
+      "crop": "甜椒",
+      "expected": "甜椒（健康）",
+      "top1": "甜椒（健康）",
+      "top1_conf_raw": 0.9998,
+      "conf_cal": 0.9984,
+      "reliability": "high",
+      "leaf_prob": 0.9998,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "甜椒（健康）",
+        "甜椒细菌性斑点病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "14_马铃薯_马铃薯早疫病.jpg",
+      "crop": "马铃薯",
+      "expected": "马铃薯早疫病",
+      "top1": "马铃薯早疫病",
+      "top1_conf_raw": 0.6302,
+      "conf_cal": 0.5969,
+      "reliability": "high",
+      "leaf_prob": 0.9994,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "马铃薯早疫病",
+        "马铃薯晚疫病",
+        "马铃薯（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "15_马铃薯_马铃薯晚疫病.jpg",
+      "crop": "马铃薯",
+      "expected": "马铃薯晚疫病",
+      "top1": "马铃薯晚疫病",
+      "top1_conf_raw": 0.5045,
+      "conf_cal": 0.5034,
+      "reliability": "medium",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "马铃薯晚疫病",
+        "马铃薯早疫病",
+        "马铃薯（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "16_树莓_树莓（健康）.jpg",
+      "crop": "树莓",
+      "expected": "树莓（健康）",
+      "top1": "树莓（健康）",
+      "top1_conf_raw": 1.0,
+      "conf_cal": 1.0,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "树莓（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "17_大豆_大豆（健康）.jpg",
+      "crop": "大豆",
+      "expected": "大豆（健康）",
+      "top1": "大豆（健康）",
+      "top1_conf_raw": 1.0,
+      "conf_cal": 1.0,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "大豆（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "18_南瓜_南瓜白粉病.jpg",
+      "crop": "南瓜",
+      "expected": "南瓜白粉病",
+      "top1": "南瓜白粉病",
+      "top1_conf_raw": 1.0,
+      "conf_cal": 1.0,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "南瓜白粉病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "19_草莓_草莓（健康）.jpg",
+      "crop": "草莓",
+      "expected": "草莓（健康）",
+      "top1": "草莓（健康）",
+      "top1_conf_raw": 1.0,
+      "conf_cal": 1.0,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "草莓（健康）",
+        "草莓叶焦病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "20_番茄_番茄细菌性斑点病.jpg",
+      "crop": "番茄",
+      "expected": "番茄细菌性斑点病",
+      "top1": "番茄早疫病",
+      "top1_conf_raw": 0.8876,
+      "conf_cal": 0.7674,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄早疫病",
+        "番茄细菌性斑点病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "21_番茄_番茄早疫病.jpg",
+      "crop": "番茄",
+      "expected": "番茄早疫病",
+      "top1": "番茄叶霉病",
+      "top1_conf_raw": 0.4706,
+      "conf_cal": 0.3841,
+      "reliability": "medium",
+      "leaf_prob": 0.9998,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄叶霉病",
+        "番茄 Septoria 叶斑病",
+        "番茄细菌性斑点病"
+      ],
+      "correct": false,
+      "top3_hit": false
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "22_番茄_番茄（健康）.jpg",
+      "crop": "番茄",
+      "expected": "番茄（健康）",
+      "top1": "番茄（健康）",
+      "top1_conf_raw": 0.8808,
+      "conf_cal": 0.7651,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄（健康）",
+        "番茄叶霉病",
+        "番茄晚疫病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "23_番茄_番茄晚疫病.jpg",
+      "crop": "番茄",
+      "expected": "番茄晚疫病",
+      "top1": "番茄晚疫病",
+      "top1_conf_raw": 0.9926,
+      "conf_cal": 0.972,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄晚疫病",
+        "番茄叶霉病",
+        "番茄早疫病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "24_番茄_番茄叶霉病.jpg",
+      "crop": "番茄",
+      "expected": "番茄叶霉病",
+      "top1": "番茄叶霉病",
+      "top1_conf_raw": 0.2316,
+      "conf_cal": 0.2062,
+      "reliability": "low",
+      "leaf_prob": 0.9949,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄叶霉病",
+        "番茄（健康）",
+        "番茄晚疫病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "25_番茄_番茄 Septoria 叶斑病.jpg",
+      "crop": "番茄",
+      "expected": "番茄 Septoria 叶斑病",
+      "top1": "番茄叶霉病",
+      "top1_conf_raw": 0.421,
+      "conf_cal": 0.3604,
+      "reliability": "medium",
+      "leaf_prob": 0.9965,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄叶霉病",
+        "番茄细菌性斑点病",
+        "番茄 Septoria 叶斑病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "26_番茄_番茄花叶病毒病.jpg",
+      "crop": "番茄",
+      "expected": "番茄花叶病毒病",
+      "top1": "番茄花叶病毒病",
+      "top1_conf_raw": 0.6771,
+      "conf_cal": 0.5771,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄叶霉病",
+        "番茄（健康）"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "01_叶片识别",
+      "file": "27_番茄_番茄黄化曲叶病毒病.jpg",
+      "crop": "番茄",
+      "expected": "番茄黄化曲叶病毒病",
+      "top1": "番茄花叶病毒病",
+      "top1_conf_raw": 0.6105,
+      "conf_cal": 0.5667,
+      "reliability": "high",
+      "leaf_prob": 0.9992,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄黄化曲叶病毒病",
+        "番茄叶霉病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T01_番茄_细菌性斑点病.jpg",
+      "crop": "番茄",
+      "expected": "细菌性斑点病",
+      "top1": "番茄 Septoria 叶斑病",
+      "top1_conf_raw": 0.4302,
+      "conf_cal": 0.3474,
+      "reliability": "medium",
+      "leaf_prob": 0.3941,
+      "likely_not_leaf": true,
+      "crop_applied": true,
+      "top3": [
+        "番茄 Septoria 叶斑病",
+        "番茄细菌性斑点病",
+        "番茄叶霉病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T02_番茄_细菌性斑点病.jpg",
+      "crop": "番茄",
+      "expected": "细菌性斑点病",
+      "top1": "番茄细菌性斑点病",
+      "top1_conf_raw": 0.6912,
+      "conf_cal": 0.5766,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄细菌性斑点病",
+        "番茄 Septoria 叶斑病",
+        "番茄黄化曲叶病毒病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T03_番茄_早疫病.jpg",
+      "crop": "番茄",
+      "expected": "早疫病",
+      "top1": "番茄晚疫病",
+      "top1_conf_raw": 0.5933,
+      "conf_cal": 0.5227,
+      "reliability": "medium",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄晚疫病",
+        "番茄早疫病",
+        "番茄叶霉病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T04_番茄_早疫病.jpg",
+      "crop": "番茄",
+      "expected": "早疫病",
+      "top1": "番茄早疫病",
+      "top1_conf_raw": 0.5779,
+      "conf_cal": 0.4629,
+      "reliability": "medium",
+      "leaf_prob": 0.9996,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄早疫病",
+        "番茄晚疫病",
+        "番茄叶霉病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T05_番茄_（健康）.jpg",
+      "crop": "番茄",
+      "expected": "（健康）",
+      "top1": "番茄晚疫病",
+      "top1_conf_raw": 0.4343,
+      "conf_cal": 0.3767,
+      "reliability": "medium",
+      "leaf_prob": 0.9996,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄晚疫病",
+        "番茄早疫病",
+        "番茄叶霉病"
+      ],
+      "correct": false,
+      "top3_hit": false
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T06_番茄_（健康）.jpg",
+      "crop": "番茄",
+      "expected": "（健康）",
+      "top1": "番茄早疫病",
+      "top1_conf_raw": 0.4685,
+      "conf_cal": 0.3716,
+      "reliability": "medium",
+      "leaf_prob": 0.9999,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄早疫病",
+        "番茄叶霉病",
+        "番茄晚疫病"
+      ],
+      "correct": false,
+      "top3_hit": false
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T07_番茄_晚疫病.jpg",
+      "crop": "番茄",
+      "expected": "晚疫病",
+      "top1": "番茄晚疫病",
+      "top1_conf_raw": 0.7214,
+      "conf_cal": 0.5926,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄晚疫病",
+        "番茄（健康）",
+        "番茄叶霉病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T08_番茄_晚疫病.jpg",
+      "crop": "番茄",
+      "expected": "晚疫病",
+      "top1": "番茄花叶病毒病",
+      "top1_conf_raw": 0.4565,
+      "conf_cal": 0.3895,
+      "reliability": "medium",
+      "leaf_prob": 0.9993,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄叶霉病",
+        "番茄晚疫病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T09_番茄_叶霉病.jpg",
+      "crop": "番茄",
+      "expected": "叶霉病",
+      "top1": "番茄花叶病毒病",
+      "top1_conf_raw": 0.3817,
+      "conf_cal": 0.3063,
+      "reliability": "medium",
+      "leaf_prob": 0.9845,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄叶霉病",
+        "番茄早疫病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T10_番茄_叶霉病.jpg",
+      "crop": "番茄",
+      "expected": "叶霉病",
+      "top1": "番茄叶霉病",
+      "top1_conf_raw": 0.4817,
+      "conf_cal": 0.4323,
+      "reliability": "medium",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄叶霉病",
+        "番茄晚疫病",
+        "番茄花叶病毒病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T11_番茄_Septoria叶斑病.jpg",
+      "crop": "番茄",
+      "expected": "Septoria叶斑病",
+      "top1": "番茄 Septoria 叶斑病",
+      "top1_conf_raw": 0.8332,
+      "conf_cal": 0.7565,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄 Septoria 叶斑病",
+        "番茄细菌性斑点病",
+        "番茄早疫病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T12_番茄_Septoria叶斑病.jpg",
+      "crop": "番茄",
+      "expected": "Septoria叶斑病",
+      "top1": "番茄 Septoria 叶斑病",
+      "top1_conf_raw": 0.8043,
+      "conf_cal": 0.7214,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄 Septoria 叶斑病",
+        "番茄早疫病",
+        "番茄细菌性斑点病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T13_番茄_花叶病毒病.jpg",
+      "crop": "番茄",
+      "expected": "花叶病毒病",
+      "top1": "番茄叶霉病",
+      "top1_conf_raw": 0.7017,
+      "conf_cal": 0.6447,
+      "reliability": "high",
+      "leaf_prob": 1.0,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄叶霉病",
+        "番茄晚疫病",
+        "番茄早疫病"
+      ],
+      "correct": false,
+      "top3_hit": false
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T14_番茄_花叶病毒病.jpg",
+      "crop": "番茄",
+      "expected": "花叶病毒病",
+      "top1": "番茄花叶病毒病",
+      "top1_conf_raw": 0.872,
+      "conf_cal": 0.7675,
+      "reliability": "high",
+      "leaf_prob": 0.9852,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄黄化曲叶病毒病",
+        "番茄叶霉病"
+      ],
+      "correct": true,
+      "top3_hit": true
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T15_番茄_黄化曲叶病毒病.jpg",
+      "crop": "番茄",
+      "expected": "黄化曲叶病毒病",
+      "top1": "番茄（健康）",
+      "top1_conf_raw": 0.3254,
+      "conf_cal": 0.2811,
+      "reliability": "medium",
+      "leaf_prob": 0.9997,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄（健康）",
+        "番茄叶霉病",
+        "番茄花叶病毒病"
+      ],
+      "correct": false,
+      "top3_hit": false
+    },
+    {
+      "group": "02_番茄专项",
+      "file": "T16_番茄_黄化曲叶病毒病.jpg",
+      "crop": "番茄",
+      "expected": "黄化曲叶病毒病",
+      "top1": "番茄花叶病毒病",
+      "top1_conf_raw": 0.5719,
+      "conf_cal": 0.4552,
+      "reliability": "medium",
+      "leaf_prob": 0.9989,
+      "likely_not_leaf": false,
+      "crop_applied": true,
+      "top3": [
+        "番茄花叶病毒病",
+        "番茄黄化曲叶病毒病",
+        "番茄叶霉病"
+      ],
+      "correct": false,
+      "top3_hit": true
+    }
+  ],
+  "negatives": [
+    {
+      "file": "N01_文档截图.jpg",
+      "top1": "玉米（健康）",
+      "leaf_prob": 0.0135,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 0.0,
+      "grayscale": true,
+      "blocked": true
+    },
+    {
+      "file": "N02_文档截图.jpg",
+      "top1": "桃（健康）",
+      "leaf_prob": 0.1542,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 3.8,
+      "grayscale": true,
+      "blocked": true
+    },
+    {
+      "file": "N03_文档截图.jpg",
+      "top1": "玉米（健康）",
+      "leaf_prob": 0.115,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 3.6,
+      "grayscale": true,
+      "blocked": true
+    },
+    {
+      "file": "N04_统计图表.jpg",
+      "top1": "桃（健康）",
+      "leaf_prob": 0.0001,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 81.3,
+      "grayscale": false,
+      "blocked": true
+    },
+    {
+      "file": "N05_统计图表.jpg",
+      "top1": "桃（健康）",
+      "leaf_prob": 0.0,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 65.5,
+      "grayscale": false,
+      "blocked": true
+    },
+    {
+      "file": "N06_统计图表.jpg",
+      "top1": "桃（健康）",
+      "leaf_prob": 0.0,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 54.9,
+      "grayscale": false,
+      "blocked": true
+    },
+    {
+      "file": "N07_非叶片合成图.jpg",
+      "top1": "蓝莓（健康）",
+      "leaf_prob": 0.0012,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 0.0,
+      "grayscale": true,
+      "blocked": true
+    },
+    {
+      "file": "N08_非叶片合成图.jpg",
+      "top1": "桃（健康）",
+      "leaf_prob": 0.019,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 0.0,
+      "grayscale": true,
+      "blocked": true
+    },
+    {
+      "file": "N09_非叶片合成图.jpg",
+      "top1": "蓝莓（健康）",
+      "leaf_prob": 0.0002,
+      "leaf_prob_source": "head",
+      "likely_not_leaf": true,
+      "mean_chroma": 0.0,
+      "grayscale": true,
+      "blocked": true
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+<Slide style={{ width: 1280, height: 720, background: '#17452C', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    {/* 顶部信息：项目归属（封面信息层，不加页脚） */}
+    <Text style={{ fontSize: 14, color: '#7FB79A', letterSpacing: 1 }}>
+        前沿技术实训 · 项目汇报
+    </Text>
+
+    {/* 母题暗示：主标题上方的短竖线，与内容页的贯通细线同源 */}
+    <Box style={{ width: 2, height: 64, background: '#2E9E5B', marginTop: 34 }} />
+
+    <Text style={{ fontSize: 60, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.18, marginTop: 28 }}>
+        农作物叶片病害识别系统
+    </Text>
+
+    <Text style={{ fontSize: 22, color: '#A9C6B4', lineHeight: 1.5, marginTop: 22 }}>
+        基于 ResNet18 的叶片病害 Web 辅助诊断应用
+    </Text>
+
+    <Text style={{ fontSize: 18, color: '#CFE3D7', lineHeight: 1.5, marginTop: 14 }}>
+        14 种作物 · 38 类病害 · 浏览器端零安装
+    </Text>
+
+    <Box style={{ flex: 1 }} />
+
+    <Text style={{ fontSize: 15, color: '#8FAF9C', letterSpacing: 0.5 }}>
+        2026 年 10 月　｜　React + FastAPI + PyTorch　｜　对应任务书 V1.0.0
+    </Text>
+</Slide>

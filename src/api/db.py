@@ -65,6 +65,29 @@ def init_db():
         leaf_prob_source TEXT,
         mean_chroma REAL,
         likely_not_leaf INTEGER,
+        -- 用户上传时的原始文件名（2026-10-29 加入）：
+        -- image_name 存的是落盘用的 uuid 名（防重名/防路径穿越），对用户毫无意义，
+        -- 历史页因此一直显示 `a3f1...c9.jpg`。真正的「图片名」必须单独存一列。
+        orig_name TEXT,
+        -- 用户自定义命名（2026-10-29 加入）：
+        -- 上传名（orig_name）往往是一串相机编号或 IMG_0001，用户想按自己的
+        -- 意思备注（「东区3号棚-晚疫」）就必须可改。空串与 NULL 都表示未命名，
+        -- 展示时回落到 orig_name，而不是把空串显示成空白行。
+        custom_name TEXT,
+        -- 人工核对结论（2026-10-29 加入）：
+        -- NULL=未核对 / 'correct'=用户认为识别正确 / 'wrong'=识别错误。
+        -- 之所以不由模型自己算「对不对」：闭集模型对体系外作物、健康叶会给出高
+        -- 置信度错误答案（docs/25 实测未知作物 88.2% 硬答），只有人能给真值。
+        -- 这也是唯一能积累真实域标注的入口。
+        verdict TEXT,
+        verdict_at TEXT,
+        -- 人工确认的「实际病害」类别（2026-10-29 加入）：
+        -- 只在 verdict='wrong'（用户判定 AI 识别错误）时才有意义 —— 用户既然
+        -- 已经知道正确答案，顺手给出是哪一类，这条记录就从「一条错误日志」
+        -- 升级成「一条带真值的标注样本」，是真实域补数据最省成本的入口。
+        -- 存 class_id(0~37) 而非病名文本：类别体系调整后名称自动跟随，
+        -- 与 top3_json 存 class_id 的理由一致。NULL = 没给 / 不适用。
+        ground_truth_class_id INTEGER,
         created_at TEXT DEFAULT (datetime('now','localtime')),
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
@@ -115,7 +138,18 @@ def _migrate_records(cur):
     for name, typ in (("leaf_prob", "REAL"),
                       ("leaf_prob_source", "TEXT"),
                       ("mean_chroma", "REAL"),
-                      ("likely_not_leaf", "INTEGER")):
+                      ("likely_not_leaf", "INTEGER"),
+                      # 原始文件名列（2026-10-29）：旧库补列后历史行仍为 NULL，
+                      # 查询层会退化显示，不会因缺列直接 500。
+                      ("orig_name", "TEXT"),
+                      # 自定义命名 / 人工核对（2026-10-29）：同样只补列不填值，
+                      # 旧记录自然落在「未命名 / 未核对」状态。
+                      ("custom_name", "TEXT"),
+                      ("verdict", "TEXT"),
+                      ("verdict_at", "TEXT"),
+                      # 实际病害：旧库补列后历史行为 NULL，即「没提供」，
+                      # 前端按「未填写」展示，不参与任何统计分母。
+                      ("ground_truth_class_id", "INTEGER")):
         if name not in have:
             cur.execute(f"ALTER TABLE recognition_records ADD COLUMN {name} {typ}")
             added.append(name)
@@ -250,9 +284,14 @@ def update_user(uid, nickname=None, password_hash=None, salt=None):
 
 
 # ===================== 识别记录 CRUD =====================
-def add_record(user_id, image_name, pred_class_id, confidence, top3, ood=None):
+def add_record(user_id, image_name, pred_class_id, confidence, top3, ood=None,
+               orig_name=None):
     """写入一条识别记录。
 
+    image_name: 落盘文件名（uuid.ext），用于取缩略图，**不是给用户看的**。
+    orig_name:  用户上传时的原始文件名（如 `番茄晚疫病.jpg`），历史列表展示用。
+                放关键字参数且默认 None —— 旧调用方与单测不受影响，
+                缺失时历史页退化为占位文案而不是报错。
     ood: `predict_image_with_ood()` 返回的判据字典（可选）。
         落库目的是**运行期监控** —— 只有把 leaf_prob 等值存下来，
         才能回答「线上输入是否偏离训练分布」，也才能为下一轮重训积累素材。
@@ -263,10 +302,10 @@ def add_record(user_id, image_name, pred_class_id, confidence, top3, ood=None):
     cur = conn.cursor()
     cur.execute(
         """INSERT INTO recognition_records
-           (user_id, image_name, pred_class_id, confidence, top3_json,
+           (user_id, image_name, orig_name, pred_class_id, confidence, top3_json,
             leaf_prob, leaf_prob_source, mean_chroma, likely_not_leaf)
-           VALUES (?,?,?,?,?,?,?,?,?)""",
-        (user_id, image_name, pred_class_id, confidence,
+           VALUES (?,?,?,?,?,?,?,?,?,?)""",
+        (user_id, image_name, orig_name, pred_class_id, confidence,
          json.dumps(top3, ensure_ascii=False),
          ood.get("leaf_prob"),
          ood.get("leaf_prob_source"),
@@ -325,20 +364,84 @@ def get_ood_stats(user_id, days=7, low_leaf=0.2):
     }
 
 
-def get_records_by_user(user_id, page=1, size=20):
+def get_records_by_user(user_id, page=1, size=20, verdict=None):
+    """按页取某个用户的识别记录，返回 (rows, total)。
+
+    `verdict` 过滤（2026-10-29 新增）：
+      · None / 'all' → 不过滤（默认，保持旧行为）
+      · 'correct' / 'wrong' → 只看已核对为正确 / 错误的
+      · 'unset' → 只看还没核对过的
+    判定为「识别错误」的记录是用户最想集中处理的那批（挑出来复核 / 补数据），
+    只能在界面上一页页翻 = 这个功能等于不存在。
+
+    ⚠️ 排序必须带 `id DESC` 二级键（2026-10-29 修复）。
+    此前只有 `ORDER BY created_at DESC`，而 `created_at` 是秒级文本时间戳：
+    同一秒内写入的多条记录（实测 user 5 在 2026-10-26 11:24:49 一次写入 6 条）
+    在 SQLite 里顺序未定义，翻页时同一行可能既出现在第 1 页又出现在第 2 页，
+    而另一行两条页都取不到 —— 表现为「历史记录偶尔少一条 / 翻页对不上」，
+    且无任何报错。加 id 二级排序后顺序全序且稳定。
+
+    ⚠️ 过滤条件必须同时进 COUNT 与 SELECT：只过滤 SELECT 会让页脚总数
+    仍是全量，用户看到「共 182 条」但翻两页就空了。
+    """
+    where = "user_id=?"
+    args = [user_id]
+    v = (verdict or "").strip().lower()
+    if v in ("correct", "wrong"):
+        where += " AND verdict=?"
+        args.append(v)
+    elif v == "unset":
+        # verdict 为 NULL 才是「未核对」；空串是脏值，也一并算未核对
+        where += " AND (verdict IS NULL OR verdict='')"
+
     conn = get_conn()
     cur = conn.cursor()
-    cur.execute(
-        "SELECT COUNT(*) AS c FROM recognition_records WHERE user_id=?", (user_id,))
+    cur.execute(f"SELECT COUNT(*) AS c FROM recognition_records WHERE {where}", args)
     total = cur.fetchone()["c"]
     cur.execute(
-        """SELECT * FROM recognition_records WHERE user_id=?
-           ORDER BY created_at DESC LIMIT ? OFFSET ?""",
-        (user_id, size, (page - 1) * size),
+        f"""SELECT * FROM recognition_records WHERE {where}
+            ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?""",
+        args + [size, (page - 1) * size],
     )
     rows = [dict(r) for r in cur.fetchall()]
     conn.close()
     return rows, total
+
+
+def count_records_by_verdict(user_id):
+    """全量历史按人工核对结论分组计数（不受分页 / 时间窗口影响）。
+
+    为什么不用 `/stats/overview.verdict`：那是**近 N 天**窗口的统计，而列表是
+    全部历史。实测 demo 用户近 30 天 171 条 / 全量 182 条 —— 拿窗口数字当
+    筛选徽标，用户会看到「识别错误 3 条」却筛出 5 条，又是一次「数字对不上」。
+    这里刻意不带时间条件，与列表口径严格一致。
+
+    返回：{"all": n, "correct": n, "wrong": n, "unset": n, "with_ground_truth": n}
+    """
+    conn = get_conn()
+    cur = conn.cursor()
+    cur.execute(
+        """SELECT COUNT(*) AS total,
+                  COALESCE(SUM(CASE WHEN verdict='correct' THEN 1 ELSE 0 END), 0) AS correct,
+                  COALESCE(SUM(CASE WHEN verdict='wrong' THEN 1 ELSE 0 END), 0) AS wrong,
+                  COALESCE(SUM(CASE WHEN ground_truth_class_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS with_gt
+           FROM recognition_records WHERE user_id=?""",
+        (user_id,),
+    )
+    r = dict(cur.fetchone())
+    conn.close()
+    total = r["total"] or 0
+    correct = r["correct"] or 0
+    wrong = r["wrong"] or 0
+    return {
+        "all": total,
+        "correct": correct,
+        "wrong": wrong,
+        # 相减而不是再查一次：三档互斥且穷尽（correct / wrong / 其余），
+        # 单独 SUM(IS NULL) 一旦碰到脏值就会与前两档之和不符
+        "unset": max(0, total - correct - wrong),
+        "with_ground_truth": r["with_gt"] or 0,
+    }
 
 
 def get_record_by_id(rid, user_id=None):
@@ -354,13 +457,117 @@ def get_record_by_id(rid, user_id=None):
 
 
 def delete_record(rid, user_id):
+    """删除一条记录，返回 (是否删除成功, 落盘文件名或 None)。
+
+    为什么要把文件名带出来：历史删掉了、`data/uploads/` 里的原图还在，
+    磁盘只会单调增长（审计里「匿名上传文件无清理」是同一个问题）。
+    但清理文件属于 I/O、不属于事务 —— 放在路由层做，数据库删除保持纯粹，
+    单测不需要造真实文件也能跑。
+
+    `user_id` 条件不能省：只按 id 删等于任何登录用户都能删别人的记录
+    （越权删除比越权读取更不可接受，且不可恢复）。
+    """
     conn = get_conn()
     cur = conn.cursor()
+    cur.execute(
+        "SELECT image_name FROM recognition_records WHERE id=? AND user_id=?",
+        (rid, user_id),
+    )
+    row = cur.fetchone()
+    if not row:
+        conn.close()
+        return False, None
+    image_name = row["image_name"]
     cur.execute("DELETE FROM recognition_records WHERE id=? AND user_id=?", (rid, user_id))
     affected = cur.rowcount
     conn.commit()
     conn.close()
-    return affected > 0
+    return affected > 0, image_name
+
+
+# 用于 update_record 区分「没传这个字段」与「显式传 None 清空」。
+# 用 None 当哨兵会把「清空自定义命名」误判成「不要改」，这是典型的三态陷阱。
+_UNSET = object()
+
+# 人工核对只允许这两种取值，其余一律拒绝 —— 存进脏值会让统计口径静默失真
+VERDICT_VALUES = ("correct", "wrong")
+
+# 自定义命名的长度上限：列表列宽 200px 大约能放 20 个汉字，
+# 留 40 字符给弹窗与导出，再长就只能靠省略号，反而更难认。
+_MAX_CUSTOM_NAME = 40
+
+
+def update_record(rid, user_id, custom_name=_UNSET, verdict=_UNSET,
+                  ground_truth_class_id=_UNSET):
+    """就地修改一条记录的自定义命名 / 人工核对结论 / 实际病害，返回更新后的行。
+
+    只允许改这几列：预测结果、置信度是识别时的客观事实，事后改动等于伪造日志，
+    真要修正请重新识别一条。
+
+    `ground_truth_class_id`（2026-10-29 新增）与 `verdict` 有从属关系：
+      · verdict='wrong' 且给了实际病害 → 记录一条「AI 认错、正确答案是 X」的样本；
+      · verdict 改成 'correct' / null 而调用方**没显式**给实际病害 → 连带清空，
+        否则会留下「已判定识别正确，却写着实际病害是别的」这种自相矛盾行，
+        统计时还得额外加条件过滤，迟早漏。
+      显式传了值就以调用方为准（三态：不传=自动 / None=清空 / 值=设置）。
+
+    Returns:
+        更新后的行 dict；记录不存在或不属于该用户时返回 None（路由层转 404，
+        不区分「不存在」与「不是你的」，避免用 404/403 差异探测他人记录 id）。
+    """
+    fields = []
+    params = []
+    if custom_name is not _UNSET:
+        # 空串统一存 NULL：空串会让「是否有自定义名」的真值判断变成两套写法
+        value = (custom_name or "").strip() or None
+        if value is not None and len(value) > _MAX_CUSTOM_NAME:
+            value = value[:_MAX_CUSTOM_NAME]
+        fields.append("custom_name = ?")
+        params.append(value)
+    verdict_value = _UNSET
+    if verdict is not _UNSET:
+        v = (verdict or "").strip().lower() or None
+        if v is not None and v not in VERDICT_VALUES:
+            raise ValueError(f"verdict 只能是 {'/'.join(VERDICT_VALUES)} 或 null")
+        verdict_value = v
+        fields.append("verdict = ?")
+        params.append(v)
+        # 时间戳跟着结论走：取消核对（置空）时一并清掉，否则会留下
+        # 「未核对但有核对时间」的自相矛盾行
+        fields.append("verdict_at = datetime('now','localtime')" if v else "verdict_at = NULL")
+    if ground_truth_class_id is _UNSET:
+        # 结论不再是「识别错误」→ 实际病害失去意义，顺带清掉
+        if verdict_value is not _UNSET and verdict_value != "wrong":
+            fields.append("ground_truth_class_id = NULL")
+    else:
+        gid = None
+        if ground_truth_class_id is not None and str(ground_truth_class_id).strip() != "":
+            try:
+                gid = int(ground_truth_class_id)
+            except (TypeError, ValueError):
+                raise ValueError("ground_truth_class_id 必须是整数类别 id")
+            # 越界直接拒绝：存进 0~37 之外的值，前端 class_name_zh 取不到名，
+            # 展示成空白，而统计又把它算成「已标注」，是最难查的一类脏数据
+            if gid < 0 or gid >= len(CLASS_DIRS):
+                raise ValueError(f"ground_truth_class_id 必须在 0~{len(CLASS_DIRS) - 1} 之间")
+        fields.append("ground_truth_class_id = ?")
+        params.append(gid)
+    if not fields:
+        return get_record_by_id(rid, user_id)
+
+    conn = get_conn()
+    cur = conn.cursor()
+    params.extend([rid, user_id])
+    cur.execute(
+        f"UPDATE recognition_records SET {', '.join(fields)} WHERE id=? AND user_id=?",
+        params,
+    )
+    affected = cur.rowcount
+    conn.commit()
+    conn.close()
+    if not affected:
+        return None
+    return get_record_by_id(rid, user_id)
 
 
 # ===================== 病害知识查询 =====================
@@ -408,6 +615,170 @@ def get_disease_by_id(did):
     row = cur.fetchone()
     conn.close()
     return dict(row) if row else None
+
+
+# ===================== 统计聚合（前端图表用） =====================
+# 置信度直方图的桶边界：<0.5 / 0.5-0.6 / ... / 0.9-1.0，共 6 档。
+# 为什么从 0.5 起单独一档：0.5 是 THRESHOLD_LOW_CONF（需人工复核线），
+# 把低于复核线的记录单独成桶，图上能直接看出「有多少条是不该轻信的」。
+_CONF_BUCKETS = [
+    ("<50%", 0.0, 0.5),
+    ("50-60%", 0.5, 0.6),
+    ("60-70%", 0.6, 0.7),
+    ("70-80%", 0.7, 0.8),
+    ("80-90%", 0.8, 0.9),
+    ("90-100%", 0.9, 1.0001),   # 上界留一点余量，避免 confidence 恰好 1.0 落不进任何桶
+]
+
+
+def get_stats_overview(user_id, days=30, low_conf=0.5):
+    """识别历史的聚合统计，供前端图表使用。
+
+    为什么必须后端聚合：`/records` 分页上限 100 条，前端拿不到全量数据，
+    自己 reduce 会在记录变多后静默算错（比例分母不对），且要发 N 个请求。
+
+    统计窗口：最近 days 天（含今天），所有子项用同一窗口，避免「总数 50 但
+    分部之和 47」这类对不上的问题。
+
+    ⚠️ 口径提醒：`confidence` 存的是**原始 softmax**，不是温度校准后的值。
+    因此本函数**不**给出 high/medium/low 可靠性分档 —— 那是基于校准值的
+    （calibration_domain.json 的 reliability_high=0.55 / medium=0.25），
+    两套阈值混用会让「历史页标签」和「图表分档」自相矛盾。
+    图表只呈现原始分布，口径差异在接口文档与前端副标题中注明。
+    """
+    conn = get_conn()
+    cur = conn.cursor()
+    window = max(1, min(int(days), 365))
+    # 作用域条件只拼整数，无注入风险；集中一处便于四个查询保持口径一致
+    scope = (
+        "FROM recognition_records r "
+        "LEFT JOIN disease_knowledge k ON k.id = r.pred_class_id "
+        "WHERE r.user_id = ? "
+        f"AND r.created_at >= datetime('now','localtime','-{window} days')"
+    )
+
+    # ① 总量 / 平均置信度 / 需复核数 / 健康叶数
+    cur.execute(
+        "SELECT COUNT(*) AS total,"
+        "       COALESCE(AVG(r.confidence), 0) AS avg_conf,"
+        "       COALESCE(SUM(CASE WHEN r.confidence < ? OR r.likely_not_leaf = 1"
+        "                        THEN 1 ELSE 0 END), 0) AS need_review,"
+        "       COALESCE(SUM(CASE WHEN k.is_healthy = 1 THEN 1 ELSE 0 END), 0) AS healthy "
+        + scope,
+        (low_conf, user_id),
+    )
+    head = dict(cur.fetchone())
+    total = head["total"] or 0
+
+    # ② 作物分布（按识别条数降序）
+    cur.execute(
+        "SELECT COALESCE(k.crop_cn, '未知') AS crop, COUNT(*) AS n " + scope +
+        " GROUP BY crop ORDER BY n DESC",
+        (user_id,),
+    )
+    crops = [
+        {"crop": r["crop"], "count": r["n"], "ratio": round(r["n"] / total, 4) if total else 0}
+        for r in cur.fetchall()
+    ]
+
+    # ③ 病害分布 Top 10（同一种病在不同作物上算不同项，故按 作物+病害 分组）
+    cur.execute(
+        "SELECT COALESCE(k.crop_cn, '未知') AS crop,"
+        "       COALESCE(k.disease_cn, '未知') AS disease,"
+        "       COALESCE(k.is_healthy, 0) AS is_healthy,"
+        "       COUNT(*) AS n " + scope +
+        " GROUP BY crop, disease ORDER BY n DESC LIMIT 10",
+        (user_id,),
+    )
+    diseases = [
+        {
+            "crop": r["crop"],
+            "disease": r["disease"],
+            # 知识库里两类命名规则不同：
+            #   · 病害类 disease_cn 已含作物前缀（"苹果黑星病"）→ 直接用
+            #   · 健康类 disease_cn 只是"健康" → 补成「苹果（健康）」，与列表页一致
+            # 曾经无条件拼 crop_cn，得到「番茄番茄晚疫病」，已修正。
+            "name": f"{r['crop']}（健康）" if r["is_healthy"] else r["disease"],
+            "is_healthy": r["is_healthy"],
+            "count": r["n"],
+        }
+        for r in cur.fetchall()
+    ]
+
+    # ④ 置信度直方图（CASE 归桶，Python 侧补零，保证 6 档恒定存在）
+    cur.execute(
+        "SELECT CASE"
+        "         WHEN r.confidence < 0.5 THEN 0"
+        "         WHEN r.confidence < 0.6 THEN 1"
+        "         WHEN r.confidence < 0.7 THEN 2"
+        "         WHEN r.confidence < 0.8 THEN 3"
+        "         WHEN r.confidence < 0.9 THEN 4"
+        "         ELSE 5 END AS idx,"
+        "       COUNT(*) AS n " + scope + " GROUP BY idx",
+        (user_id,),
+    )
+    bucket_counts = {r["idx"]: r["n"] for r in cur.fetchall()}
+    confidence_buckets = [
+        {"range": label, "count": bucket_counts.get(i, 0)}
+        for i, (label, _, _) in enumerate(_CONF_BUCKETS)
+    ]
+
+    # ⑤ 日趋势：SQL 只返回有记录的日子，Python 补零到完整窗口，
+    #    否则前端画柱状/折线时会出现「跳日期」的错觉。
+    cur.execute(
+        "SELECT date(r.created_at) AS d, COUNT(*) AS n " + scope + " GROUP BY d",
+        (user_id,),
+    )
+    daily_map = {r["d"]: r["n"] for r in cur.fetchall()}
+    daily = []
+    for back in range(window - 1, -1, -1):
+        cur.execute("SELECT date('now','localtime',?) AS d", (f"-{back} days",))
+        day = cur.fetchone()["d"]
+        daily.append({"date": day, "count": daily_map.get(day, 0)})
+
+    # ⑥ 人工核对结论（2026-10-29 新增）
+    #    准确率的分母必须是「已核对条数」，不是 total —— 只有 20% 的记录被人看过时，
+    #    拿 total 当分母会得到一个既不是模型精度、也不是人工精度的数字。
+    #    未核对条数单独返回，让前端能显式说明「样本量还小」。
+    cur.execute(
+        "SELECT COALESCE(SUM(CASE WHEN r.verdict = 'correct' THEN 1 ELSE 0 END), 0) AS correct,"
+        "       COALESCE(SUM(CASE WHEN r.verdict = 'wrong' THEN 1 ELSE 0 END), 0) AS wrong,"
+        # 「判错且顺手给了正确答案」的条数：这才是可回流训练的那部分样本，
+        # 光有 wrong 只是「知道错了」，不知道对的是什么，标注还得重来一遍
+        "       COALESCE(SUM(CASE WHEN r.ground_truth_class_id IS NOT NULL THEN 1 ELSE 0 END), 0) AS with_gt "
+        + scope,
+        (user_id,),
+    )
+    v = dict(cur.fetchone())
+    labeled = (v["correct"] or 0) + (v["wrong"] or 0)
+    verdict = {
+        "labeled": labeled,
+        "correct": v["correct"] or 0,
+        "wrong": v["wrong"] or 0,
+        "with_ground_truth": v["with_gt"] or 0,
+        "unlabeled": total - labeled,
+        # 没有核对记录时返回 None 而不是 0：0% 会被读成「全错」，
+        # None 前端才好显示「暂无核对」
+        "accuracy": round((v["correct"] or 0) / labeled, 4) if labeled else None,
+    }
+
+    conn.close()
+
+    return {
+        "days": window,
+        "total": total,
+        "avg_confidence": round(head["avg_conf"], 4),
+        "need_review": head["need_review"],
+        "healthy": head["healthy"],
+        "diseased": total - head["healthy"],
+        "crops": crops,
+        "diseases": diseases,
+        "confidence_buckets": confidence_buckets,
+        "daily": daily,
+        "verdict": verdict,
+        # 复用已有的 OOD 监控聚合，避免两处各写一份判据统计而口径漂移
+        "ood": get_ood_stats(user_id, days=window),
+    }
 
 
 # ===================== 配置读写 =====================

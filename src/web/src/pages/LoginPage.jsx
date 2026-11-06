@@ -1,8 +1,8 @@
 // 登录 / 注册页（对接 /auth/login、/auth/register；mock 模式降级）
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Input, Button, Tabs, Card, Typography, App } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import http, { USE_MOCK } from '../api/http'
 import { setToken, setUser } from '../store/auth'
 import LeafMark from '../components/LeafMark'
@@ -15,6 +15,18 @@ export default function LoginPage() {
   const { message } = App.useApp()
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const [sp] = useSearchParams()
+
+  // 会话过期提示（配合 http.js 的 401 跳转）：
+  // 不提示的话用户只看到「突然回到登录页」，会以为账号出了问题。
+  // 提示后把参数清掉，避免刷新页面反复弹。
+  useEffect(() => {
+    if (sp.get('expired') === '1') {
+      message.warning('登录已过期，请重新登录')
+      navigate('/login', { replace: true })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const doLogin = async (vals) => {
     setLoading(true)

@@ -1,0 +1,75 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    {/* 页眉：眉标 + 主标题 + 贯通细线（全篇母题） */}
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>
+        网站功能 · 总览 · 优点
+    </Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        四项核心功能，贯通识别与复核全流程
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    {/* 内容区：左清单 + 右截图 */}
+    <Box style={{ flexDirection: 'row', gap: 40, marginTop: 26 }}>
+
+        {/* 左：四条同层级条目，行间细线 */}
+        <Box style={{ width: 720 }}>
+            <Box style={{ flexDirection: 'row', alignItems: 'flex-start', paddingTop: 18, paddingBottom: 18, borderBottom: '1px solid #E3EAE5' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 52 }}>01</Text>
+                <Box style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>单张识别</Text>
+                    <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                        单张图像输入，输出 Top-3 候选、校准置信度与防治建议，结论可复核
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', alignItems: 'flex-start', paddingTop: 18, paddingBottom: 18, borderBottom: '1px solid #E3EAE5' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 52 }}>02</Text>
+                <Box style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>批量识别</Text>
+                    <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                        单次最多 9 张，同作物约束与单张失败隔离，适配连续巡田采样
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', alignItems: 'flex-start', paddingTop: 18, paddingBottom: 18, borderBottom: '1px solid #E3EAE5' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 52 }}>03</Text>
+                <Box style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>识别历史</Text>
+                    <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                        识别记录自动入库并按用户隔离，支持四档筛选、人工核对与导出
+                    </Text>
+                </Box>
+            </Box>
+
+            <Box style={{ flexDirection: 'row', alignItems: 'flex-start', paddingTop: 18, paddingBottom: 18 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B9C9BF', width: 52 }}>04</Text>
+                <Box style={{ flex: 1 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#1F2A24' }}>病害知识库</Text>
+                    <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                        14 种作物 38 个类别，每类 3 张典型病叶图与症状防治说明，可即时查证
+                    </Text>
+                </Box>
+            </Box>
+        </Box>
+
+        {/* 右：一张实机缩略图 + 说明，垂直居中锚定 */}
+        <Box style={{ flex: 1, justifyContent: 'center' }}>
+            <Box style={{ border: '1px solid #D8E4DC', borderRadius: 10, padding: 6, background: '#F7FBF8' }}>
+                <Image src="assets/detect_empty.png" style={{ width: 386, height: 241, objectFit: 'cover', borderRadius: 6 }} />
+            </Box>
+            <Text style={{ fontSize: 14, color: '#5B6B60', lineHeight: 1.6, marginTop: 12 }}>
+                识别页真实截图：作物清单由后端统一下发，前端不硬编码；整株或远距离照片支持框选单片后重新识别
+            </Text>
+        </Box>
+    </Box>
+
+    {/* 整页结论条 */}
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 20 }}>
+        <Text style={{ fontSize: 17, color: '#1F7A46', fontWeight: 'bold' }}>
+            四项功能共用同一套后端与同一份数据：识别结果直接进入历史，核对后的错样本可回流作为真实域标注。
+        </Text>
+    </Box>
+</Slide>

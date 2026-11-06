@@ -1,0 +1,54 @@
+<Slide style={{ width: 1280, height: 720, background: '#FFFFFF', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+
+    <Text style={{ fontSize: 14, color: '#1F7A46', letterSpacing: 1 }}>
+        网站功能 · 01 单张识别 · 优点
+    </Text>
+    <Text style={{ fontSize: 34, fontWeight: 'bold', color: '#1F2A24', marginTop: 10 }}>
+        作物约束与可信度并重：先收窄范围，再给出置信判断
+    </Text>
+    <Box style={{ height: 1, background: '#D8E4DC', marginTop: 14 }} />
+
+    <Box style={{ flexDirection: 'row', gap: 40, marginTop: 22 }}>
+
+        {/* 左：实机截图（主视觉） */}
+        <Box style={{ width: 614 }}>
+            <Box style={{ border: '1px solid #D8E4DC', borderRadius: 10, padding: 6, background: '#F7FBF8' }}>
+                <Image src="assets/detect_result.png" style={{ width: 600, height: 375, objectFit: 'cover', borderRadius: 6 }} />
+            </Box>
+            <Text style={{ fontSize: 14, color: '#5B6B60', marginTop: 8 }}>
+                识别结果页 · 苹果黑星病，Top-1 &gt; 99.9%，候选病害附参考图与防治建议
+            </Text>
+        </Box>
+
+        {/* 右：三条要点 */}
+        <Box style={{ flex: 1, justifyContent: 'center' }}>
+            <Box style={{ borderLeft: '2px solid #1F7A46', paddingLeft: 18 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>候选范围前置收窄</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                    下拉仅列 14 种支持作物，选定后只在该作物候选类内比较（苹果 4 类），从源头抑制跨作物误判
+                </Text>
+            </Box>
+
+            <Box style={{ borderLeft: '2px solid #1F7A46', paddingLeft: 18, marginTop: 26 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>结论附带可信度</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                    同时输出 Top-3 候选、原始与校准置信度、可靠性分档；低置信结果标注提示复核
+                </Text>
+            </Box>
+
+            <Box style={{ borderLeft: '2px solid #1F7A46', paddingLeft: 18, marginTop: 26 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1F2A24' }}>结果可对照查证</Text>
+                <Text style={{ fontSize: 18, color: '#5B6B60', lineHeight: 1.5, marginTop: 8 }}>
+                    每个候选均附 3 张典型病叶图，并给出症状描述与防治建议，可直接比对判断
+                </Text>
+            </Box>
+        </Box>
+    </Box>
+
+    {/* 整页结论条 */}
+    <Box style={{ background: '#F0F9F4', borderRadius: 6, paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 12, marginTop: 16 }}>
+        <Text style={{ fontSize: 18, color: '#1F7A46', fontWeight: 'bold' }}>
+            仅输出病名不足以支撑田间决策；系统同时给出置信度与分层提示，使每次结果可判断、可复核。
+        </Text>
+    </Box>
+</Slide>

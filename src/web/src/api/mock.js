@@ -95,3 +95,57 @@ export function mockRecords() {
     size: 20,
   }
 }
+
+// 历史页统计聚合：结构与 /stats/overview 一致，便于 mock / 真实自由切换。
+// 故意只给 4 条记录：用来验证「记录数不足时不画分布图」的降级分支。
+export function mockStats() {
+  const daily = []
+  for (let i = 29; i >= 0; i -= 1) {
+    const d = new Date()
+    d.setDate(d.getDate() - i)
+    daily.push({ date: d.toISOString().slice(0, 10), count: i === 0 ? 1 : 0 })
+  }
+  daily[26].count = 1
+  daily[27].count = 2
+  return {
+    days: 30,
+    total: 4,
+    avg_confidence: 0.8835,
+    need_review: 0,
+    healthy: 0,
+    diseased: 4,
+    crops: [
+      { crop: '番茄', count: 1, ratio: 0.25 },
+      { crop: '苹果', count: 1, ratio: 0.25 },
+      { crop: '柑橘', count: 1, ratio: 0.25 },
+      { crop: '马铃薯', count: 1, ratio: 0.25 },
+    ],
+    diseases: [
+      { crop: '番茄', disease: '番茄晚疫病', name: '番茄晚疫病', is_healthy: 0, count: 1 },
+      { crop: '苹果', disease: '苹果黑星病', name: '苹果黑星病', is_healthy: 0, count: 1 },
+      { crop: '柑橘', disease: '柑橘黄龙病', name: '柑橘黄龙病', is_healthy: 0, count: 1 },
+      { crop: '马铃薯', disease: '马铃薯早疫病', name: '马铃薯早疫病', is_healthy: 0, count: 1 },
+    ],
+    confidence_buckets: [
+      { range: '<50%', count: 0 },
+      { range: '50-60%', count: 0 },
+      { range: '60-70%', count: 0 },
+      { range: '70-80%', count: 0 },
+      { range: '80-90%', count: 2 },
+      { range: '90-100%', count: 2 },
+    ],
+    daily,
+    ood: {
+      days: 30,
+      total: 4,
+      monitored: 0,
+      flagged: 0,
+      msp_fallback: 0,
+      avg_leaf_prob: null,
+      avg_chroma: null,
+      flagged_ratio: null,
+      low_leaf_ratio: null,
+      low_leaf_threshold: 0.2,
+    },
+  }
+}

@@ -1,0 +1,43 @@
+<Slide style={{ width: 1280, height: 720, background: '#123A28', padding: 60, fontFamily: 'Microsoft YaHei' }}>
+    <Box style={{ flexDirection: 'row', width: 1160, height: 600, alignItems: 'center', gap: 44 }}>
+
+        {/* 左：实机截图，白边卡片承载 */}
+        <Box style={{ width: 660 }}>
+            <Box style={{ border: '1px solid rgba(255,255,255,0.16)', borderRadius: 12, padding: 8, background: 'rgba(255,255,255,0.07)' }}>
+                <Image src="assets/detect_result.png" style={{ width: 642, height: 401, objectFit: 'cover', borderRadius: 6 }} />
+            </Box>
+            <Text style={{ fontSize: 14, color: '#8FBFA2', marginTop: 14 }}>
+                识别页真实截图 · 苹果黑星病，Top-1 置信度 &gt; 99.9%
+            </Text>
+        </Box>
+
+        {/* 右：标题组 */}
+        <Box style={{ flex: 1, justifyContent: 'center' }}>
+            <Text style={{ fontSize: 15, color: '#7FC79C', letterSpacing: 1 }}>
+                前沿技术实训 · 项目汇报
+            </Text>
+
+            <Box style={{ height: 1, background: 'rgba(255,255,255,0.22)', marginTop: 16, marginBottom: 26 }} />
+
+            <Text style={{ fontSize: 62, fontWeight: 'bold', color: '#FFFFFF', lineHeight: 1.16 }}>
+                农作物叶片
+                <br />
+                病害识别系统
+            </Text>
+
+            <Text style={{ fontSize: 20, color: '#CFE9D9', lineHeight: 1.55, marginTop: 26 }}>
+                单张图像输入，10 秒内输出诊断结论与防治建议
+            </Text>
+
+            <Text style={{ fontSize: 15, color: '#8FBFA2', marginTop: 14 }}>
+                38 类病害 · 14 种作物 · 单次最多 9 张
+            </Text>
+
+            <Box style={{ height: 1, background: 'rgba(255,255,255,0.14)', marginTop: 34, marginBottom: 16 }} />
+
+            <Text style={{ fontSize: 14, color: '#7FAF92' }}>
+                2026 年 10 月　｜　React 18 + FastAPI + PyTorch 2.5.1 + ResNet18
+            </Text>
+        </Box>
+    </Box>
+</Slide>

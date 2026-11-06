@@ -1,0 +1,13 @@
+{
+  "T_global": 1.2,
+  "T_crop": 1.3,
+  "reliability_high": 0.55,
+  "reliability_medium": 0.25,
+  "fitted_on": "data/real_mix (2341 张, 真实域 train)",
+  "evaluated_on": "data/real_mix_test (225 张, 未进训练)",
+  "ece_global_before": 0.2614,
+  "ece_global_after": 0.2239,
+  "ece_crop_before": 0.0805,
+  "ece_crop_after": 0.0699,
+  "note": "温度缩放只改置信度数值，不改变 Top-1（单调变换）。T 在真实田间数据上拟合，故对 PlantVillage 这类实验室风格图会偏保守（欠自信）—— 这是刻意选择：宁可说「仅供参考」，也不能把 17% 准确率的场景显示成 93% 可靠。"
+}

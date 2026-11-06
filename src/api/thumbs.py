@@ -30,6 +30,18 @@ from src.config import UPLOAD_DIR
 THUMB_SIZE = 96
 THUMB_QUALITY = 70
 
+# 详情弹窗用的预览图规格（2026-10-29 新增）：
+#   96px 缩略图放大到弹窗尺寸必然糊成马赛克，但也没必要回传原图 ——
+#   手机原图 3~5MB，base64 后膨胀 1.33 倍，一次开弹窗就吃十几 MB 内存。
+#   720px 长边在 900px 宽的弹窗里 1:1 显示清晰，放大到 2 倍仍可辨认病斑。
+PREVIEW_SIZE = 720
+PREVIEW_QUALITY = 82
+
+# 预览图缓存独立一份：与缩略图 key 不同尺寸，共用缓存会互相顶掉。
+# 数量上限比缩略图小（详情是逐条打开的，不会一次要几十张），
+# 但要能容下用户来回翻看十几条记录。
+_PREVIEW_CACHE_MAX = 128
+
 
 @lru_cache(maxsize=512)
 def _cached_thumb(abs_path: str, mtime: float) -> str:
@@ -58,6 +70,45 @@ def _cached_thumb(abs_path: str, mtime: float) -> str:
     except Exception as exc:  # 缩略图失败不应影响历史列表本身
         warnings.warn(f"缩略图生成失败 {abs_path}: {exc}")
         return ""
+
+
+@lru_cache(maxsize=_PREVIEW_CACHE_MAX)
+def _cached_preview(abs_path: str, mtime: float) -> str:
+    """生成详情弹窗用的长边 720px 预览图 data URI。
+
+    与缩略图用同一套缓存策略（键含 mtime，文件被覆盖即失效），
+    但尺寸与质量不同 —— 详情要能看清病斑，缩略图只要能认出来是同一张图。
+    """
+    try:
+        with Image.open(abs_path) as im:
+            im.draft("RGB", (PREVIEW_SIZE * 2, PREVIEW_SIZE * 2))
+            im = im.convert("RGB")
+            im.thumbnail((PREVIEW_SIZE, PREVIEW_SIZE), Image.LANCZOS)
+            buf = BytesIO()
+            im.save(buf, format="JPEG", quality=PREVIEW_QUALITY, optimize=True)
+        return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
+    except Exception as exc:
+        warnings.warn(f"预览图生成失败 {abs_path}: {exc}")
+        return ""
+
+
+def preview_for(image_name):
+    """按落盘文件名取详情用预览图 data URI。
+
+    Args:
+        image_name: 记录中的 `image_name` 字段（落盘文件名，如 `abc123.jpg`）
+
+    Returns:
+        data URI 字符串；文件不存在或生成失败时返回空字符串
+        （文件被手工清理掉时前端显示占位图，不影响其余字段）
+    """
+    if not image_name:
+        return ""
+    # 与 thumb_for 同样只取文件名部分，挡住 `../../` 路径穿越
+    path = Path(UPLOAD_DIR) / Path(image_name).name
+    if not path.is_file():
+        return ""
+    return _cached_preview(str(path), path.stat().st_mtime)
 
 
 def thumb_for(image_name):
